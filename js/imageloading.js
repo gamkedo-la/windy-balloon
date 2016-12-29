@@ -1,4 +1,5 @@
 var carPic = document.createElement("img");
+var carShadowPic = document.createElement("img");
 var trackSheet = document.createElement("img");
 
 var picsToLoad = 0;
@@ -19,6 +20,7 @@ function loadImages() {
 
   var imageList = [
     {varName:carPic, theFile:"ball.png"},
+    {varName:carShadowPic, theFile:"ball-shadow.png"},
     {varName:trackSheet, theFile:"track_all_sheet.png"}
     ];
 
