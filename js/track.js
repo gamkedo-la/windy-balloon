@@ -52,10 +52,14 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
   return trackGrid[trackIndex];
 }
 
+var mtPos = [];
+
 function drawTracks() {
   var trackIndex = 0;
   var trackLeftEdgeX = 0;
   var trackTopEdgeY = 0;
+
+  mtPos = [];
   
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
     
@@ -65,6 +69,12 @@ function drawTracks() {
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
       
+      if(trackTypeHere == TRACK_WALL) {
+        var newPt = {x:trackLeftEdgeX+TRACK_W/2,
+                     y:trackTopEdgeY+TRACK_H};
+        mtPos.push(newPt);
+      }
+
       if(trackTypeHere < 0) {
         var arrowType = -trackTypeHere;
         // first draw default ground under the arrow
@@ -75,7 +85,7 @@ function drawTracks() {
           TRACK_W, TRACK_H); // draw full full tile size for destination
 
         canvasContext.drawImage(trackSheet,
-            0, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
+            arrowAnimFrame * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
             TRACK_W, TRACK_H, // get full tile size from source
             trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
             TRACK_W, TRACK_H); // draw full full tile size for destination

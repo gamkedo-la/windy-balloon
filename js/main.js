@@ -14,6 +14,11 @@ var maxHeight = 33;
 var minHeight = 27;
 var heightChangeScalar = 0.25;
 
+var arrowAnimFrame = 0;
+var arrowAnimFrameTicksDelay = 0;
+const TICKS_PER_ANIM = 2;
+const ARROW_ANIM_FRAMES = 5;
+
 var parCornerTL = {x:0,y:0};
 var parCornerTR = {x:0,y:0};
 var parCornerBL = {x:0,y:0};
@@ -63,6 +68,13 @@ function moveEverything() {
 }
 
 function drawEverything() {
+  if(arrowAnimFrameTicksDelay++ > TICKS_PER_ANIM) {
+    arrowAnimFrameTicksDelay = 0;
+    if(arrowAnimFrame++ >= ARROW_ANIM_FRAMES) {
+      arrowAnimFrame= 0 ;
+    }
+  }
+
   drawTracks();
   
   p1.Draw();
@@ -85,6 +97,14 @@ function drawEverything() {
   scaledContext.fillRect(parCornerBL.x-1,parCornerBL.y-1,3,3);
   scaledContext.fillRect(parCornerBR.x-1,parCornerBR.y-1,3,3);
   */
+
+  for(var i=0;i<mtPos.length;i++) {
+    var mtDot = worldCoordToParCoord(mtPos[i].x,mtPos[i].y);
+    scaledContext.drawImage(mountainPic,
+      mtDot.x-mountainPic.width/2,
+      mtDot.y-mountainPic.height);
+  }
+
   var balloonDot = worldCoordToParCoord(p1.X,p1.Y);
   // scaledContext.fillRect(balloonDot.x-3,balloonDot.y-3,7,7);
   balloonHeight += Math.random() * heightChangeScalar
