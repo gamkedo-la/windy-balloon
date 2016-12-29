@@ -84,11 +84,20 @@ function drawTracks() {
           trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
           TRACK_W, TRACK_H); // draw full full tile size for destination
 
+        // draw arrow
+        canvasContext.drawImage(trackSheet,
+            (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
+            TRACK_W, TRACK_H, // get full tile size from source
+            trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
+            TRACK_W, TRACK_H); // draw full full tile size for destination
+
+        // draw conveyor belt (animated)
         canvasContext.drawImage(trackSheet,
             arrowAnimFrame * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
             TRACK_W, TRACK_H, // get full tile size from source
             trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
             TRACK_W, TRACK_H); // draw full full tile size for destination
+
       } else {
         canvasContext.drawImage(trackSheet,
           trackTypeHere * TRACK_W, 0, // top-left corner of tile art, multiple of tile width

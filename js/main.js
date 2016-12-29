@@ -17,7 +17,7 @@ var heightChangeScalar = 0.25;
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
 const TICKS_PER_ANIM = 2;
-const ARROW_ANIM_FRAMES = 5;
+const ARROW_ANIM_FRAMES = 4;
 
 var parCornerTL = {x:0,y:0};
 var parCornerTR = {x:0,y:0};
@@ -79,7 +79,7 @@ function drawEverything() {
   
   p1.Draw();
 
-  scaledContext.fillStyle = "black";
+  scaledContext.fillStyle = "#003"; // background color
   scaledContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
 
   var canvHei = canvas.height;
