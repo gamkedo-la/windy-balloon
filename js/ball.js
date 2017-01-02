@@ -1,8 +1,21 @@
+var balloonHeightNormal = 20;
+var ballonDeviation = 2;
+var heightChangePace = 0.04;
+var heightChangeDampen = 0.6;
+var heightMin = 2;
+var heightMax = 50;
+var mountainHeight = 30;
+var balloonCorrectivePaceRise = 0.1;
+var balloonCorrectivePaceSink = 0.5;
+
 function ballClass() {
-  this.X = 75;
-  this.Y = 75;
-  this.XV = 5;
-  this.YV = -3;
+  this.x = 75;
+  this.y = 75;
+  this.xv = 5;
+  this.yv = -3;
+  this.z = balloonHeightNormal;
+  this.zv = 0;
+  this.heightOscillate = 0.0;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_Gas = false;
@@ -32,16 +45,16 @@ function ballClass() {
       } // end of for
     } // end of if car position not saved yet
     
-    this.X = this.homeX;
-    this.Y = this.homeY;
-    this.XV = 5;
-    this.YV = -3;
+    this.x = this.homeX;
+    this.y = this.homeY;
+    this.xv = 5;
+    this.yv = -3;
 
   } // end of carReset
   
   this.Move = function() {
-    var nextX = this.X + this.XV;
-    var nextY = this.Y + this.YV;
+    var nextX = this.x + this.xv;
+    var nextY = this.y + this.yv;
     
     var carRad = 19;
 
@@ -50,9 +63,9 @@ function ballClass() {
     for(var r=Math.random()*0.1; r < 2*3.14159; r+=0.1) {
       hitR = getTrackAtPixelCoord(nextX+Math.cos(r)*carRad,
                                   nextY+Math.sin(r)*carRad);
-      if(hitR == TRACK_WALL) {
-        this.XV -= Math.cos(r)*0.09;
-        this.YV -= Math.sin(r)*0.09;
+      if(hitR == TRACK_MOUNTAINS && this.z < mountainHeight) {
+        this.xv -= Math.cos(r)*0.09;
+        this.yv -= Math.sin(r)*0.09;
       }
     }
   
@@ -60,20 +73,26 @@ function ballClass() {
     var otherAxisDampen = 0.97;
     switch( hitC ) {
       case ARROW_U:
-        this.YV -= primaryAxisAccel;
-        this.XV *= otherAxisDampen;
+        this.yv -= primaryAxisAccel;
+        this.xv *= otherAxisDampen;
         break;
       case ARROW_R:
-        this.XV += primaryAxisAccel;
-        this.YV *= otherAxisDampen;
+        this.xv += primaryAxisAccel;
+        this.yv *= otherAxisDampen;
         break;
       case ARROW_D:
-        this.YV += primaryAxisAccel;
-        this.XV *= otherAxisDampen;
+        this.yv += primaryAxisAccel;
+        this.xv *= otherAxisDampen;
         break;
       case ARROW_L:
-        this.XV -= primaryAxisAccel;
-        this.YV *= otherAxisDampen;
+        this.xv -= primaryAxisAccel;
+        this.yv *= otherAxisDampen;
+        break;
+      case TRACK_HEAT:
+        this.zv = 5;
+        break;
+      case TRACK_ICE:
+        this.zv = -5;
         break;
       case TRACK_GOAL:
         this.Reset();
@@ -81,26 +100,47 @@ function ballClass() {
     }
 
     var speed = Math.sqrt(
-        this.XV*this.XV +
-        this.YV*this.YV
+        this.xv*this.xv +
+        this.yv*this.yv
         );
     var minSpeed = 2.0;
     var maxSpeed = 5.0;
     if(speed < minSpeed) {
-      this.XV = minSpeed * (this.XV/speed);
-      this.YV = minSpeed * (this.YV/speed);
+      this.xv = minSpeed * (this.xv/speed);
+      this.yv = minSpeed * (this.yv/speed);
     }
     if(speed > maxSpeed) {
-      this.XV = maxSpeed * (this.XV/speed);
-      this.YV = maxSpeed * (this.YV/speed);
+      this.xv = maxSpeed * (this.xv/speed);
+      this.yv = maxSpeed * (this.yv/speed);
     }
 
-    this.X = nextX;
-    this.Y = nextY;
+    this.heightOscillate += heightChangePace;
+
+    this.x = nextX;
+    this.y = nextY;
+
+    this.z += this.zv;
+    if(this.z < heightMin) {
+      this.z = heightMin;
+    }
+    if(this.z > heightMax) {
+      this.z = heightMax;
+    }
+    if(this.z < balloonHeightNormal - balloonCorrectivePaceRise && this.zv<balloonCorrectivePaceRise) {
+      this.zv = balloonCorrectivePaceRise;
+    } else if(this.z > balloonHeightNormal + balloonCorrectivePaceSink && this.zv>-balloonCorrectivePaceSink) {
+      this.zv = -balloonCorrectivePaceSink;
+    } else {
+      this.zv *= heightChangeDampen;
+    }
+  }
+
+  this.heightNow = function() {
+    return this.z + Math.cos(this.heightOscillate) * ballonDeviation;
   }
   
   this.Draw = function() {
-    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.X, this.Y, 0 );
+    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0 );
   }
 
 } // end of car class

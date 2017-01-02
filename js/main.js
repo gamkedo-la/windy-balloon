@@ -9,10 +9,6 @@ var parHorizBaseWidth = 370;
 var parXRangeTop = 0;
 var parXRangeBot = 0;
 var parYRange = 0;
-var balloonHeight = 30;
-var maxHeight = 33;
-var minHeight = 27;
-var heightChangeScalar = 0.25;
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -105,19 +101,11 @@ function drawEverything() {
       mtDot.y,mtDot.scaleHere);
   }
 
-  var balloonDot = worldCoordToParCoord(p1.X,p1.Y);
+  var balloonDot = worldCoordToParCoord(p1.x,p1.y);
   // scaledContext.fillRect(balloonDot.x-3,balloonDot.y-3,7,7);
-  balloonHeight += Math.random() * heightChangeScalar
-                 - Math.random() * heightChangeScalar;
-  if(balloonHeight < minHeight) {
-    balloonHeight = minHeight;
-  }
-  if(balloonHeight > maxHeight) {
-    balloonHeight = maxHeight;
-  }
-  scaledContext.drawImage(carPic,
-    balloonDot.x-carPic.width/2,
-    balloonDot.y-carPic.height - balloonHeight);
+  drawAtBaseScaled(carPic,
+    balloonDot.x,
+    balloonDot.y - p1.heightNow()*balloonDot.scaleHere ,balloonDot.scaleHere);
 }
 
 function worldCoordToParCoord(worldX,worldY) {
