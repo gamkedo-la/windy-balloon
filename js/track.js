@@ -9,7 +9,7 @@ var trackGrid =
       1, 1,-4,-4, 0, 0, 0,-2, 0, 0, 0,-4,-4, 0,-1,-1, 0,-1,-1, 1,
       1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
       1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1,-3,-3, 1,
-      1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1,-1,-1,-1, 1, 1,-3,-3, 1,
+      1, 0, 5, 1, 1, 0, 0, 1, 4, 4, 1, 1,-1,-1,-1, 1, 1,-3,-3, 1,
       1,-3,-3, 1,-2,-2,-1,-1, 1, 4, 1,-2,-1,-2,-1,-2, 1, 0, 0, 1,
       1, 0, 0, 1,-1,-1,-2,-2, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
       1, 2, 0, 1, 0, 0, 0, 0, 0,-2, 1, 0, 0, 1,-3,-3, 1, 0, 0, 1,
@@ -69,9 +69,10 @@ function drawTracks() {
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
       
-      if(trackTypeHere == TRACK_WALL) {
+      if(trackTypeHere == TRACK_WALL || trackTypeHere == TRACK_TREE) {
         var newPt = {x:trackLeftEdgeX+TRACK_W/2,
-                     y:trackTopEdgeY+TRACK_H};
+                     y:trackTopEdgeY+TRACK_H,
+                     img:(trackTypeHere == TRACK_WALL ? mountainPic : treePic)};
         mtPos.push(newPt);
       }
 

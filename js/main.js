@@ -100,9 +100,9 @@ function drawEverything() {
 
   for(var i=0;i<mtPos.length;i++) {
     var mtDot = worldCoordToParCoord(mtPos[i].x,mtPos[i].y);
-    scaledContext.drawImage(mountainPic,
-      mtDot.x-mountainPic.width/2,
-      mtDot.y-mountainPic.height);
+    drawAtBaseScaled(mtPos[i].img,
+      mtDot.x,
+      mtDot.y,mtDot.scaleHere);
   }
 
   var balloonDot = worldCoordToParCoord(p1.X,p1.Y);
@@ -128,6 +128,11 @@ function worldCoordToParCoord(worldX,worldY) {
   screenPair.x = 
     (1.0-percDown) * (parCornerTL.x + parXRangeTop * percAcross) +
     (percDown) * (parCornerBL.x + parXRangeBot * percAcross);
+  var scaleTop = 0.85;
+  var scaleBot = 1.0;
+  screenPair.scaleHere = 
+    (1.0-percDown) * scaleTop +
+    (percDown) * scaleBot;
   return screenPair;
 }
 
