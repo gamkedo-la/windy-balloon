@@ -60,6 +60,7 @@ function loadingDoneSoStartGame() {
 }
 
 function moveEverything() {
+  movePlanes();
   p1.Move();
 }
 
@@ -72,7 +73,8 @@ function drawEverything() {
   }
 
   drawTracks();
-  
+
+  drawPlanes();
   p1.Draw();
 
   scaledContext.fillStyle = "#003"; // background color
@@ -106,6 +108,8 @@ function drawEverything() {
   drawAtBaseScaled(carPic,
     balloonDot.x,
     balloonDot.y - p1.heightNow()*balloonDot.scaleHere ,balloonDot.scaleHere);
+
+  drawAtBaseScaledPlanes();
 }
 
 function worldCoordToParCoord(worldX,worldY) {

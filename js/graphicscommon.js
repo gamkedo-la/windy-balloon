@@ -10,10 +10,13 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fill();
 }
 
-function drawAtBaseScaled(graphic, atX, atY, forScale) {
+function drawAtBaseScaled(graphic, atX, atY, forScaleX, forScaleY) {
+  if (forScaleY == undefined) {
+    forScaleY = forScaleX;
+  }
   scaledContext.save(); 
   scaledContext.translate(atX,atY);
-  scaledContext.scale(forScale,forScale);
+  scaledContext.scale(forScaleX,forScaleY);
   scaledContext.drawImage(graphic,-graphic.width/2,-graphic.height);
   scaledContext.restore();
 }
