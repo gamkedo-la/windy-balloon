@@ -137,7 +137,7 @@ function drawEverything() {
   drawAtBaseScaledPlanes();
 
   if(isInEditor) {
-    colorText("Editor Mode! Use mouse. 1-7 row sets tiles, WASD for arrows, R resets track. L to exit Level Editor",50,50,"yellow");
+    colorText("Editor Mode! Use mouse. 1-7 row sets tiles, WASD for arrows, R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
   } else {
     colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
   }  

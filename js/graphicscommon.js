@@ -5,9 +5,8 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
 
 function colorRectOutline(topLeftX, topLeftY, boxWidth, boxHeight, lineColor) {
   canvasContext.strokeStyle = lineColor;
-  canvasContext.beginPath();
-  canvasContext.rect(topLeftX, topLeftY, boxWidth, boxHeight);
-  canvasContext.stroke();
+  canvasContext.lineWidth = 5;
+  canvasContext.strokeRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
 function colorCircle(centerX, centerY, radius, fillColor) {

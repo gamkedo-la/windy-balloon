@@ -33,6 +33,18 @@ const ARROW_R = -2;
 const ARROW_D = -3;
 const ARROW_L = -4;
 
+function trackAsHTMLString() {
+  var levStr = "";
+  levStr += "var worldMap1 = [";
+  for(i=0;i<trackGrid.length;i++) {
+    if(i%TRACK_COLS==0) {
+      levStr += "<br/>";
+    }
+    levStr += trackGrid[i] + (i<trackGrid.length-1 ? ", " : "];");
+  }
+  return levStr;
+}
+
 function trackTileToIndex(tileCol, tileRow) {
   return (tileCol + TRACK_COLS*tileRow);
 }

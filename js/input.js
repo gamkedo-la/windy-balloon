@@ -13,6 +13,7 @@ const KEY_LETTER_D = 68;
 
 const KEY_LETTER_L = 76; // level editor
 const KEY_LETTER_R = 82; // reset
+const KEY_LETTER_X = 88; // eXport level
 
 const KEY_NUMROW_1 = 49;
 const KEY_NUMROW_2 = 50;
@@ -30,11 +31,11 @@ function initInput() {
 }
 
 function updateMousePos(evt) {
-  var rect = canvas.getBoundingClientRect();
-  var root = document.documentElement;
+  var rect = scaledCanvas.getBoundingClientRect();
+  var root = document.body;
 
-  mouseX = evt.clientX - rect.left - root.scrollLeft;
-  mouseY = evt.clientY - rect.top - root.scrollTop;
+  mouseX = evt.clientX - rect.left + root.scrollLeft;
+  mouseY = evt.clientY - rect.top + root.scrollTop;
 }
 
 function keyPressed(evt) {
@@ -42,7 +43,7 @@ function keyPressed(evt) {
   var wasValidGameKeySoBlockDefault = false;
 
   if(isInEditor) {
-    if(editIdx != -1) {
+    if(editIdx != -1) { // first for keys that require a valid tile under mouse
       wasValidGameKeySoBlockDefault = false;
       if(thisKey >= KEY_NUMROW_1 && thisKey <= KEY_NUMROW_LAST) {
         var tileValueToPlace = thisKey - KEY_NUMROW_1;
@@ -77,11 +78,16 @@ function keyPressed(evt) {
         }
       }
     }
+    // again but for editor keys that don't need mouse over a valid tile
     switch(thisKey) {
       case KEY_LETTER_R:
         for(var i=0;i<trackGrid.length;i++) {
           trackGrid[i] = TRACK_ROAD;
         }
+        break;
+      case KEY_LETTER_X:
+        console.log("ja");
+        document.getElementById("levelOutput").innerHTML = trackAsHTMLString();
         break;
       case KEY_LETTER_L:
         isInEditor = false;
@@ -96,6 +102,8 @@ function keyPressed(evt) {
     }
     return;
   }
+
+  // gameplay / non-editor keys follow
 
   wasValidGameKeySoBlockDefault = true;
   switch(thisKey) {
