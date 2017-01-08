@@ -62,8 +62,23 @@ function loadingDoneSoStartGame() {
   initInput();  
 }
 
+function prevLevel() {
+  currentLevelIdx--;
+  if(currentLevelIdx < 0) {
+    currentLevelIdx = levelOrder.length-1;
+  }
+  loadLevel();
+}
+function nextLevel() {
+  currentLevelIdx++;
+  if(currentLevelIdx >= levelOrder.length) {
+    currentLevelIdx = 0;
+  }
+  loadLevel();
+}
+
 function loadLevel() {
-  trackGrid = worldMap1.slice();
+  trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
 }
 
@@ -135,6 +150,8 @@ function drawEverything() {
     p1.DrawInAir();
   }
   drawAtBaseScaledPlanes();
+
+  colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 
   if(isInEditor) {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");

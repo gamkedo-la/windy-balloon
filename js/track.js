@@ -3,7 +3,23 @@ const TRACK_W = 40;
 const TRACK_H = 40;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
-var worldMap1 =
+var worldMap1 = [
+4, 4, 4, 4, 4, 0, -2, -2, -2, -2, -2, -2, 0, 0, 0, 4, 4, 4, 4, 4, 
+4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, -1, -4, 0, 4, 4, 4, 
+4, 4, 4, 0, 0, -4, -2, 0, -3, -3, -3, -3, 0, -1, -4, -1, 0, 0, 0, 0, 
+4, 0, 0, 0, 0, -4, -2, 0, -3, -3, -3, -3, 0, 0, 0, 0, 0, 0, -3, -4, 
+-4, 0, 0, 0, 0, -4, -2, 0, 0, 4, 4, 0, 1, 1, 1, 0, 0, 0, -4, -3, 
+-4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 1, 3, 3, 0, 0, 0, 0, 0, 
+-4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 0, 0, 0, 0, 0, 
+-4, 0, 0, 0, 0, 0, -4, -4, 0, 0, 0, 4, 1, 3, 3, 0, 0, 0, 0, 0, 
+-4, 0, 0, 0, 0, 0, -4, -4, 0, 0, 0, 4, 1, 1, 1, 4, 0, 0, 0, 0, 
+4, 0, -3, -2, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, -4, -4, 0, 
+4, 0, -2, -3, 0, 0, 0, 0, 0, -3, -3, -3, 4, 4, 4, 4, 0, -4, -4, 0, 
+4, 0, 0, 0, 0, 0, 4, 0, 0, -3, -3, -3, 0, 4, 4, 0, 0, -4, -4, 0, 
+4, 4, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 
+4, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0, -4, -1, -4, 0, 0, 4, 4, 
+2, 0, 0, 0, 0, 4, 4, 4, -4, -4, -4, -4, 0, -1, -4, -1, 4, 4, 4, 4];
+var worldMap2 =
     [ 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
       4, 1, 1,-4, 0, 0, 0,-2, 0, 6, 0,-4,-4, 0,-1,-1, 0,-2, 1, 1,
       1, 1,-4,-4, 0, 0, 0,-2, 0, 6, 0,-4,-4, 0,-1,-1, 0,-1,-1, 1,
@@ -19,6 +35,9 @@ var worldMap1 =
       0, 3, 0, 0,-3,-4, 1, 4, 1, 1,-1,-1, 1, 1, 0, 0, 0, 0, 0, 1,
       0, 3, 0, 0,-4,-3, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1];
+var levelOrder = [worldMap1,worldMap2];
+
+var currentLevelIdx = 0;
 var trackGrid = []; // live play/edit scratch copy
 const TRACK_ROAD = 0;
 const TRACK_MOUNTAINS = 1;
@@ -33,16 +52,16 @@ const ARROW_R = -2;
 const ARROW_D = -3;
 const ARROW_L = -4;
 
-function trackAsHTMLString() {
+function displayTrackAsHTMLString() {
   var levStr = "";
-  levStr += "var worldMap1 = [";
+  levStr += "var worldMap"+(currentLevelIdx+1)+" = [";
   for(i=0;i<trackGrid.length;i++) {
     if(i%TRACK_COLS==0) {
       levStr += "<br/>";
     }
     levStr += trackGrid[i] + (i<trackGrid.length-1 ? ", " : "];");
   }
-  return levStr;
+  document.getElementById("levelOutput").innerHTML = levStr;
 }
 
 function trackTileToIndex(tileCol, tileRow) {

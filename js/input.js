@@ -14,6 +14,8 @@ const KEY_LETTER_D = 68;
 const KEY_LETTER_L = 76; // level editor
 const KEY_LETTER_R = 82; // reset
 const KEY_LETTER_X = 88; // eXport level
+const KEY_COMMA = 188;
+const KEY_PERIOD = 190;
 
 const KEY_NUMROW_1 = 49;
 const KEY_NUMROW_2 = 50;
@@ -41,6 +43,16 @@ function updateMousePos(evt) {
 function keyPressed(evt) {
   var thisKey = evt.keyCode;
   var wasValidGameKeySoBlockDefault = false;
+
+  // first check keys which apply in or out of level editor
+  switch(thisKey) {
+    case KEY_COMMA:
+    prevLevel();
+    break;
+    case KEY_PERIOD:
+    nextLevel();
+    break;
+  } 
 
   if(isInEditor) {
     if(editIdx != -1) { // first for keys that require a valid tile under mouse
@@ -86,11 +98,11 @@ function keyPressed(evt) {
         }
         break;
       case KEY_LETTER_X:
-        document.getElementById("levelOutput").innerHTML = trackAsHTMLString();
+        displayTrackAsHTMLString();
         break;
       case KEY_LETTER_L:
         isInEditor = false;
-        worldMap1 = trackGrid.slice();
+        levelOrder[currentLevelIdx] = trackGrid.slice();
         loadLevel();
         wasValidGameKeySoBlockDefault = true;
         break;
