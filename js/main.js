@@ -137,7 +137,15 @@ function drawEverything() {
   drawAtBaseScaledPlanes();
 
   if(isInEditor) {
-    colorText("Editor Mode! Use mouse. 1-7 row sets tiles, WASD for arrows, R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
+    colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
+
+    colorText("Key guide for number row 1-7 (also: WASD to place arrows):",50,70,"yellow");
+    scaledContext.drawImage(trackSheet,
+      0, 0, // top-left corner of tile art, multiple of tile width
+      trackSheet.width, TRACK_H, // get full tile size from source
+      50, 75, // x,y top-left corner for image destination
+      trackSheet.width, TRACK_H); // draw full full tile size for destination
+
   } else {
     colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
   }  

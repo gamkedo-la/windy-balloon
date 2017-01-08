@@ -71,6 +71,7 @@ function ballClass() {
   
     var primaryAxisAccel = 0.7;
     var otherAxisDampen = 0.97;
+
     switch( hitC ) {
       case ARROW_U:
         this.yv -= primaryAxisAccel;
@@ -95,8 +96,8 @@ function ballClass() {
         this.zv = -5;
         break;
       case TRACK_GOAL:
-        this.Reset();
-        break;
+        loadLevel();
+        return;
     }
 
     var speed = Math.sqrt(

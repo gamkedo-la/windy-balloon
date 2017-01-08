@@ -86,7 +86,6 @@ function keyPressed(evt) {
         }
         break;
       case KEY_LETTER_X:
-        console.log("ja");
         document.getElementById("levelOutput").innerHTML = trackAsHTMLString();
         break;
       case KEY_LETTER_L:
