@@ -32,18 +32,17 @@ function ballClass() {
     this.Speed = 0;
     this.Ang = -0.5 * Math.PI;
   
-    if(this.homeX == undefined) {
-      for(var i=0; i<trackGrid.length; i++) {
-        if( trackGrid[i] == TRACK_PLAYER) {
-          var tileRow = Math.floor(i/TRACK_COLS);
-          var tileCol = i%TRACK_COLS;
-          this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
-          this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
+    for(var i=0; i<trackGrid.length; i++) {
+      if( trackGrid[i] == TRACK_PLAYER) {
+        var tileRow = Math.floor(i/TRACK_COLS);
+        var tileCol = i%TRACK_COLS;
+        this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
+        this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
+        if(isInEditor == false) {
           trackGrid[i] = TRACK_ROAD;
-          break; // found it, so no need to keep searching 
-        } // end of if
-      } // end of for
-    } // end of if car position not saved yet
+        }
+      } // end of if
+    } // end of for
     
     this.x = this.homeX;
     this.y = this.homeY;
@@ -63,7 +62,8 @@ function ballClass() {
     for(var r=Math.random()*0.1; r < 2*3.14159; r+=0.1) {
       hitR = getTrackAtPixelCoord(nextX+Math.cos(r)*carRad,
                                   nextY+Math.sin(r)*carRad);
-      if(hitR == TRACK_MOUNTAINS && this.z < mountainHeight) {
+      if((hitR == TRACK_MOUNTAINS && this.z < mountainHeight) ||
+          hitR == TRACK_OUT_OF_BOUNDS) {
         this.xv -= Math.cos(r)*0.09;
         this.yv -= Math.sin(r)*0.09;
       }
@@ -139,8 +139,14 @@ function ballClass() {
     return this.z + Math.cos(this.heightOscillate) * ballonDeviation;
   }
   
-  this.Draw = function() {
+  this.DrawShadow = function() {
     drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0 );
+  }
+  this.DrawInAir = function () {
+    var balloonDot = worldCoordToParCoord(this.x,this.y);
+    drawAtBaseScaled(carPic,
+      balloonDot.x,
+      balloonDot.y - this.heightNow()*balloonDot.scaleHere, balloonDot.scaleHere);
   }
 
 } // end of car class

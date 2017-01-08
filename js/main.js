@@ -1,6 +1,9 @@
 var canvas, canvasContext;
 var scaledCanvas, scaledContext;
 
+var isInEditor = false;
+var editIdx=-1;
+
 // 
 var parVertSkip = 1.65;
 var parVertOffset = 170;
@@ -55,13 +58,20 @@ function loadingDoneSoStartGame() {
       drawEverything();
     }, 1000/framesPerSecond);
   
-  p1.Init(carShadowPic);
+  loadLevel();
   initInput();  
+}
+
+function loadLevel() {
+  trackGrid = worldMap1.slice();
+  p1.Init(carShadowPic);
 }
 
 function moveEverything() {
   movePlanes();
-  p1.Move();
+  if(isInEditor == false) {
+    p1.Move();
+  }
 }
 
 function drawEverything() {
@@ -75,7 +85,9 @@ function drawEverything() {
   drawTracks();
 
   drawPlanes();
-  p1.Draw();
+  if(isInEditor == false) {
+    p1.DrawShadow(); // shadow
+  }
 
   scaledContext.fillStyle = "#003"; // background color
   scaledContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
@@ -96,6 +108,22 @@ function drawEverything() {
   scaledContext.fillRect(parCornerBR.x-1,parCornerBR.y-1,3,3);
   */
 
+  //scaledContext.fillStyle = "red";
+  //scaledContext.fillRect(editDot.x-1,editDot.y-1,3,3);
+  //console.log(editDot.x,editDot.y);
+  if(isInEditor) {
+    var editDot = parCoordToWorldCoord(mouseX,mouseY);
+    if(editDot.x < 0 || editDot.x >= scaledCanvas.width ||
+       editDot.y < 0 || editDot.y >= scaledCanvas.height) {
+      editIdx = -1;
+    } else {
+      var editCol = Math.floor(editDot.x / TRACK_W);
+      var editRow = Math.floor(editDot.y / TRACK_H);
+      editIdx = editRow*TRACK_COLS + editCol;
+    }    
+  }
+
+
   for(var i=0;i<mtPos.length;i++) {
     var mtDot = worldCoordToParCoord(mtPos[i].x,mtPos[i].y);
     drawAtBaseScaled(mtPos[i].img,
@@ -103,17 +131,20 @@ function drawEverything() {
       mtDot.y,mtDot.scaleHere);
   }
 
-  var balloonDot = worldCoordToParCoord(p1.x,p1.y);
-  // scaledContext.fillRect(balloonDot.x-3,balloonDot.y-3,7,7);
-  drawAtBaseScaled(carPic,
-    balloonDot.x,
-    balloonDot.y - p1.heightNow()*balloonDot.scaleHere ,balloonDot.scaleHere);
-
+  if(isInEditor == false) {
+    p1.DrawInAir();
+  }
   drawAtBaseScaledPlanes();
+
+  if(isInEditor) {
+    colorText("Editor Mode! Use mouse. 1-7 row sets tiles, WASD for arrows, R resets track. L to exit Level Editor",50,50,"yellow");
+  } else {
+    colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
+  }  
 }
 
 function worldCoordToParCoord(worldX,worldY) {
-  var screenPair = {x:0,y:0};
+  var screenPair = {x:0,y:0,scaleHere:1.0};
   var percAcross = worldX / canvas.width;
   var percDown = worldY / canvas.height;
   screenPair.y = parCornerTL.y + parYRange * percDown;
@@ -126,6 +157,19 @@ function worldCoordToParCoord(worldX,worldY) {
     (1.0-percDown) * scaleTop +
     (percDown) * scaleBot;
   return screenPair;
+}
+
+function parCoordToWorldCoord(parX,parY) {
+  var worldPair = {x:0,y:0};
+  var percDown = (parY - parCornerTL.y) / (parCornerBL.y-parCornerTL.y);
+  var percAcrossTop = (parX - parCornerTL.x) / (parCornerTR.x-parCornerTL.x);
+  var percAcrossBot = (parX - parCornerBL.x) / (parCornerBR.x-parCornerBL.x);
+  var percAcross = (1.0-percDown) * percAcrossTop +
+    (percDown) * percAcrossBot;
+
+  worldPair.x = percAcross * canvas.width;
+  worldPair.y = percDown * canvas.height;
+  return worldPair;
 }
 
 function setParCorners() {

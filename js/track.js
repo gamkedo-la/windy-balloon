@@ -3,7 +3,7 @@ const TRACK_W = 40;
 const TRACK_H = 40;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
-var trackGrid =
+var worldMap1 =
     [ 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
       4, 1, 1,-4, 0, 0, 0,-2, 0, 6, 0,-4,-4, 0,-1,-1, 0,-2, 1, 1,
       1, 1,-4,-4, 0, 0, 0,-2, 0, 6, 0,-4,-4, 0,-1,-1, 0,-1,-1, 1,
@@ -19,6 +19,7 @@ var trackGrid =
       0, 3, 0, 0,-3,-4, 1, 4, 1, 1,-1,-1, 1, 1, 0, 0, 0, 0, 0, 1,
       0, 3, 0, 0,-4,-3, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
       1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1];
+var trackGrid = []; // live play/edit scratch copy
 const TRACK_ROAD = 0;
 const TRACK_MOUNTAINS = 1;
 const TRACK_PLAYER = 2;
@@ -26,6 +27,7 @@ const TRACK_GOAL = 3;
 const TRACK_TREE = 4;
 const TRACK_HEAT = 5;
 const TRACK_ICE = 6;
+const TRACK_OUT_OF_BOUNDS = 999; // no tile or track, just a return value
 const ARROW_U = -1;
 const ARROW_R = -2;
 const ARROW_D = -3;
@@ -46,7 +48,7 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
   // first check whether the ball is within any part of the track wall
   if(tileCol < 0 || tileCol >= TRACK_COLS ||
      tileRow < 0 || tileRow >= TRACK_ROWS) {
-     return TRACK_MOUNTAINS; // avoid invalid array access, treat out of bounds as wall
+     return TRACK_OUT_OF_BOUNDS; // avoid invalid array access, treat out of bounds as wall
   }
   
   var trackIndex = trackTileToIndex(tileCol, tileRow);
@@ -106,6 +108,10 @@ function drawTracks() {
           TRACK_W, TRACK_H, // get full tile size from source
           trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
           TRACK_W, TRACK_H); // draw full full tile size for destination
+      }
+
+      if(isInEditor && trackIndex == editIdx) {
+        colorRectOutline(trackLeftEdgeX, trackTopEdgeY, TRACK_W, TRACK_H, 'yellow');
       }
       trackIndex++; // increment which index we're going to next check for in the track        
       trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
