@@ -73,6 +73,8 @@ function ballClass() {
     var otherAxisDampen = 0.97;
 
     switch( hitC ) {
+      case TRACK_REFRIGERANT:
+        break;
       case ARROW_U:
         this.yv -= primaryAxisAccel;
         this.xv *= otherAxisDampen;

@@ -2,7 +2,7 @@ var canvas, canvasContext;
 var scaledCanvas, scaledContext;
 
 var isInEditor = false;
-var editIdx=-1;
+var editIdx = -1;
 
 // 
 var parVertSkip = 1.65;
@@ -12,6 +12,7 @@ var parHorizBaseWidth = 370;
 var parXRangeTop = 0;
 var parXRangeBot = 0;
 var parYRange = 0;
+var cureTemp = 0;
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -54,6 +55,7 @@ function loadingDoneSoStartGame() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
   setInterval(function() {
+      cureTempUpdate();
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
@@ -80,6 +82,10 @@ function nextLevel() {
 function loadLevel() {
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
+}
+
+function cureTempUpdate(){
+  cureTemp += 0.03;
 }
 
 function moveEverything() {
@@ -151,6 +157,8 @@ function drawEverything() {
   }
   drawAtBaseScaledPlanes();
 
+  colorText("Cure Vial Temperature: " +Math.floor(cureTemp).toString(), 550, 100, 'white');
+
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 
   if(isInEditor) {
@@ -165,7 +173,8 @@ function drawEverything() {
 
   } else {
     colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
-  }  
+  }
+
 }
 
 function worldCoordToParCoord(worldX,worldY) {
