@@ -59,6 +59,14 @@ function loadingDoneSoStartGame() {
       drawEverything();
     }, 1000/framesPerSecond);
   
+  ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
+  /* Temporary demo for the curious 
+  ParticleSystem.add(100,100, {'vxRange':[-1,-3], 'vyRange':[0,0]}, "wind");
+  ParticleSystem.add(150,100, {'vxRange':[0,0], 'vyRange':[-1,-3]}, "wind");
+  ParticleSystem.add(200,100, {'vxRange':[0,0], 'vyRange':[1,3]}, "wind");
+  ParticleSystem.add(250,100, {'vxRange':[1,3], 'vyRange':[0,0]}, "wind");
+  */
+
   loadLevel();
   initInput();  
 }
@@ -156,6 +164,8 @@ function drawEverything() {
     p1.DrawInAir();
   }
   drawAtBaseScaledPlanes();
+
+  ParticleSystem.draw();
 
   colorText("Cure Vial Temperature: " +Math.floor(cureTemp), 550, 100, 'white');
 
