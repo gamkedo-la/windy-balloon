@@ -24,8 +24,9 @@ const KEY_NUMROW_4 = 52;
 const KEY_NUMROW_5 = 53;
 const KEY_NUMROW_6 = 54;
 const KEY_NUMROW_7 = 55;
+const KEY_NUMROW_8 = 56;
 const KEY_NUMROW_FOR_PLAYER_START = KEY_NUMROW_3;
-const KEY_NUMROW_LAST = KEY_NUMROW_7;
+const KEY_NUMROW_LAST = KEY_NUMROW_8;
 
 function initInput() {
   document.addEventListener("keydown", keyPressed);

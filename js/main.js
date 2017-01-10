@@ -55,7 +55,6 @@ function loadingDoneSoStartGame() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
   setInterval(function() {
-      cureTempUpdate();
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
@@ -89,6 +88,7 @@ function cureTempUpdate(){
 }
 
 function moveEverything() {
+  cureTempUpdate();
   movePlanes();
   if(isInEditor == false) {
     p1.Move();
@@ -157,14 +157,14 @@ function drawEverything() {
   }
   drawAtBaseScaledPlanes();
 
-  colorText("Cure Vial Temperature: " +Math.floor(cureTemp).toString(), 550, 100, 'white');
+  colorText("Cure Vial Temperature: " +Math.floor(cureTemp), 550, 100, 'white');
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 
   if(isInEditor) {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
 
-    colorText("Key guide for number row 1-7 (also: WASD to place arrows):",50,70,"yellow");
+    colorText("Key guide for number row 1-8 (also: WASD to place arrows):",50,70,"yellow");
     scaledContext.drawImage(trackSheet,
       0, 0, // top-left corner of tile art, multiple of tile width
       trackSheet.width, TRACK_H, // get full tile size from source
