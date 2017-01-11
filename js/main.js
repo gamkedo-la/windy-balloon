@@ -2,6 +2,7 @@ var canvas, canvasContext;
 var scaledCanvas, scaledContext;
 
 var isInEditor = false;
+var showParticles = false;
 var editIdx = -1;
 
 // 
@@ -59,13 +60,7 @@ function loadingDoneSoStartGame() {
       drawEverything();
     }, 1000/framesPerSecond);
   
-  ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
-  /* Temporary demo for the curious 
-  ParticleSystem.add(100,100, {'vxRange':[-1,-3], 'vyRange':[0,0]}, "wind");
-  ParticleSystem.add(150,100, {'vxRange':[0,0], 'vyRange':[-1,-3]}, "wind");
-  ParticleSystem.add(200,100, {'vxRange':[0,0], 'vyRange':[1,3]}, "wind");
-  ParticleSystem.add(250,100, {'vxRange':[1,3], 'vyRange':[0,0]}, "wind");
-  */
+  ParticleSystem.init(canvas, 1000/framesPerSecond);
 
   loadLevel();
   initInput();  
@@ -89,6 +84,34 @@ function nextLevel() {
 function loadLevel() {
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
+  setupParticles();
+}
+
+function setupParticles() {
+  for(var i=0; i < particleGrid.length; i++) {
+    particleGrid[i] != null && ParticleSystem.remove(particleGrid[i]);
+  }
+  particleGrid = [];
+  var cx = TRACK_W / 2, cy = TRACK_H / 2;
+  var trackIndex = 0; 
+  var pos = [0,0];
+  for(var y=0; y < TRACK_ROWS; y++) {
+    for(var x=0; x < TRACK_COLS; x++) {
+      var localCluster = null;
+      switch(trackGrid[ trackIndex ]) {
+        case -1: localCluster = ParticleSystem.add(pos[0]+cx,pos[1]+TRACK_H, {}, "upwind"); break;
+        case -2: localCluster = ParticleSystem.add(pos[0],pos[1]+cy, {}, "rightwind"); break;
+        case -3: localCluster = ParticleSystem.add(pos[0]+cx,pos[1], {}, "downwind"); break;
+        case -4: localCluster = ParticleSystem.add(pos[0]+TRACK_W,pos[1]+cy, {}, "leftwind"); break;
+      }
+      particleGrid.push(localCluster);
+      trackIndex++;
+      pos[0] += TRACK_W;
+    }
+    pos[0] = 0;
+    pos[1] += TRACK_H;
+  }
+
 }
 
 function cureTempUpdate(){
@@ -112,6 +135,8 @@ function drawEverything() {
   }
 
   drawTracks();
+
+  showParticles && ParticleSystem.draw();
 
   drawPlanes();
   if(isInEditor == false) {
@@ -165,8 +190,6 @@ function drawEverything() {
   }
   drawAtBaseScaledPlanes();
 
-  ParticleSystem.draw();
-
   colorText("Cure Vial Temperature: " +Math.floor(cureTemp), 550, 100, 'white');
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
@@ -182,7 +205,7 @@ function drawEverything() {
       trackSheet.width, TRACK_H); // draw full full tile size for destination
 
   } else {
-    colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
+    colorText("Press R to Restart, Press L for Level Editor Mode, Press P for Particles",50,50,"yellow");
   }
 
 }

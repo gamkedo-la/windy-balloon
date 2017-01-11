@@ -277,7 +277,7 @@ function Cluster()
 	var aliveCtr = this.settings['startAmount'];
 	this.particles = [];
 	for(var i=0; i < this.settings['maxAmount']; i++) {
-		this.particles.push(new Particle().init( this, (i < aliveCtr ? false : true) ));
+		this.particles.push(new Particle().init( this, (i >= aliveCtr) ));
 	}
 	//
 	return this;
@@ -330,6 +330,28 @@ Cluster.DefaultSettings = {
 
 };
 
+
+Cluster.prototype.resetWith = function(changes_, xShift_, yShift_)
+{
+	this.x += typeof xShift_ === 'undefined' ? 0 : xShift_;
+	this.y += typeof yShift_ === 'undefined' ? 0 : yShift_;
+	//
+	this.settings = Da.Merge(changes_, this.settings);
+	for(var i=0; i < this.particles.length; i++) {
+		this.particles[i].init(this, ( i >= this.settings['startAmount'] ));
+	}	
+};
+
+Cluster.prototype.switchPreset = function(presetId_, xShift_, yShift_)
+{
+	this.x += typeof xShift_ === 'undefined' ? 0 : xShift_;
+	this.y += typeof yShift_ === 'undefined' ? 0 : yShift_;
+	//
+	this.settings = Da.Merge(_presets[presetId_], Cluster.DefaultSettings);
+	for(var i=0; i < this.particles.length; i++) {
+		this.particles[i].init(this, ( i >= this.settings['startAmount'] ));
+	}	
+};
 
 
 Cluster.prototype.draw = function()
@@ -400,11 +422,11 @@ Cluster.prototype.getColor = function()
 
 
 
-ParticleSystem.addPreset("wind", {
-	'maxAmount': 5,
-	'minRadius': 1,
-	'maxRadius': 4,
-	'alphaRange': [0.0, 1.0, 0.1], 
+ParticleSystem.addPreset("upwind", {
+	'maxAmount': 10,
+	'minRadius': 2,
+	'maxRadius': 3,
+	'alphaRange': [0.0, 1.0, 0.12], 
 	'alphaLoop': true,
 	'endByAlpha': true, 
 	'spawnChance': 0.1,
@@ -412,8 +434,66 @@ ParticleSystem.addPreset("wind", {
 		[0,0],
 		[800,600]
 	],
-	'color': [255,255,255],
+	'color': [80,160,255],
+	'gradient': null,
+	'scatter': [30,30],
+	'vxRange': [0,0],
+	'vyRange': [-1,-3],
+});
+
+ParticleSystem.addPreset("downwind", {
+	'maxAmount': 10,
+	'minRadius': 2,
+	'maxRadius': 3,
+	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaLoop': true,
+	'endByAlpha': true, 
+	'spawnChance': 0.1,
+	'bounds': [
+		[0,0],
+		[800,600]
+	],
+	'color': [220,190,60],
+	'gradient': null,
 	'scatter': [30,30],
 	'vxRange': [0,0],
 	'vyRange': [1,3],
+});
+
+ParticleSystem.addPreset("leftwind", {
+	'maxAmount': 10,
+	'minRadius': 2,
+	'maxRadius': 3,
+	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaLoop': true,
+	'endByAlpha': true, 
+	'spawnChance': 0.1,
+	'bounds': [
+		[0,0],
+		[800,600]
+	],
+	'color': [64,211,80],
+	'gradient': null,
+	'scatter': [30,30],
+	'vxRange': [-1,-3],
+	'vyRange': [0,0],
+});
+
+ParticleSystem.addPreset("rightwind", {
+	'maxAmount': 10,
+	'minRadius': 2,
+	'maxRadius': 3,
+	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaLoop': true,
+	'endByAlpha': true, 
+	'spawnChance': 0.1,
+	'bounds': [
+		[0,0],
+		[800,600]
+	],
+	'color': [255,64,255],
+	'gradient': null,
+	'scatter': [30,30],
+	'vxRange': [1,3],
+	'vyRange': [0,0],
 });

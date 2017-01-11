@@ -12,6 +12,7 @@ const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
 
 const KEY_LETTER_L = 76; // level editor
+const KEY_LETTER_P = 80; // particle effects
 const KEY_LETTER_R = 82; // reset
 const KEY_LETTER_X = 88; // eXport level
 const KEY_COMMA = 188;
@@ -124,8 +125,10 @@ function keyPressed(evt) {
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_L) {
           trackGrid[i] = ARROW_R;
+          particleGrid[i] != null && particleGrid[i].switchPreset("rightwind", -TRACK_W,0);
         } else if(trackGrid[i] == ARROW_R) {
           trackGrid[i] = ARROW_L;
+          particleGrid[i] != null && particleGrid[i].switchPreset("leftwind", TRACK_W,0);
         }
       }
       break;
@@ -134,8 +137,10 @@ function keyPressed(evt) {
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_U) {
           trackGrid[i] = ARROW_D;
+          particleGrid[i] != null && particleGrid[i].switchPreset("downwind", 0,-TRACK_H);
         } else if(trackGrid[i] == ARROW_D) {
           trackGrid[i] = ARROW_U;
+          particleGrid[i] != null && particleGrid[i].switchPreset("upwind", 0,TRACK_H);
         }
       }
       break;
@@ -145,6 +150,9 @@ function keyPressed(evt) {
     case KEY_LETTER_L:
       isInEditor = !isInEditor;
       loadLevel();
+      break;
+    case KEY_LETTER_P:
+      showParticles = !showParticles;
       break;
     default:
       wasValidGameKeySoBlockDefault = false;

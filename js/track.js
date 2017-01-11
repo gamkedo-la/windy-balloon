@@ -39,6 +39,7 @@ var levelOrder = [worldMap1,worldMap2];
 
 var currentLevelIdx = 0;
 var trackGrid = []; // live play/edit scratch copy
+var particleGrid = [];
 const TRACK_ROAD = 0;
 const TRACK_MOUNTAINS = 1;
 const TRACK_PLAYER = 2;
@@ -120,20 +121,22 @@ function drawTracks() {
           trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
           TRACK_W, TRACK_H); // draw full full tile size for destination
 
-        // draw arrow
-        canvasContext.drawImage(trackSheet,
-            (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
-            TRACK_W, TRACK_H, // get full tile size from source
-            trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-            TRACK_W, TRACK_H); // draw full full tile size for destination
-
-        // draw conveyor belt (animated)
-        canvasContext.drawImage(trackSheet,
-            arrowAnimFrame * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
-            TRACK_W, TRACK_H, // get full tile size from source
-            trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-            TRACK_W, TRACK_H); // draw full full tile size for destination
-
+        if(!showParticles) {
+          // draw arrow
+          canvasContext.drawImage(trackSheet,
+              (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
+              TRACK_W, TRACK_H, // get full tile size from source
+              trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
+              TRACK_W, TRACK_H); // draw full full tile size for destination
+          
+          // draw conveyor belt (animated) 
+          canvasContext.drawImage(trackSheet,
+              arrowAnimFrame * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
+              TRACK_W, TRACK_H, // get full tile size from source
+              trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
+              TRACK_W, TRACK_H); // draw full full tile size for destination
+          
+        }
       } else {
         canvasContext.drawImage(trackSheet,
           trackTypeHere * TRACK_W, 0, // top-left corner of tile art, multiple of tile width
