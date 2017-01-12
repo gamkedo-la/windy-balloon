@@ -29,7 +29,7 @@ function loadImages() {
     {varName:mountainPic, theFile:"mountains.png"},
     {varName:treePic, theFile:"trees.png"},
     {varName:trackSheet, theFile:"track_all_sheet.png"},
-    {varName:cityBuildingPic, theFile:"citybuildings.png"}
+    {varName:cityBuildingsPic, theFile:"citybuildings.png"}
     ];
 
   picsToLoad = imageList.length;
