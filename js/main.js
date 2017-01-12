@@ -97,7 +97,7 @@ function setupParticles() {
   particleGrid = [];
   var cx = TRACK_W / 2, cy = TRACK_H / 2;
   var trackIndex = 0; 
-  var pos = [0,0];
+  var pos = [0,-15];
   for(var y=0; y < TRACK_ROWS; y++) {
     for(var x=0; x < TRACK_COLS; x++) {
       var localCluster = null;

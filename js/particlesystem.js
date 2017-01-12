@@ -40,6 +40,10 @@ var ParticleSystem = (function () {
 		*/
 
 		for(var i=0; i < _clusters.length; i++) {
+			_clusters[i].drawShadows();
+		}
+
+		for(var i=0; i < _clusters.length; i++) {
 			_clusters[i].draw();
 		}
 	};
@@ -173,7 +177,6 @@ function Particle()
 Particle.prototype.gradient = function()
 {
 	var cfg = this.cluster.settings['gradient'];
-	//
 	if(cfg == null) {
 		return this.rgba;
 	}
@@ -187,6 +190,38 @@ Particle.prototype.gradient = function()
 	return gradient;
 };
 
+Particle.prototype.shadowGradient = function()
+{
+	var cfg = this.cluster.settings['shadow'];
+	if(cfg['gradient'] == null) {
+		return "rgba(0,0,0,1)";
+	}
+	//
+	var scale = this.cluster.settings['shadow']['scale']*this.scale;
+	var gradient = this.cluster.system.getCtx().createRadialGradient(this.x+cfg['offset'][0], this.y+cfg['offset'][1], 0, this.x+cfg['offset'][0], this.y+cfg['offset'][1], this.radius*scale);
+	for(var i=0; i < cfg['gradient'].length; i++) {
+		var col = cfg['gradient'][i]['color'] != null ? Da.RGBA(cfg['gradient'][i]['color'], + cfg['gradient'][i]['alpha']*cfg['alpha']) : this.rgba;
+		gradient.addColorStop(cfg['gradient'][i]['pos'], col);	
+	}
+	//
+	return gradient;
+};
+
+
+Particle.prototype.drawShadow = function()
+{
+	if(!this.alive) return;
+	//
+	var cfg = this.cluster.settings['shadow'];
+	//
+	var psCtx = this.cluster.system.getCtx();
+	psCtx.beginPath();
+
+	psCtx.fillStyle = this.shadowGradient();
+	psCtx.arc(this.x+cfg['offset'][0], this.y+cfg['offset'][1], this.radius*this.scale*cfg['scale'], Math.PI*2, false);
+	psCtx.fill();
+};
+
 
 Particle.prototype.draw = function()
 {
@@ -194,12 +229,13 @@ Particle.prototype.draw = function()
 		if(Math.random() > this.cluster.settings['spawnChance']) return;
 		//
 		this.init(this.cluster, false);
+		return;
 	}
 	//
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
-	psCtx.fillStyle = this.gradient();
+	psCtx.fillStyle = this.gradient(false);
 	psCtx.arc(this.x, this.y, this.radius*this.scale, Math.PI*2, false);
 	psCtx.fill();
 	//
@@ -324,8 +360,27 @@ Cluster.DefaultSettings = {
 			'color': [0,0,0],
 			'alpha': 0.0
 		},
-
 	],
+	'shadow': null,
+	/*
+	'shadow': {
+		'offset': [1,1],
+		'alpha': 1.0,
+		'scale': 1,
+		'gradient': [
+			{ 
+				'pos': 0.0,
+				'color': [0,0,0],
+				'alpha': 0.0
+			},
+			{ 
+				'pos': 1.0,
+				'color': [0,0,0],
+				'alpha': 1.0
+			},
+		],
+	},
+	*/
 
 
 };
@@ -358,6 +413,16 @@ Cluster.prototype.draw = function()
 {
 	for(var i=0; i < this.particles.length; i++) {
 		this.particles[i].draw();
+	}
+};
+
+
+Cluster.prototype.drawShadows = function()
+{
+	if(this.settings['shadow'] == null) return;
+	//
+	for(var i=0; i < this.particles.length; i++) {
+		this.particles[i].drawShadow();
 	}
 };
 
@@ -426,7 +491,7 @@ ParticleSystem.addPreset("upwind", {
 	'maxAmount': 10,
 	'minRadius': 2,
 	'maxRadius': 3,
-	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaRange': [0.0, 1.0, 0.06], 
 	'alphaLoop': true,
 	'endByAlpha': true, 
 	'spawnChance': 0.1,
@@ -438,14 +503,31 @@ ParticleSystem.addPreset("upwind", {
 	'gradient': null,
 	'scatter': [30,30],
 	'vxRange': [0,0],
-	'vyRange': [-1,-3],
+	'vyRange': [-0.5,-1.5],
+	'shadow': {
+		'alpha': 0.1,
+		'offset': [0,35],
+		'scale': 3,
+		'gradient': [
+			{ 
+				'pos': 0.0,
+				'color': [0,0,0],
+				'alpha': 1.0
+			},
+			{ 
+				'pos': 1.0,
+				'color': [0,0,0],
+				'alpha': 0.0
+			},
+		],
+	},
 });
 
 ParticleSystem.addPreset("downwind", {
 	'maxAmount': 10,
 	'minRadius': 2,
 	'maxRadius': 3,
-	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaRange': [0.0, 1.0, 0.06], 
 	'alphaLoop': true,
 	'endByAlpha': true, 
 	'spawnChance': 0.1,
@@ -457,14 +539,31 @@ ParticleSystem.addPreset("downwind", {
 	'gradient': null,
 	'scatter': [30,30],
 	'vxRange': [0,0],
-	'vyRange': [1,3],
+	'vyRange': [0.5,1.5],
+	'shadow': {
+		'alpha': 0.1,
+		'offset': [0,35],
+		'scale': 3,
+		'gradient': [
+			{ 
+				'pos': 0.0,
+				'color': [0,0,0],
+				'alpha': 1.0
+			},
+			{ 
+				'pos': 1.0,
+				'color': [0,0,0],
+				'alpha': 0.0
+			},
+		],
+	},
 });
 
 ParticleSystem.addPreset("leftwind", {
 	'maxAmount': 10,
 	'minRadius': 2,
 	'maxRadius': 3,
-	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaRange': [0.0, 1.0, 0.06], 
 	'alphaLoop': true,
 	'endByAlpha': true, 
 	'spawnChance': 0.1,
@@ -475,15 +574,32 @@ ParticleSystem.addPreset("leftwind", {
 	'color': [64,211,80],
 	'gradient': null,
 	'scatter': [30,30],
-	'vxRange': [-1,-3],
+	'vxRange': [-0.5,-1.5],
 	'vyRange': [0,0],
+	'shadow': {
+		'alpha': 0.1,
+		'offset': [0,35],
+		'scale': 3,
+		'gradient': [
+			{ 
+				'pos': 0.0,
+				'color': [0,0,0],
+				'alpha': 1.0
+			},
+			{ 
+				'pos': 1.0,
+				'color': [0,0,0],
+				'alpha': 0.0
+			},
+		],
+	},
 });
 
 ParticleSystem.addPreset("rightwind", {
 	'maxAmount': 10,
 	'minRadius': 2,
 	'maxRadius': 3,
-	'alphaRange': [0.0, 1.0, 0.12], 
+	'alphaRange': [0.0, 1.0, 0.06], 
 	'alphaLoop': true,
 	'endByAlpha': true, 
 	'spawnChance': 0.1,
@@ -494,6 +610,23 @@ ParticleSystem.addPreset("rightwind", {
 	'color': [255,64,255],
 	'gradient': null,
 	'scatter': [30,30],
-	'vxRange': [1,3],
+	'vxRange': [0.5,1.5],
 	'vyRange': [0,0],
+	'shadow': {
+		'alpha': 0.1,
+		'offset': [0,35],
+		'scale': 3,
+		'gradient': [
+			{ 
+				'pos': 0.0,
+				'color': [0,0,0],
+				'alpha': 1.0
+			},
+			{ 
+				'pos': 1.0,
+				'color': [0,0,0],
+				'alpha': 0.0
+			},
+		],
+	},
 });
