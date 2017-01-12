@@ -103,12 +103,14 @@ function ballClass() {
       case TRACK_GOAL:
           if(cureVialStatus == true){
               loadLevel();
-          } //else {
+          } else {
               //colorText("Hey! The vial is spoiled! Please head back to base" +
               // " to get another sample.", 600, 100, 'white');
               // }
 
               // need to figure out how to get this working (Eric)
+              break;
+          }
         return;
     }
 
