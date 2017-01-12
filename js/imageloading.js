@@ -4,6 +4,7 @@ var planePic = document.createElement("img");
 var mountainPic = document.createElement("img");
 var treePic = document.createElement("img");
 var trackSheet = document.createElement("img");
+var cityBuildingsPic = document.createElement("img");
 
 var picsToLoad = 0;
 
@@ -27,7 +28,8 @@ function loadImages() {
     {varName:planePic, theFile:"Spad-XIII.png"},
     {varName:mountainPic, theFile:"mountains.png"},
     {varName:treePic, theFile:"trees.png"},
-    {varName:trackSheet, theFile:"track_all_sheet.png"}
+    {varName:trackSheet, theFile:"track_all_sheet.png"},
+    {varName:cityBuildingPic, theFile:"citybuildings.png"}
     ];
 
   picsToLoad = imageList.length;
