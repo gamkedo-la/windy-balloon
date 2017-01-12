@@ -14,6 +14,9 @@ var parXRangeTop = 0;
 var parXRangeBot = 0;
 var parYRange = 0;
 var cureTemp = 0;
+var cureVialStatus = true; // this is supposed to be true
+var cureVialCondition = "Viable";
+var cureVialMaxTemp = 5; // testing this at 50
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -115,7 +118,14 @@ function setupParticles() {
 }
 
 function cureTempUpdate(){
-  cureTemp += 0.03;
+    if(cureTemp >= cureVialMaxTemp) {
+        cureVialStatus = false;
+        cureTemp = cureVialMaxTemp;
+        cureVialCondition = "Spoiled";
+    } else {
+        cureTemp += 0.03;
+        cureVialStatus = true;
+    }
 }
 
 function moveEverything() {
@@ -191,6 +201,8 @@ function drawEverything() {
   drawAtBaseScaledPlanes();
 
   colorText("Cure Vial Temperature: " +Math.floor(cureTemp), 550, 100, 'white');
+
+  colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'red');
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 

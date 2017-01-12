@@ -73,8 +73,11 @@ function ballClass() {
     var otherAxisDampen = 0.97;
 
     switch( hitC ) {
-      case TRACK_REFRIGERANT:
-        break;
+        case TRACK_COOLDOWN:
+          if(this.z <= 5 && cureVialStatus != false) {
+              cureTemp = 0;
+          }
+          break;
       case ARROW_U:
         this.yv -= primaryAxisAccel;
         this.xv *= otherAxisDampen;
@@ -98,7 +101,14 @@ function ballClass() {
         this.zv = -5;
         break;
       case TRACK_GOAL:
-        loadLevel();
+          if(cureVialStatus == true){
+              loadLevel();
+          } //else {
+              //colorText("Hey! The vial is spoiled! Please head back to base" +
+              // " to get another sample.", 600, 100, 'white');
+              // }
+
+              // need to figure out how to get this working (Eric)
         return;
     }
 
