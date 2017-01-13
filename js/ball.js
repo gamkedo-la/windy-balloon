@@ -74,7 +74,7 @@ function ballClass() {
 
     switch( hitC ) {
         case TRACK_COOLDOWN:
-          if(this.z <= 5 && cureVialStatus != false) {
+          if(this.z <= 5 && isCureVialViable != false) {
               cureTemp = 0;
           }
           break;
@@ -101,7 +101,7 @@ function ballClass() {
         this.zv = -5;
         break;
       case TRACK_GOAL:
-          if(cureVialStatus == true){
+          if(isCureVialViable == true){
               loadLevel();
           } else {
               //colorText("Hey! The vial is spoiled! Please head back to base" +

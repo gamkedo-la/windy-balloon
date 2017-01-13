@@ -14,9 +14,9 @@ var parXRangeTop = 0;
 var parXRangeBot = 0;
 var parYRange = 0;
 var cureTemp = 0;
-var cureVialStatus = true; // this is supposed to be true
+var isCureVialViable = true; // this is supposed to be true
 var cureVialCondition = "Viable";
-var cureVialMaxTemp = 5; // testing this at 50
+var cureVialMaxTemp = 50; // testing this at 50
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -88,6 +88,9 @@ function loadLevel() {
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
   setupParticles();
+  isCureVialViable = true;
+  cureVialCondition = "Viable";
+  cureTemp = 0;
 }
 
 function setupParticles() {
@@ -119,12 +122,12 @@ function setupParticles() {
 
 function cureTempUpdate(){
     if(cureTemp >= cureVialMaxTemp) {
-        cureVialStatus = false;
+        isCureVialViable = false;
         cureTemp = cureVialMaxTemp;
         cureVialCondition = "Spoiled";
     } else {
         cureTemp += 0.03;
-        cureVialStatus = true;
+        isCureVialViable = true;
     }
 }
 
@@ -200,9 +203,9 @@ function drawEverything() {
   }
   drawAtBaseScaledPlanes();
 
-  colorText("Cure Vial Temperature: " +Math.floor(cureTemp), 550, 100, 'white');
+  colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
 
-  colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'red');
+  colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'cyan');
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 
