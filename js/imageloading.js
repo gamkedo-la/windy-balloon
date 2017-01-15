@@ -29,14 +29,16 @@ function loadTile3d(tileKind, fileName) {
 
 function loadImages() {
   var imageList = [
-    {varName:carPic, theFile:"ball.png"},
-    {varName:carShadowPic, theFile:"ball-shadow.png"},
-    {varName:planePic, theFile:"Spad-XIII.png"},
-    {varName:trackSheet, theFile:"track_all_sheet.png"},
-    {varName:cityBuildingsPic, theFile:"citybuildings.png"},
-    {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
-    {tileKind3d: TRACK_TREE, theFile:"trees.png"},
-    {tileKind3d: TRACK_GOAL, theFile:"citybuildings.png"}
+      {varName:carPic, theFile:"ball.png"},
+      {varName:carShadowPic, theFile:"ball-shadow.png"},
+      {varName:planePic, theFile:"Spad-XIII.png"},
+      {varName:trackSheet, theFile:"track_all_sheet.png"},
+      {varName:cityBuildingsPic, theFile:"citybuildings.png"},
+      {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
+      // added this to 3d tile render because it's easier to see
+      {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
+      {tileKind3d: TRACK_TREE, theFile:"trees.png"},
+      {tileKind3d: TRACK_GOAL, theFile:"citybuildings.png"}
     ];
 
   picsToLoad = imageList.length;
