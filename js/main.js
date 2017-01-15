@@ -88,6 +88,7 @@ function loadLevel() {
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
   setupParticles();
+  showParticles = (isInEditor == false);
   isCureVialViable = true;
   cureVialCondition = "Viable";
   cureTemp = 0;

@@ -120,6 +120,8 @@ function keyPressed(evt) {
 
   wasValidGameKeySoBlockDefault = true;
   switch(thisKey) {
+    case KEY_LETTER_A:
+    case KEY_LETTER_D:
     case KEY_LEFT_ARROW:
     case KEY_RIGHT_ARROW:
       for(var i=0;i<trackGrid.length;i++) {
@@ -132,6 +134,8 @@ function keyPressed(evt) {
         }
       }
       break;
+    case KEY_LETTER_W:
+    case KEY_LETTER_S:
     case KEY_UP_ARROW:
     case KEY_DOWN_ARROW:
       for(var i=0;i<trackGrid.length;i++) {
@@ -151,9 +155,9 @@ function keyPressed(evt) {
       isInEditor = !isInEditor;
       loadLevel();
       break;
-    case KEY_LETTER_P:
+    /*case KEY_LETTER_P:
       showParticles = !showParticles;
-      break;
+      break;*/
     default:
       wasValidGameKeySoBlockDefault = false;
       break;
