@@ -191,12 +191,7 @@ function drawEverything() {
   }
 
 
-  for(var i=0;i<mtPos.length;i++) {
-    var mtDot = worldCoordToParCoord(mtPos[i].x,mtPos[i].y);
-    drawAtBaseScaled(mtPos[i].img,
-      mtDot.x,
-      mtDot.y,mtDot.scaleHere);
-  }
+  drawTrackSpriteCards();
 
   if(isInEditor == false) {
     p1.DrawInAir();
@@ -213,11 +208,21 @@ function drawEverything() {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
 
     colorText("Key guide for number row 1-8 (also: WASD to place arrows):",50,70,"yellow");
+
+    var keyTileGuideX = 50;
+    var keyTileGuideY = 75;
     scaledContext.drawImage(trackSheet,
       0, 0, // top-left corner of tile art, multiple of tile width
       trackSheet.width, TRACK_H, // get full tile size from source
-      50, 75, // x,y top-left corner for image destination
+      keyTileGuideX, keyTileGuideY, // x,y top-left corner for image destination
       trackSheet.width, TRACK_H); // draw full full tile size for destination
+
+    for(var i=0;i<TRACK_HIGHEST_VALID_NUMBER;i++) {
+      if(track3dPics[i] != undefined) {
+        scaledContext.drawImage(track3dPics[i],
+          keyTileGuideX+i*TRACK_W, keyTileGuideY);
+      }
+    }
 
   } else {
     colorText("Press R to Restart, Press L for Level Editor Mode, Press P for Particles",50,50,"yellow");

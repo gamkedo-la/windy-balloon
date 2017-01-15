@@ -48,6 +48,7 @@ const TRACK_TREE = 4;
 const TRACK_HEAT = 5;
 const TRACK_ICE = 6;
 const TRACK_COOLDOWN = 7;
+const TRACK_HIGHEST_VALID_NUMBER = TRACK_COOLDOWN;
 const TRACK_OUT_OF_BOUNDS = 999; // no tile or track, just a return value
 const ARROW_U = -1;
 const ARROW_R = -2;
@@ -88,15 +89,11 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
   return trackGrid[trackIndex];
 }
 
-var mtPos = [];
-
-function drawTracks() {
+function drawTrackSpriteCards() {
   var trackIndex = 0;
   var trackLeftEdgeX = 0;
   var trackTopEdgeY = 0;
 
-  mtPos = [];
-  
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
     
     trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
@@ -105,13 +102,37 @@ function drawTracks() {
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
       
-      if(trackTypeHere == TRACK_MOUNTAINS || trackTypeHere == TRACK_TREE) {
-        var newPt = {x:trackLeftEdgeX+TRACK_W/2,
-                     y:trackTopEdgeY+TRACK_H,
-                     img:(trackTypeHere == TRACK_MOUNTAINS ? mountainPic : treePic)};
-        mtPos.push(newPt);
+      if(track3dPics[trackTypeHere] != undefined) {
+        var parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
+        drawAtBaseScaled(track3dPics[trackTypeHere],
+          parPt.x,
+          parPt.y,
+          parPt.scaleHere)
       }
 
+      trackIndex++; // increment which index we're going to next check for in the track        
+      trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
+
+    } // end of for eachCol
+    
+    trackTopEdgeY += TRACK_H; // jump horizontal draw position down by one full tile height
+    
+  } // end of for eachRow    
+} // end of drawTracks()
+
+function drawTracks() {
+  var trackIndex = 0;
+  var trackLeftEdgeX = 0;
+  var trackTopEdgeY = 0;
+
+  for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
+    
+    trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
+    
+    for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
+
+      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
+      
       if(trackTypeHere < 0) {
         var arrowType = -trackTypeHere;
         // first draw default ground under the arrow
