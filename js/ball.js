@@ -78,6 +78,14 @@ function ballClass() {
               cureTemp = 0;
           }
           break;
+        case TRACK_LABORATORY:
+          if(isCureVialViable == false){
+            isCureVialViable = true;
+            cureVialCondition = "Viable";
+            cureTemp = 0;
+            // eventually I'll need to remove the message that directs the player to the lab here
+          }
+          break;
       case ARROW_U:
         this.yv -= primaryAxisAccel;
         this.xv *= otherAxisDampen;
@@ -102,7 +110,7 @@ function ballClass() {
         break;
       case TRACK_GOAL:
           if(isCureVialViable == true){
-              loadLevel();
+              nextLevel();
           } else {
               //colorText("Hey! The vial is spoiled! Please head back to base" +
               // " to get another sample.", 600, 100, 'white');
@@ -111,6 +119,7 @@ function ballClass() {
               // need to figure out how to get this working (Eric)
               break;
           }
+
         return;
     }
 

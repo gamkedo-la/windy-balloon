@@ -35,7 +35,8 @@ function loadImages() {
       {varName:trackSheet, theFile:"track_all_sheet.png"},
       {varName:cityBuildingsPic, theFile:"citybuildings.png"},
       {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
-      // added this to 3d tile render because it's easier to see
+      {tileKind3d: TRACK_LABORATORY, theFile:"laboratory.png"},
+      // added track_cooldown and laboratory to 3d tile render because it's easier to see
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
       {tileKind3d: TRACK_GOAL, theFile:"citybuildings.png"}

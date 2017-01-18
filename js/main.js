@@ -13,10 +13,11 @@ var parHorizBaseWidth = 370;
 var parXRangeTop = 0;
 var parXRangeBot = 0;
 var parYRange = 0;
+
 var cureTemp = 0;
 var isCureVialViable = true; // this is supposed to be true
 var cureVialCondition = "Viable";
-var cureVialMaxTemp = 50; // testing this at 50
+var cureVialMaxTemp = 5; // testing this at 50
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -204,6 +205,10 @@ function drawEverything() {
   colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'cyan');
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
+
+  if(isCureVialViable == false){
+    colorText("Hey! The vial is spoiled! Please get a to a local laboratory to pickup another sample.", 200, 575, 'white');
+  }
 
   if(isInEditor) {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
