@@ -228,7 +228,7 @@ Particle.prototype.drawShadow = function()
 
 	psCtx.fillStyle = this.shadowGradient();
 	psCtx.arc(this.parDot.x, this.parDot.y, 
-		this.radius*this.scale*cfg['scale'], // this.parDot.scaleHere
+		this.radius*this.scale*cfg['scale']*this.parDot.scaleHere,
 		Math.PI*2, false);
 	psCtx.fill();
 };
