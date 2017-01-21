@@ -37,6 +37,8 @@ var worldMap2 =
       1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1];
 var levelOrder = [worldMap1,worldMap2];
 
+var trackNeedsRedraw = true;
+
 var currentLevelIdx = 0;
 var trackGrid = []; // live play/edit scratch copy
 var particleGrid = [];

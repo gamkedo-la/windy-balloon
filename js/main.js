@@ -1,4 +1,5 @@
 var canvas, canvasContext;
+var worldDrawCanvas, worldDrawContext;
 var scaledCanvas, scaledContext;
 
 var isInEditor = false;
@@ -36,8 +37,11 @@ window.onload = function() {
   canvas = document.createElement('canvas');
   canvasContext = canvas.getContext('2d');
 
-  scaledCanvas.width = canvas.width = 800;
-  scaledCanvas.height = canvas.height = 600;
+  worldDrawCanvas = document.createElement('canvas');
+  worldDrawContext = worldDrawCanvas.getContext('2d');
+
+  worldDrawCanvas.width = scaledCanvas.width = canvas.width = 800;
+  worldDrawCanvas.height = scaledCanvas.height = canvas.height = 600;
 
   scaledContext = scaledCanvas.getContext('2d');
   scaledContext.fillStyle = "black";
@@ -47,6 +51,12 @@ window.onload = function() {
   canvasContext.imageSmoothingEnabled = false;
   canvasContext.msImageSmoothingEnabled = false;
   canvasContext.imageSmoothingEnabled = false;
+
+  worldDrawContext.mozImageSmoothingEnabled = false;
+  worldDrawContext.imageSmoothingEnabled = false;
+  worldDrawContext.msImageSmoothingEnabled = false;
+  worldDrawContext.imageSmoothingEnabled = false;
+
   scaledContext.mozImageSmoothingEnabled = false;
   scaledContext.imageSmoothingEnabled = false;
   scaledContext.msImageSmoothingEnabled = false;
@@ -64,7 +74,7 @@ function loadingDoneSoStartGame() {
       drawEverything();
     }, 1000/framesPerSecond);
   
-  ParticleSystem.init(canvas, 1000/framesPerSecond);
+  ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
 
   loadLevel();
   initInput();  
@@ -149,25 +159,46 @@ function drawEverything() {
     }
   }
 
-  drawTracks();
-
-  showParticles && ParticleSystem.draw();
-
   drawPlanes();
   if(isInEditor == false) {
     p1.DrawShadow(); // shadow
   }
 
-  scaledContext.fillStyle = "#003"; // background color
-  scaledContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
+  var backgroundColor = "#003";
+  scaledContext.fillStyle = backgroundColor;
+  scaledContext.fillRect(0,0,scaledCanvas.width,parCornerTL.y);
+  scaledContext.fillRect(0,parCornerBL.y,
+    scaledCanvas.width,scaledCanvas.height-parCornerBL.y);
+  scaledContext.fillRect(0,parCornerTL.y,
+                        parCornerBL.x,parCornerBL.y-parCornerTL.y);
+  scaledContext.fillRect(parCornerBR.x,parCornerTL.y,
+                        canvas.width-parCornerBR.x,parCornerBL.y-parCornerTL.y);
+  
+  if(isInEditor || trackNeedsRedraw) {
+    trackNeedsRedraw = false;
+    worldDrawContext.fillStyle = backgroundColor;
+    worldDrawContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
+    drawTracks();
 
-  var canvHei = canvas.height;
-  var centerX = canvas.width/2;
-  for(var i=0;i<canvHei;i+=parVertSkip) {
-    var wid = i*parHorizStretch+parHorizBaseWidth;
-    scaledContext.drawImage(canvas, 0, i, canvas.width, 1,
-          centerX-wid/2, i/parVertSkip+parVertOffset, wid, 1);
+    var canvHei = canvas.height;
+    var centerX = canvas.width/2;
+    for(var i=0;i<canvHei;i+=parVertSkip) {
+      var wid = i*parHorizStretch+parHorizBaseWidth;
+      worldDrawContext.drawImage(canvas, 0, i, canvas.width, 1,
+            centerX-wid/2, i/parVertSkip+parVertOffset, wid, 1);
+    }
   }
+  scaledContext.drawImage(worldDrawCanvas,
+                          parCornerBL.x,parCornerTL.y,
+                          parCornerBR.x-parCornerBL.x,
+                          parCornerBL.y-parCornerTL.y,
+                          parCornerBL.x,parCornerTL.y,
+                          parCornerBR.x-parCornerBL.x,
+                          parCornerBL.y-parCornerTL.y);
+  if(showParticles) {
+    ParticleSystem.draw()
+  }
+
   /*
   // anchors for the parallelogram projection
   scaledContext.fillStyle = "red";

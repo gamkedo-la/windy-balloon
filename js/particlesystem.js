@@ -132,6 +132,7 @@ function Particle()
 	this.color = [0.0, 0.0, 0.0];
 	this.rgba;
 	//
+	this.parDot; // cache perspective location
 	return this;	
 } Particle.prototype.init = function(cluster_, first_) {
 	//
@@ -198,7 +199,11 @@ Particle.prototype.shadowGradient = function()
 	}
 	//
 	var scale = this.cluster.settings['shadow']['scale']*this.scale;
-	var gradient = this.cluster.system.getCtx().createRadialGradient(this.x+cfg['offset'][0], this.y+cfg['offset'][1], 0, this.x+cfg['offset'][0], this.y+cfg['offset'][1], this.radius*scale);
+	var gradient = this.cluster.system.getCtx().createRadialGradient(
+		this.parDot.x,
+		this.parDot.y, 0,
+		this.parDot.x,
+		this.parDot.y, this.radius*scale);
 	for(var i=0; i < cfg['gradient'].length; i++) {
 		var col = cfg['gradient'][i]['color'] != null ? Da.RGBA(cfg['gradient'][i]['color'], + cfg['gradient'][i]['alpha']*cfg['alpha']) : this.rgba;
 		gradient.addColorStop(cfg['gradient'][i]['pos'], col);	
@@ -217,8 +222,14 @@ Particle.prototype.drawShadow = function()
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
+	this.parDot = worldCoordToParCoord(
+		this.x+cfg['offset'][0],
+		this.y+cfg['offset'][1]);
+
 	psCtx.fillStyle = this.shadowGradient();
-	psCtx.arc(this.x+cfg['offset'][0], this.y+cfg['offset'][1], this.radius*this.scale*cfg['scale'], Math.PI*2, false);
+	psCtx.arc(this.parDot.x, this.parDot.y, 
+		this.radius*this.scale*cfg['scale'], // this.parDot.scaleHere
+		Math.PI*2, false);
 	psCtx.fill();
 };
 
@@ -235,8 +246,11 @@ Particle.prototype.draw = function()
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
+	this.parDot = worldCoordToParCoord(this.x,this.y);
+
 	psCtx.fillStyle = this.gradient(false);
-	psCtx.arc(this.x, this.y, this.radius*this.scale, Math.PI*2, false);
+	psCtx.arc(this.parDot.x, this.parDot.y,
+		this.radius*this.scale, Math.PI*2, false);
 	psCtx.fill();
 	//
 	// Update

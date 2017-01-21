@@ -111,6 +111,7 @@ function keyPressed(evt) {
     }
 
     if(wasValidGameKeySoBlockDefault) {
+      trackNeedsRedraw = true;
       evt.preventDefault();
     }
     return;
@@ -164,6 +165,7 @@ function keyPressed(evt) {
   }
 
   if(wasValidGameKeySoBlockDefault) {
+    trackNeedsRedraw = true;
     evt.preventDefault();
   }
 }
