@@ -16,6 +16,23 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fill();
 }
 
+function drawAtBaseScaledSheet(graphic, idx, atX, atY, forScaleX, forScaleY) {
+  if (forScaleY == undefined) {
+    forScaleY = forScaleX;
+  }
+  scaledContext.save(); 
+  var dimPerFrame = graphic.height;
+  scaledContext.translate(atX-forScaleX*dimPerFrame/2,
+                          atY-forScaleY*dimPerFrame*1.2);
+  scaledContext.scale(forScaleX,forScaleY);
+  scaledContext.drawImage(graphic,
+    idx * TRACK_W, 0,
+    TRACK_W, TRACK_H,
+    0, 0,
+    TRACK_W, TRACK_H);
+  scaledContext.restore();
+}
+
 function drawAtBaseScaled(graphic, atX, atY, forScaleX, forScaleY) {
   if (forScaleY == undefined) {
     forScaleY = forScaleX;

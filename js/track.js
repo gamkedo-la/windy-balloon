@@ -51,7 +51,8 @@ const TRACK_HEAT = 5;
 const TRACK_ICE = 6;
 const TRACK_COOLDOWN = 7;
 const TRACK_LABORATORY = 8;
-const TRACK_HIGHEST_VALID_NUMBER = TRACK_COOLDOWN;
+const TRACK_GOAL_LANDMARK = 9;
+const TRACK_HIGHEST_VALID_NUMBER = TRACK_GOAL_LANDMARK;
 const TRACK_OUT_OF_BOUNDS = 999; // no tile or track, just a return value
 const ARROW_U = -1;
 const ARROW_R = -2;
@@ -96,7 +97,7 @@ function drawTrackSpriteCards() {
   var trackIndex = 0;
   var trackLeftEdgeX = 0;
   var trackTopEdgeY = 0;
-
+  var parPt;
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
     
     trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
@@ -105,12 +106,14 @@ function drawTrackSpriteCards() {
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
       
-      if(track3dPics[trackTypeHere] != undefined) {
-        var parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
+      if(trackTypeHere == TRACK_GOAL_LANDMARK) {
+        parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
+        drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
+          parPt.x,parPt.y,parPt.scaleHere)
+      } else if(track3dPics[trackTypeHere] != undefined) {
+        parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaled(track3dPics[trackTypeHere],
-          parPt.x,
-          parPt.y,
-          parPt.scaleHere)
+          parPt.x,parPt.y,parPt.scaleHere)
       }
 
       trackIndex++; // increment which index we're going to next check for in the track        
@@ -140,33 +143,39 @@ function drawTracks() {
         var arrowType = -trackTypeHere;
         // first draw default ground under the arrow
         canvasContext.drawImage(trackSheet,
-          0, 0, // top-left corner of tile art, multiple of tile width
-          TRACK_W, TRACK_H, // get full tile size from source
-          trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-          TRACK_W, TRACK_H); // draw full full tile size for destination
+          0, 0,
+          TRACK_W, TRACK_H,
+          trackLeftEdgeX, trackTopEdgeY,
+          TRACK_W, TRACK_H);
 
           // draw arrow
           canvasContext.drawImage(trackSheet,
-              (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
-              TRACK_W, TRACK_H, // get full tile size from source
-              trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-              TRACK_W, TRACK_H); // draw full full tile size for destination
+              (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H,
+              TRACK_W, TRACK_H,
+              trackLeftEdgeX, trackTopEdgeY,
+              TRACK_W, TRACK_H);
           
         if(!showParticles) {
           // draw conveyor belt (animated) 
           canvasContext.drawImage(trackSheet,
-              arrowAnimFrame * TRACK_W, arrowType* TRACK_H, // top-left corner of tile art, multiple of tile width
-              TRACK_W, TRACK_H, // get full tile size from source
-              trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-              TRACK_W, TRACK_H); // draw full full tile size for destination
+              arrowAnimFrame * TRACK_W, arrowType* TRACK_H,
+              TRACK_W, TRACK_H,
+              trackLeftEdgeX, trackTopEdgeY,
+              TRACK_W, TRACK_H);
           
         }
       } else {
+        var tileFlatIdx;
+        if(trackTypeHere != TRACK_GOAL_LANDMARK) {
+          tileFlatIdx = trackTypeHere;
+        } else {
+          tileFlatIdx = TRACK_GOAL;
+        }
         canvasContext.drawImage(trackSheet,
-          trackTypeHere * TRACK_W, 0, // top-left corner of tile art, multiple of tile width
-          TRACK_W, TRACK_H, // get full tile size from source
-          trackLeftEdgeX, trackTopEdgeY, // x,y top-left corner for image destination
-          TRACK_W, TRACK_H); // draw full full tile size for destination
+            tileFlatIdx * TRACK_W, 0,
+            TRACK_W, TRACK_H,
+            trackLeftEdgeX, trackTopEdgeY,
+            TRACK_W, TRACK_H);
       }
 
       if(isInEditor && trackIndex == editIdx) {

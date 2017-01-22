@@ -16,9 +16,9 @@ var parXRangeBot = 0;
 var parYRange = 0;
 
 var cureTemp = 0;
-var isCureVialViable = true; // this is supposed to be true
+var isCureVialViable = true;
 var cureVialCondition = "Viable";
-var cureVialMaxTemp = 5; // testing this at 50
+var cureVialMaxTemp = 50;
 
 var arrowAnimFrame = 0;
 var arrowAnimFrameTicksDelay = 0;
@@ -96,6 +96,7 @@ function nextLevel() {
 }
 
 function loadLevel() {
+  trackNeedsRedraw = true;
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
   setupParticles();
@@ -133,6 +134,7 @@ function setupParticles() {
 }
 
 function cureTempUpdate(){
+  if(isInEditor == false) {
     if(cureTemp >= cureVialMaxTemp) {
         isCureVialViable = false;
         cureTemp = cureVialMaxTemp;
@@ -141,6 +143,7 @@ function cureTempUpdate(){
         cureTemp += 0.03;
         isCureVialViable = true;
     }
+  }
 }
 
 function moveEverything() {
@@ -231,20 +234,21 @@ function drawEverything() {
   }
   drawAtBaseScaledPlanes();
 
-  colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
-
-  colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'cyan');
-
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
 
-  if(isCureVialViable == false){
-    colorText("Hey! The vial is spoiled! Please get a to a local laboratory to pickup another sample.", 200, 575, 'white');
+  if(isInEditor == false){
+    colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
+
+    colorText("Cure Vial Status: " +cureVialCondition, 550, 80, 'cyan');
+    if(isCureVialViable == false) {
+      colorText("Hey! The vial is spoiled! Please get a to a local laboratory to pickup another sample.", 200, 575, 'white');
+    }
   }
 
   if(isInEditor) {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
 
-    colorText("Key guide for number row 1-8 (also: WASD to place arrows):",50,70,"yellow");
+    colorText("Key guide for number row 1-9, WASD to place arrows, 0 for landmark/goal:",50,70,"yellow");
 
     var keyTileGuideX = 50;
     var keyTileGuideY = 75;

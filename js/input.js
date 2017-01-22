@@ -26,8 +26,10 @@ const KEY_NUMROW_5 = 53;
 const KEY_NUMROW_6 = 54;
 const KEY_NUMROW_7 = 55;
 const KEY_NUMROW_8 = 56;
+const KEY_NUMROW_9 = 57;
+const KEY_NUMROW_0 = 48;
 const KEY_NUMROW_FOR_PLAYER_START = KEY_NUMROW_3;
-const KEY_NUMROW_LAST = KEY_NUMROW_8;
+const KEY_NUMROW_LAST = KEY_NUMROW_9;
 
 function initInput() {
   document.addEventListener("keydown", keyPressed);
@@ -59,7 +61,10 @@ function keyPressed(evt) {
   if(isInEditor) {
     if(editIdx != -1) { // first for keys that require a valid tile under mouse
       wasValidGameKeySoBlockDefault = false;
-      if(thisKey >= KEY_NUMROW_1 && thisKey <= KEY_NUMROW_LAST) {
+      if(thisKey == KEY_NUMROW_0) {
+        trackGrid[editIdx] = TRACK_GOAL_LANDMARK;
+        wasValidGameKeySoBlockDefault = true;
+      } else if(thisKey >= KEY_NUMROW_1 && thisKey <= KEY_NUMROW_LAST) {
         var tileValueToPlace = thisKey - KEY_NUMROW_1;
         if(thisKey == KEY_NUMROW_FOR_PLAYER_START) { // remove any prior player start
           for(var i=0;i<trackGrid.length;i++) {

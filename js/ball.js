@@ -109,6 +109,7 @@ function ballClass() {
         this.zv = -5;
         break;
       case TRACK_GOAL:
+      case TRACK_GOAL_LANDMARK:
           if(isCureVialViable == true){
               nextLevel();
           } else {
