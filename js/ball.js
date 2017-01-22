@@ -29,9 +29,6 @@ function ballClass() {
   }
   
   this.Reset = function() {
-    this.Speed = 0;
-    this.Ang = -0.5 * Math.PI;
-  
     for(var i=0; i<trackGrid.length; i++) {
       if( trackGrid[i] == TRACK_PLAYER) {
         var tileRow = Math.floor(i/TRACK_COLS);
@@ -103,7 +100,7 @@ function ballClass() {
         this.zv = 5;
         break;
       case TRACK_ICE:
-        this.zv = -5;
+        this.zv = -2;
         break;
       case TRACK_GOAL:
       case TRACK_GOAL_LANDMARK:
@@ -125,8 +122,8 @@ function ballClass() {
         this.xv*this.xv +
         this.yv*this.yv
         );
-    var minSpeed = 2.0;
-    var maxSpeed = 5.0;
+    var minSpeed = 1.5;
+    var maxSpeed = 3.0;
     if(speed < minSpeed) {
       this.xv = minSpeed * (this.xv/speed);
       this.yv = minSpeed * (this.yv/speed);
@@ -162,7 +159,9 @@ function ballClass() {
   }
   
   this.DrawShadow = function() {
-    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0 );
+    var scaleFromHeight = 1.0-(this.z/heightMax);
+    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0,
+              scaleFromHeight);
   }
   this.DrawInAir = function () {
     var balloonDot = worldCoordToParCoord(this.x,this.y);

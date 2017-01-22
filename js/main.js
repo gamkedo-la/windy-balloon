@@ -163,9 +163,6 @@ function drawEverything() {
   }
 
   drawPlanes();
-  if(isInEditor == false) {
-    p1.DrawShadow(); // shadow
-  }
 
   var backgroundColor = "#003";
   scaledContext.fillStyle = backgroundColor;
@@ -199,7 +196,11 @@ function drawEverything() {
                           parCornerBR.x-parCornerBL.x,
                           parCornerBL.y-parCornerTL.y);
   if(showParticles) {
-    ParticleSystem.draw()
+    ParticleSystem.draw();
+  }
+
+  if(isInEditor == false) {
+    p1.DrawShadow(); // shadow
   }
 
   /*

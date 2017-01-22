@@ -44,12 +44,18 @@ function drawAtBaseScaled(graphic, atX, atY, forScaleX, forScaleY) {
   scaledContext.restore();
 }
   
-function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) {
-  canvasContext.save(); // allows us to undo translate movement and rotate spin
-  canvasContext.translate(atX,atY); // sets the point where our graphic will go
-  canvasContext.rotate(withAngle); // sets the rotation
-  canvasContext.drawImage(graphic,-graphic.width/2,-graphic.height/2); // center, draw
-  canvasContext.restore(); // undo the translation movement and rotation since save()
+function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle, atScale) {
+  if(atScale == undefined) {
+    atScale = 1.0;
+  }
+  scaledContext.save(); // allows us to undo translate movement and rotate spin
+  var parPt = worldCoordToParCoord( atX, atY );
+  scaledContext.translate(parPt.x,parPt.y); // sets the point where our graphic will go
+  var scaleExagg = parPt.scaleHere*atScale;
+  scaledContext.scale(scaleExagg,scaleExagg);
+  scaledContext.rotate(withAngle); // sets the rotation
+  scaledContext.drawImage(graphic,-graphic.width/2,-graphic.height/2); // center, draw
+  scaledContext.restore(); // undo the translation movement and rotation since save()
 }
 
 function colorText(showWords, textX,textY, fillColor) {
