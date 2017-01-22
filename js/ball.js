@@ -38,9 +38,6 @@ function ballClass() {
         var tileCol = i%TRACK_COLS;
         this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
         this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
-        if(isInEditor == false) {
-          trackGrid[i] = TRACK_ROAD;
-        }
       } // end of if
     } // end of for
     
@@ -78,7 +75,7 @@ function ballClass() {
               cureTemp = 0;
           }
           break;
-        case TRACK_LABORATORY:
+        case TRACK_PLAYER:
           if(isCureVialViable == false){
             isCureVialViable = true;
             cureVialCondition = "Viable";

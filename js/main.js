@@ -248,7 +248,7 @@ function drawEverything() {
   if(isInEditor) {
     colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
 
-    colorText("Key guide for number row 1-9, WASD to place arrows, 0 for landmark/goal:",50,70,"yellow");
+    colorText("Key guide for number row 1-8, WASD to place arrows, 9 for landmark/goal:",50,70,"yellow");
 
     var keyTileGuideX = 50;
     var keyTileGuideY = 75;

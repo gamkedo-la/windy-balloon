@@ -44,6 +44,21 @@ function updateMousePos(evt) {
   mouseY = evt.clientY - rect.top + root.scrollTop;
 }
 
+function clearIfUniqueKeyReq(whichKind) {
+  var isNeeded = whichKind == TRACK_PLAYER ||
+                whichKind == TRACK_GOAL_LANDMARK;
+
+  if(isNeeded == false) {
+    return;
+  }
+
+  for(var i=0;i<trackGrid.length;i++) {
+    if(trackGrid[i] == whichKind) {
+      trackGrid[i] = TRACK_ROAD;
+    }
+  }
+}
+
 function keyPressed(evt) {
   var thisKey = evt.keyCode;
   var wasValidGameKeySoBlockDefault = false;
@@ -66,13 +81,7 @@ function keyPressed(evt) {
         wasValidGameKeySoBlockDefault = true;
       } else if(thisKey >= KEY_NUMROW_1 && thisKey <= KEY_NUMROW_LAST) {
         var tileValueToPlace = thisKey - KEY_NUMROW_1;
-        if(thisKey == KEY_NUMROW_FOR_PLAYER_START) { // remove any prior player start
-          for(var i=0;i<trackGrid.length;i++) {
-            if(trackGrid[i] == tileValueToPlace) {
-              trackGrid[i] = TRACK_ROAD;
-            }
-          }
-        }
+        clearIfUniqueKeyReq(tileValueToPlace);
         trackGrid[editIdx] = tileValueToPlace;
         wasValidGameKeySoBlockDefault = true;
 
