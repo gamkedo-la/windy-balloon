@@ -267,7 +267,7 @@ function drawEverything() {
     }
 
   } else {
-    colorText("Press R to Restart, Press L for Level Editor Mode, Press P for Particles",50,50,"yellow");
+    colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
   }
 
 }

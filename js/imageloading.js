@@ -41,7 +41,7 @@ function loadImages() {
       // added track_cooldown and laboratory to 3d tile render because it's easier to see
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
-      {tileKind3d: TRACK_GOAL, theFile:"citybuildings.png"}
+      {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"}
     ];
 
   picsToLoad = imageList.length;
