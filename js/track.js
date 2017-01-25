@@ -3,55 +3,71 @@ const TRACK_W = 40;
 const TRACK_H = 40;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
+var worldMap0 =  [
+0, 0, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+6, 0, 0, 4, 4, 4, 4, 4, 4, 1, 1, -3, -3, -3, -3, -3, -3, -3, -3, -3,
+6, 0, 0, 0, 0, 4, 4, 4, 4, 4, 1, -2, 4, -4, 4, 0, -2, 0, 4, -4,
+6, 6, 6, 0, 0, 0, 4, 4, 4, 1, 1, -2, 4, -4, 0, 4, -2, 4, 4, -4,
+-1, -1, -1, -1, -1, -1, 0, 4, 4, 4, 4, -2, 4, -4, 4, 4, -2, 0, 4, -4,
+6, 6, 6, 6, 0, 0, 0, 4, 4, 4, 4, -2, 0, -4, 4, 0, -2, 4, 0, -4,
+6, 6, 6, 6, 6, 0, 4, 4, 4, 4, 4, -2, 4, -4, 1, 1, 1, 1, 0, -4,
+6, 6, 6, 6, 6, 0, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1,
+6, 6, 6, 6, 6, -2, 0, 4, 4, 4, 1, 1, 1, -2, -2, 0, -4, -1, -1, -1,
+6, 6, 6, 6, 6, -2, 0, 4, 4, 1, 1, 1, 1, -2, -2, 4, -4, 0, 0, 0,
+-1, -1, -1, 6, 6, -2, 0, 0, 4, 1, 1, 1, 1, -2, -2, 4, 1, 1, 1, 1,
+6, 6, 6, 6, 6, -2, 0, 0, 4, 4, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
+6, 8, 6, 6, 6, 6, 6, 0, 0, 0, 1, 1, -3, -3, -3, 1, 1, 1, 1, 1,
+6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 1, 1, -3, -3, -3, -2, -2, 0, 2, 1,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 1, 1, -3, -3, -3, -2, -2, 0, 1, 1];
 var worldMap1 = [
--2, -3, 3, 3, 3, 3, 3, 4, 4, 6, 6, 6, 6, 6, 6, 3, 4, 4, 4, 4, 
--3, -2, 3, 3, 3, 3, 3, 4, 6, 6, 6, 6, 6, 6, 3, 3, 0, 2, 0, 3, 
--1, -1, -1, 4, 4, -2, -2, -2, 6, 6, 6, 3, 3, 3, 3, 3, 3, 0, 0, 3, 
--1, -1, -1, 4, 4, 4, 4, 6, 6, 6, 6, 3, 3, -2, -2, -2, 3, -1, -1, -4, 
-6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 3, 3, 6, 6, 6, 6, 6, 
-4, 4, 4, 6, 4, 4, 4, 4, 6, 6, -2, -1, -1, -4, 6, 6, 6, 6, 6, 6, 
-4, 4, 4, 4, 4, -3, -3, -3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -3, 
-4, 4, 4, -3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, -4, 
-4, 4, 4, -3, 6, 6, -3, 6, 6, 6, 6, 5, -1, 6, 6, 6, 6, 3, 4, -4, 
-4, 7, 4, -2, 6, -2, 8, 6, 6, 6, 3, 5, -4, 3, 6, 6, 4, 4, 3, 3, 
-4, 4, 4, 4, 6, 6, 6, 6, 6, -1, 3, 5, -3, 6, 6, -3, 4, 4, 3, 3, 
-4, -4, -4, -4, 6, 6, 6, 6, 6, 5, 5, 6, 6, 6, -3, 4, 4, 3, 4, 7, 
-4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -3, 4, 4, 3, 3, 4, 4, 
-6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, -4, -4, -4, 3, 3, -1, -4, 
+-2, -3, 3, 3, 3, 3, 3, 4, 4, 6, 6, 6, 6, 6, 6, 3, 4, 4, 4, 4,
+-3, -2, 3, 3, 3, 3, 3, 4, 6, 6, 6, 6, 6, 6, 3, 3, 0, 2, 0, 3,
+-1, -1, -1, 4, 4, -2, -2, -2, 6, 6, 6, 3, 3, 3, 3, 3, 3, 0, 0, 3,
+-1, -1, -1, 4, 4, 4, 4, 6, 6, 6, 6, 3, 3, -2, -2, -2, 3, -1, -1, -4,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 3, 3, 6, 6, 6, 6, 6,
+4, 4, 4, 6, 4, 4, 4, 4, 6, 6, -2, -1, -1, -4, 6, 6, 6, 6, 6, 6,
+4, 4, 4, 4, 4, -3, -3, -3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -3,
+4, 4, 4, -3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, -4,
+4, 4, 4, -3, 6, 6, -3, 6, 6, 6, 6, 5, -1, 6, 6, 6, 6, 3, 4, -4,
+4, 7, 4, -2, 6, -2, 8, 6, 6, 6, 3, 5, -4, 3, 6, 6, 4, 4, 3, 3,
+4, 4, 4, 4, 6, 6, 6, 6, 6, -1, 3, 5, -3, 6, 6, -3, 4, 4, 3, 3,
+4, -4, -4, -4, 6, 6, 6, 6, 6, 5, 5, 6, 6, 6, -3, 4, 4, 3, 4, 7,
+4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -3, 4, 4, 3, 3, 4, 4,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, -4, -4, -4, 3, 3, -1, -4,
 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 6, 3, 3, -4, -4, -4, 3, 3, -4, -1];
 var worldMap2 = [
-0, 0, -2, -3, -3, -4, 1, 1, 1, 0, 0, 0, 0, -3, -3, -3, -3, 0, 0, -4, 
-4, 0, -2, 5, 5, 1, 1, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 4, 4, -4, 
-4, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, -4, -4, 0, 0, 4, 2, 4, 4, 
-6, 4, 1, 0, 0, -3, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 4, 4, 4, 0, 
-6, 6, 0, 0, 0, 0, 0, -2, 0, 0, 0, -3, 0, 1, 1, 1, 0, 0, 0, 0, 
-6, 6, 6, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 
-6, 6, 6, 6, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 
-6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 5, 5, 1, 1, 
-6, 6, 6, 1, 1, 1, -1, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0, 4, -4, 
-6, 6, 6, -3, -2, 1, 1, -1, 0, 0, 0, 0, 0, 0, -4, 0, 4, 4, 4, -4, 
-6, 6, 6, -2, -3, -2, 1, 1, -2, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, -1, 
-6, 6, 6, 0, 0, 5, 5, 1, -2, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 
-6, 6, 0, 0, 3, 0, 5, 5, 1, 0, 0, 4, 4, 4, 4, 4, -3, -3, -3, 0, 
-4, 4, 0, 3, 3, 3, 0, 5, 1, 0, 4, 4, 4, 4, 0, 0, -2, 7, -4, 0, 
+0, 0, -2, -3, -3, -4, 1, 1, 1, 0, 0, 0, 0, -3, -3, -3, -3, 0, 0, -4,
+4, 0, -2, 5, 5, 1, 1, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 4, 4, -4,
+4, 4, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, -4, -4, 0, 0, 4, 2, 4, 4,
+6, 4, 1, 0, 0, -3, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 4, 4, 4, 0,
+6, 6, 0, 0, 0, 0, 0, -2, 0, 0, 0, -3, 0, 1, 1, 1, 0, 0, 0, 0,
+6, 6, 6, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1,
+6, 6, 6, 6, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 5, 5, 1, 1,
+6, 6, 6, 1, 1, 1, -1, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0, 4, -4,
+6, 6, 6, -3, -2, 1, 1, -1, 0, 0, 0, 0, 0, 0, -4, 0, 4, 4, 4, -4,
+6, 6, 6, -2, -3, -2, 1, 1, -2, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, -1,
+6, 6, 6, 0, 0, 5, 5, 1, -2, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0,
+6, 6, 0, 0, 3, 0, 5, 5, 1, 0, 0, 4, 4, 4, 4, 4, -3, -3, -3, 0,
+4, 4, 0, 3, 3, 3, 0, 5, 1, 0, 4, 4, 4, 4, 0, 0, -2, 7, -4, 0,
 1, 1, 4, 3, 3, 3, 3, -1, -4, 4, 4, 4, -4, 0, 0, 0, -1, -1, -1, 0];
 var worldMap3 = [
-3, 3, 3, -4, 4, 4, -3, 4, 4, 4, -1, -1, 6, 6, 6, 6, -3, 6, 6, 6, 
-3, 3, 3, -4, 4, 4, -3, 4, 4, 0, 0, 6, 6, 6, 6, 0, -3, 0, 2, 6, 
-3, 3, 3, 0, 4, 4, 0, 0, 0, 6, 6, 6, 6, -2, -2, 0, 0, 0, -1, -1, 
--4, -4, 0, 0, 0, 0, 0, -2, 6, 6, 6, 0, 0, 3, 0, 3, 0, 3, 3, 3, 
-3, 3, 3, 0, 3, 0, -3, 6, 6, 6, 0, 0, 3, 3, 0, 3, 0, 3, 3, 3, 
-3, 3, 3, 0, 0, -2, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, -2, 0, -4, -4, 
-3, 3, 0, 0, 0, 6, 6, 6, 0, 0, -2, -2, 4, -3, -3, 3, 0, 3, 3, 3, 
--2, -2, 0, 0, 6, 6, 6, 0, 0, 3, -2, -2, 4, -3, -3, 3, 0, 3, 3, 3, 
-3, 3, 0, 6, 6, 6, 0, 0, 3, 3, 4, 4, 4, 4, 4, 3, 0, 3, 3, 3, 
-3, 3, 0, 6, 6, 0, 0, 3, 3, 3, 4, 4, 8, 4, 4, 3, 0, 3, 3, 3, 
--4, -4, 0, -2, -2, 0, 0, 0, 0, 0, 4, 4, 6, 4, 4, 0, -1, 0, -2, -2, 
-3, 3, 0, 6, 6, 0, 0, 3, 3, 3, -1, -1, 4, -4, -4, 3, 0, 3, 3, 3, 
-3, 3, 0, 6, 6, 0, 0, 3, 3, 3, -1, -1, 4, -4, -4, 3, 0, 3, 3, 3, 
-3, 3, -1, 6, 6, -4, -3, 3, 3, 3, 3, 3, 3, 3, 3, 3, -1, 3, -1, -4, 
+3, 3, 3, -4, 4, 4, -3, 4, 4, 4, -1, -1, 6, 6, 6, 6, -3, 6, 6, 6,
+3, 3, 3, -4, 4, 4, -3, 4, 4, 0, 0, 6, 6, 6, 6, 0, -3, 0, 2, 6,
+3, 3, 3, 0, 4, 4, 0, 0, 0, 6, 6, 6, 6, -2, -2, 0, 0, 0, -1, -1,
+-4, -4, 0, 0, 0, 0, 0, -2, 6, 6, 6, 0, 0, 3, 0, 3, 0, 3, 3, 3,
+3, 3, 3, 0, 3, 0, -3, 6, 6, 6, 0, 0, 3, 3, 0, 3, 0, 3, 3, 3,
+3, 3, 3, 0, 0, -2, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, -2, 0, -4, -4,
+3, 3, 0, 0, 0, 6, 6, 6, 0, 0, -2, -2, 4, -3, -3, 3, 0, 3, 3, 3,
+-2, -2, 0, 0, 6, 6, 6, 0, 0, 3, -2, -2, 4, -3, -3, 3, 0, 3, 3, 3,
+3, 3, 0, 6, 6, 6, 0, 0, 3, 3, 4, 4, 4, 4, 4, 3, 0, 3, 3, 3,
+3, 3, 0, 6, 6, 0, 0, 3, 3, 3, 4, 4, 8, 4, 4, 3, 0, 3, 3, 3,
+-4, -4, 0, -2, -2, 0, 0, 0, 0, 0, 4, 4, 6, 4, 4, 0, -1, 0, -2, -2,
+3, 3, 0, 6, 6, 0, 0, 3, 3, 3, -1, -1, 4, -4, -4, 3, 0, 3, 3, 3,
+3, 3, 0, 6, 6, 0, 0, 3, 3, 3, -1, -1, 4, -4, -4, 3, 0, 3, 3, 3,
+3, 3, -1, 6, 6, -4, -3, 3, 3, 3, 3, 3, 3, 3, 3, 3, -1, 3, -1, -4,
 3, 3, -1, 6, 6, -4, -3, 3, 3, 3, 3, 3, 3, 3, 3, 3, -1, 3, -4, -1];
-var levelOrder = [worldMap1,worldMap2,worldMap3];
+var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3];
 
 var trackNeedsRedraw = true;
 
@@ -90,10 +106,10 @@ function trackTileToIndex(tileCol, tileRow) {
   return (tileCol + TRACK_COLS*tileRow);
 }
 
-function getTrackAtPixelCoord(pixelX,pixelY) { 
+function getTrackAtPixelCoord(pixelX,pixelY) {
   var tileCol = pixelX / TRACK_W;
   var tileRow = pixelY / TRACK_H;
-  
+
   // we'll use Math.floor to round down to the nearest whole number
   tileCol = Math.floor( tileCol );
   tileRow = Math.floor( tileRow );
@@ -103,7 +119,7 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
      tileRow < 0 || tileRow >= TRACK_ROWS) {
      return TRACK_OUT_OF_BOUNDS; // avoid invalid array access, treat out of bounds as wall
   }
-  
+
   var trackIndex = trackTileToIndex(tileCol, tileRow);
   return trackGrid[trackIndex];
 }
@@ -114,13 +130,13 @@ function drawTrackSpriteCards() {
   var trackTopEdgeY = 0;
   var parPt;
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
-    
+
     trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
-    
+
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
 
-      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
-      
+      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
+
       if(trackTypeHere == TRACK_GOAL_LANDMARK) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
@@ -131,14 +147,14 @@ function drawTrackSpriteCards() {
           parPt.x,parPt.y,parPt.scaleHere)
       }
 
-      trackIndex++; // increment which index we're going to next check for in the track        
+      trackIndex++; // increment which index we're going to next check for in the track
       trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
 
     } // end of for eachCol
-    
+
     trackTopEdgeY += TRACK_H; // jump horizontal draw position down by one full tile height
-    
-  } // end of for eachRow    
+
+  } // end of for eachRow
 } // end of drawTracks()
 
 function drawTracks() {
@@ -147,13 +163,13 @@ function drawTracks() {
   var trackTopEdgeY = 0;
 
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
-    
+
     trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
-    
+
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
 
-      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile        
-      
+      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
+
       if(trackTypeHere < 0) {
         var arrowType = -trackTypeHere;
         // first draw default ground under the arrow
@@ -169,15 +185,15 @@ function drawTracks() {
               TRACK_W, TRACK_H,
               trackLeftEdgeX, trackTopEdgeY,
               TRACK_W, TRACK_H);
-          
+
         if(!showParticles) {
-          // draw conveyor belt (animated) 
+          // draw conveyor belt (animated)
           canvasContext.drawImage(trackSheet,
               arrowAnimFrame * TRACK_W, arrowType* TRACK_H,
               TRACK_W, TRACK_H,
               trackLeftEdgeX, trackTopEdgeY,
               TRACK_W, TRACK_H);
-          
+
         }
       } else {
         var tileFlatIdx;
@@ -196,12 +212,12 @@ function drawTracks() {
       if(isInEditor && trackIndex == editIdx) {
         colorRectOutline(trackLeftEdgeX, trackTopEdgeY, TRACK_W, TRACK_H, 'yellow');
       }
-      trackIndex++; // increment which index we're going to next check for in the track        
+      trackIndex++; // increment which index we're going to next check for in the track
       trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
 
     } // end of for eachCol
-    
+
     trackTopEdgeY += TRACK_H; // jump horizontal draw position down by one full tile height
-    
-  } // end of for eachRow    
+
+  } // end of for eachRow
 } // end of drawTracks()
