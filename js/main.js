@@ -227,7 +227,7 @@ function drawEverything() {
     }    
   }
 
-
+  //TODO:ZOMBIES WILL GET DRAWN HERE -ALRIGHT
   drawTrackSpriteCards();
 
   if(isInEditor == false) {
