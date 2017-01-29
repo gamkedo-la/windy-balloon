@@ -30,6 +30,8 @@ var parCornerTR = {x:0,y:0};
 var parCornerBL = {x:0,y:0};
 var parCornerBR = {x:0,y:0};
 
+var videoPlaying = true;
+
 var p1 = new ballClass();
 
 window.onload = function() {
@@ -64,6 +66,36 @@ window.onload = function() {
   
   loadImages();
   setParCorners();
+  videoElement = document.createElement("video");
+  videoDiv = document.createElement('div');
+  document.body.appendChild(videoDiv);
+  videoDiv.appendChild(videoElement);
+  videoDiv.setAttribute("style", "display:none;");
+  var videoType = supportedVideoFormat(videoElement);
+  videoElement.addEventListener("canplaythrough",
+    function() {
+      videoElement.play();
+    },false);
+  videoElement.setAttribute("src", "movie/windy-intro." + videoType);
+}
+var  videoElement,videoDiv;
+function videoLoaded() {
+}
+
+// borrowed from:
+// http://chimera.labs.oreilly.com/books/1234000001654/ch06.html#displaying_a_video_on_html5_canvas
+function supportedVideoFormat(video) {
+   var returnExtension = "";
+   if (video.canPlayType("video/webm") =="probably" ||
+       video.canPlayType("video/webm") == "maybe") {
+         returnExtension = "webm";
+   } else if(video.canPlayType("video/mp4") == "probably" ||
+       video.canPlayType("video/mp4") == "maybe") {
+         returnExtension = "mp4";
+   }
+
+   return returnExtension;
+
 }
 
 function loadingDoneSoStartGame() {
@@ -147,6 +179,9 @@ function cureTempUpdate(){
 }
 
 function moveEverything() {
+  if(videoPlaying) {
+    return;
+  }
   cureTempUpdate();
   movePlanes();
   if(isInEditor == false) {
@@ -155,6 +190,12 @@ function moveEverything() {
 }
 
 function drawEverything() {
+  if(videoPlaying) {
+    videoPlaying = videoElement.currentTime < videoElement.duration;
+    scaledContext.drawImage(videoElement , 0, 0);
+    return;
+  }
+
   if(arrowAnimFrameTicksDelay++ > TICKS_PER_ANIM) {
     arrowAnimFrameTicksDelay = 0;
     if(arrowAnimFrame++ >= ARROW_ANIM_FRAMES) {

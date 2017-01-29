@@ -31,9 +31,18 @@ const KEY_NUMROW_0 = 48;
 const KEY_NUMROW_FOR_PLAYER_START = KEY_NUMROW_3;
 const KEY_NUMROW_LAST = KEY_NUMROW_9;
 
+function skipVideo() {
+  if(videoPlaying) {
+    videoElement.pause();
+    videoPlaying = false;
+  }
+}
+
 function initInput() {
   document.addEventListener("keydown", keyPressed);
   scaledCanvas.addEventListener('mousemove', updateMousePos);
+  scaledCanvas.addEventListener('mousedown',
+    skipVideo);
 }
 
 function updateMousePos(evt) {
@@ -126,6 +135,7 @@ function keyPressed(evt) {
 
     if(wasValidGameKeySoBlockDefault) {
       trackNeedsRedraw = true;
+      skipVideo();
       evt.preventDefault();
     }
     return;
@@ -180,6 +190,7 @@ function keyPressed(evt) {
 
   if(wasValidGameKeySoBlockDefault) {
     trackNeedsRedraw = true;
+    skipVideo();
     evt.preventDefault();
   }
 }
