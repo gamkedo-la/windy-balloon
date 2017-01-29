@@ -176,6 +176,13 @@ function ballClass() {
     drawAtBaseScaled(carPic,
       balloonDot.x,
       balloonDot.y - this.heightNow()*balloonDot.scaleHere, balloonDot.scaleHere);
+
+    if(isCureVialViable == false) {
+      scaledContext.textAlign = "center";
+      colorText("I need to go back!", balloonDot.x, balloonDot.y+15,
+                'white');
+      scaledContext.textAlign = "left";
+    }
   }
 
 } // end of car class

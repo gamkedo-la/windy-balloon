@@ -168,9 +168,14 @@ function setupParticles() {
 function cureTempUpdate(){
   if(isInEditor == false) {
     if(cureTemp >= cureVialMaxTemp) {
+      if(isCureVialViable) {
+        spawnPlane((p1.y+canvas.height/2 +
+                    Math.random()*80)%canvas.height,
+          Math.random()<0.5?PLANE_START_RIGHT:PLANE_START_LEFT);
         isCureVialViable = false;
         cureTemp = cureVialMaxTemp;
         cureVialCondition = "Spoiled";
+      }
     } else {
         cureTemp += 0.03;
         isCureVialViable = true;
