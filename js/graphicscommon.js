@@ -58,7 +58,12 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle, 
   scaledContext.restore(); // undo the translation movement and rotation since save()
 }
 
-function colorText(showWords, textX,textY, fillColor) {
+function colorText(showWords, textX,textY, fillColor, font) {
+  if(font){
+    scaledContext.font = font;
+  }else{
+    scaledContext.font = "16px Arial";
+  }
   scaledContext.fillStyle = fillColor;
   scaledContext.fillText(showWords, textX, textY);
 }

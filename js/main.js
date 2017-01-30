@@ -98,6 +98,18 @@ function supportedVideoFormat(video) {
 
 }
 
+function StartGameOnLevel(selectedLevel){
+  currentLevelIdx = selectedLevel;
+  var framesPerSecond = 30;
+  setInterval(function() {
+      moveEverything();
+      drawEverything();
+    }, 1000/framesPerSecond);
+  ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
+  loadLevel();
+  initInput(); 
+}
+
 function loadingDoneSoStartGame() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
