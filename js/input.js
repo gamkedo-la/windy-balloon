@@ -14,6 +14,8 @@ const KEY_LETTER_A = 65;
 const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
 
+const KEY_LETTER_M = 77; // mute button
+
 const KEY_LETTER_L = 76; // level editor
 const KEY_LETTER_P = 80; // particle effects
 const KEY_LETTER_R = 82; // reset
@@ -83,6 +85,17 @@ function keyPressed(evt) {
     case KEY_PERIOD:
     nextLevel();
     break;
+
+    case KEY_LETTER_M:
+      if (isMuted) {
+        sounds['music'].play()
+        isMuted = false;
+      }
+      else {
+        sounds['music'].stop();
+        isMuted = true;
+      }
+    break;
   } 
 
   if(isInEditor) {
@@ -111,7 +124,7 @@ function keyPressed(evt) {
             break;
           case KEY_LETTER_D:
             trackGrid[editIdx] = ARROW_R;
-            break;
+            break;           
           default:
             wasValidGameKeySoBlockDefault = false;
             break;

@@ -102,6 +102,9 @@ function keyPressedInMenu(evt){
 }
 
 function menuActivate(){
+
+    soundSystem();
+
     switch(curr_select){
         case MENU_SELECT:
             if(curr_pointer_index === 0){

@@ -5,15 +5,15 @@
 
 "use strict";
 
-var SoundSystem = (function () {
+var isMuted = false;
+var music = null;	// one looping Howl() object
+var sounds = [];	// an array of Howl() objects
 
-	var mute = false;	// if true ignore all play()
-	var music = null;	// one looping Howl() object
-  	var sounds = [];	// an array of Howl() objects
+
+function soundSystem (mute) {
 
 	var play = function(samplename,looping,vol) 
 	{
-		if (mute) return;
 		if (looping==null) looping = false;
 		if (vol==null) vol = 1;
 
@@ -37,8 +37,16 @@ var SoundSystem = (function () {
 	
 	var init = function()
 	{
+
+		if (mute) {
+			sounds['music'].stop();
+		}
+
+		else {
 		// TODO: normally a game should not auto play sound but 
 		play("music",true,0.5); // looping quite music
+		}
+
 		
 		// test voiceover intro
 		//play("Wendy_B_Loon_Intro_Cinematic_VO"); // once only
@@ -46,5 +54,5 @@ var SoundSystem = (function () {
 	
 	init();
 	
-})();
+};
 
