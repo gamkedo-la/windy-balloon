@@ -37,17 +37,8 @@ function soundSystem (mute) {
 	
 	var init = function()
 	{
-
-		if (mute) {
-			sounds['music'].stop();
-		}
-
-		else {
-		// TODO: normally a game should not auto play sound but 
 		play("music",true,0.5); // looping quite music
-		}
 
-		
 		// test voiceover intro
 		//play("Wendy_B_Loon_Intro_Cinematic_VO"); // once only
 	}
