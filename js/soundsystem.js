@@ -5,7 +5,7 @@
 
 "use strict";
 
-var isMuted = false;
+var isMuted = false; 
 var music = null;	// one looping Howl() object
 var sounds = [];	// an array of Howl() objects
 

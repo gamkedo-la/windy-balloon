@@ -1,4 +1,3 @@
-
 var menuInterval;
 var currSelectedLevel = 0;
 const MENU_SELECT = 0;

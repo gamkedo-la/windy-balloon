@@ -4,6 +4,7 @@ var planePic = document.createElement("img");
 var trackSheet = document.createElement("img");
 var cityBuildingsPic = document.createElement("img");
 var landmarksPic = document.createElement("img");
+var zombiePic = document.createElement("img");
 
 var track3dPics = [];
 /*var mountainPic = document.createElement("img");
@@ -37,12 +38,14 @@ function loadImages() {
       {varName:trackSheet, theFile:"track_all_sheet.png"},
       {varName:cityBuildingsPic, theFile:"citybuildings.png"},
       {varName:landmarksPic, theFile:"landmarks.png"},
+      {varName:zombiePic, theFile:"zombie4.png"},
       {tileKind3d: TRACK_PLAYER, theFile:"laboratory.png"},
       {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
       // added track_cooldown and laboratory to 3d tile render because it's easier to see
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
       {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"}
+
     ];
 
   picsToLoad = imageList.length;

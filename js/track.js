@@ -136,7 +136,6 @@ function drawTrackSpriteCards() {
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
-
       if(trackTypeHere == TRACK_GOAL_LANDMARK) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
@@ -145,6 +144,7 @@ function drawTrackSpriteCards() {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaled(track3dPics[trackTypeHere],
           parPt.x,parPt.y,parPt.scaleHere)
+
       }
 
       trackIndex++; // increment which index we're going to next check for in the track
