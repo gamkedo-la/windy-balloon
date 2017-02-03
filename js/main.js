@@ -360,8 +360,8 @@ function drawZombie(){
 }
 
 function zombieClass(){
-  this.speedX = Math.random()*2;
-  this.speedY = Math.random()*2;
+  this.speedX = Math.random()*0.4;
+  this.speedY = Math.random()*0.4;
 
   this.zombieRandomStartLocation = function(){
     this.x=canvas.width*Math.random();
