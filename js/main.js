@@ -305,7 +305,7 @@ drawTrackSpriteCards();
   drawAtBaseScaledPlanes();
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
-
+  colorText("Press 'M' to toggle music",canvas.width - 200,canvas.height-40,"yellow");
   if(isInEditor == false){
     colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
 
