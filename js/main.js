@@ -116,8 +116,6 @@ function StartGameOnLevel(selectedLevel){
   ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
   loadLevel();
   initInput(); 
-  createEveryZombie();
-
 }
 
 function loadingDoneSoStartGame() {
@@ -158,6 +156,7 @@ function loadLevel() {
   isCureVialViable = true;
   cureVialCondition = "Viable";
   cureTemp = 0;
+  createEveryZombie();
 }
 
 function setupParticles() {
@@ -343,6 +342,7 @@ drawTrackSpriteCards();
 
 //START OF ZOMBIE SECTION
 createEveryZombie = function() {
+  zombieList = []; // start with clean list
     for(var i=0;i<zombieCount;i++) {
       zombieList.push(new zombieClass());
       zombieList[i].zombieRandomStartLocation();
