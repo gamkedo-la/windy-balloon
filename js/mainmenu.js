@@ -7,10 +7,57 @@ var curr_pointer_index = 0;
 var menu_select_length = 2;
 var level_select_length;
 var selectLength;
+var menuBalloons = [];
+
+function menuBalloon(){
+    this.x;
+    this.y;
+    this.balloonObj;
+    this.speed;
+    this.sinVal;
+    this.scale;
+    this.oscillation;
+    this.baseScale;
+    //oscillation base should be around 1000
+    this.Init = function(x,y,speed,oscillation, baseScale){
+        this.x = x;
+        this.y = y;
+        this.oscillation = oscillation;
+        this.speed = speed;
+        this.baseScale = baseScale;
+        this.balloonObj = new ballClass();
+        this.balloonObj.Init();
+        this.scale = 0.75;
+        this.sinVal = 0;
+    }
+
+    this.Draw = function(delta){
+        this.x += delta * this.speed;
+        this.sinVal += delta/this.oscillation;
+        if(this.sinVal >= (Math.PI)){
+            this.sinVal = 0;
+        }        
+        this.scale = Math.sin(this.sinVal)*(this.baseScale*1/4) + (this.baseScale*3/4);
+        this.balloonObj.DrawCustom(this.x, this.y, this.scale);
+        if(this.x > 1000){
+            this.x = -600;
+        }
+    }
+
+}
+
+
 function loadMainMenu(){
     var framesPerSecond = 30;
     level_select_length = levelOrder.length;
     selectLength = menu_select_length;
+    for(let i=0; i<14; i++){
+        let temp = new menuBalloon();
+        temp.Init( -200+Math.random()*10 + Math.random()*-10, 30+i*30+Math.random()*10, 0.01+ i*0.02,
+            1000+Math.random()*100, 1+i*0.2);
+        menuBalloons.push(temp);
+    }
+
     menuInterval = setInterval(function() {        
         drawMainMenu();
         }, 1000/framesPerSecond);    
@@ -25,13 +72,22 @@ function drawMainMenu(){
         scaledContext.drawImage(videoElement , 0, 0);
         return;
     }    
+    
     drawBG();    
+    drawBalloons();
     var unit = worldDrawCanvas.height/20;
     colorText("Windy Balloon" , worldDrawCanvas.width/4*1.2, worldDrawCanvas.height/3, 'white',"40px Verdana");
     switch(curr_select){
         case MENU_SELECT: menuSelectDraw(); break;
         case LEVEL_SELECT: levelSelectDraw(); break;
-    }    
+    }
+
+}
+
+function drawBalloons(){
+    for(let i=0; i<menuBalloons.length; i++){
+        menuBalloons[i].Draw(1000/30);
+    }
 }
 
 function menuSelectDraw(){

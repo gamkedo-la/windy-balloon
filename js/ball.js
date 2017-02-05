@@ -184,5 +184,12 @@ function ballClass() {
       scaledContext.textAlign = "left";
     }
   }
+  this.DrawCustom = function(x,y,scale){
+    var balloonDot = worldCoordToParCoord(x,y);
+    balloonDot.scaleHere = scale;
+    drawAtBaseScaled(carPic,
+      balloonDot.x,
+      balloonDot.y - this.heightNow()*scale, scale);
+  }
 
 } // end of car class
