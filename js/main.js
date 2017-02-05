@@ -105,9 +105,6 @@ function supportedVideoFormat(video) {
 function StartGameOnLevel(selectedLevel){
   currentLevelIdx = selectedLevel;
   //manual control of zombie count for size of zombie-walking-area
-  if (currentLevelIdx == 1){
-  zombieCount = 20} else {zombieCount=150};
-  console.log(currentLevelIdx);
   var framesPerSecond = 30;
   setInterval(function() {
       moveEverything();
@@ -156,7 +153,11 @@ function loadLevel() {
   isCureVialViable = true;
   cureVialCondition = "Viable";
   cureTemp = 0;
-  createEveryZombie();
+  if(isInEditor) {
+    clearZombies();
+  } else {
+    createEveryZombie();
+  }
 }
 
 function setupParticles() {
@@ -294,9 +295,8 @@ function drawEverything() {
     }    
   }
 
-drawZombie();
-drawTrackSpriteCards();
-
+  drawZombie();
+  drawTrackSpriteCards();
 
   if(isInEditor == false) {
     p1.DrawInAir();
@@ -315,7 +315,7 @@ drawTrackSpriteCards();
   }
 
   if(isInEditor) {
-    colorText("Editor Mode! Use mouse. R resets track. X to eXport level code below. L to pLaytest",50,50,"yellow");
+    colorText("Editor Mode! Use mouse. R reloads. X eXports. B cycles Background. L to pLaytest",50,50,"yellow");
 
     colorText("Key guide for number row 1-8, WASD to place arrows, 9 for landmark/goal:",50,70,"yellow");
 
@@ -341,19 +341,28 @@ drawTrackSpriteCards();
 }
 
 //START OF ZOMBIE SECTION
-createEveryZombie = function() {
-  zombieList = []; // start with clean list
-    for(var i=0;i<zombieCount;i++) {
-      zombieList.push(new zombieClass());
-      zombieList[i].zombieRandomStartLocation();
-        //while(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y)!=0) 
-         //{zombieList[i].zombieRandomStartLocation()};          
-       //console.log(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y))
-      }//end for
-  }//end createEveryZombie function
+function clearZombies() {
+  zombieList = [];
+}
+
+function createEveryZombie() {
+  clearZombies() // start with clean list
+  if (currentLevelIdx == 1){
+    zombieCount = 20;
+  } else {
+    zombieCount=150;
+  }
+  for(var i=0;i<zombieCount;i++) {
+    zombieList.push(new zombieClass());
+    zombieList[i].zombieRandomStartLocation();
+      //while(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y)!=0) 
+       //{zombieList[i].zombieRandomStartLocation()};          
+     //console.log(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y))
+    }//end for
+}//end createEveryZombie function
 
 function drawZombie(){
-  for(i=0;i<zombieCount;i++){
+  for(i=0;i<zombieList.length;i++){
     zombieList[i].moveZombie()
     zombieList[i].drawEachZombie();
   }

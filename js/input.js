@@ -16,6 +16,7 @@ const KEY_LETTER_D = 68;
 
 const KEY_LETTER_M = 77; // mute button
 
+const KEY_LETTER_B = 66; // cycle background (in editor)
 const KEY_LETTER_L = 76; // level editor
 const KEY_LETTER_P = 80; // particle effects
 const KEY_LETTER_R = 82; // reset
@@ -137,6 +138,13 @@ function keyPressed(evt) {
         for(var i=0;i<trackGrid.length;i++) {
           trackGrid[i] = TRACK_ROAD;
         }
+        break;
+      case KEY_LETTER_B:
+        trackGrid[trackGrid.length-1]++;
+        if(trackGrid[trackGrid.length-1]>TRACK_TREE) {
+          trackGrid[trackGrid.length-1]=0;
+        }
+        console.log(trackGrid[trackGrid.length-1]);
         break;
       case KEY_LETTER_X:
         displayTrackAsHTMLString();
