@@ -35,7 +35,7 @@ var videoPlaying = true;
 var p1 = new ballClass();
 
 var zombieList=[];
-var zombieCount;
+const ZOMBIECOUNT = 150;
 
 window.onload = function() {
   scaledCanvas = document.getElementById('gameCanvas');
@@ -339,94 +339,6 @@ function drawEverything() {
   }
 
 }
-
-//START OF ZOMBIE SECTION
-function clearZombies() {
-  zombieList = [];
-}
-
-function createEveryZombie() {
-  clearZombies() // start with clean list
-  if (currentLevelIdx == 1){
-    zombieCount = 20;
-  } else {
-    zombieCount=150;
-  }
-  for(var i=0;i<zombieCount;i++) {
-    zombieList.push(new zombieClass());
-    zombieList[i].zombieRandomStartLocation();
-      //while(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y)!=0) 
-       //{zombieList[i].zombieRandomStartLocation()};          
-     //console.log(getTrackAtPixelCoord(zombieList[i].x,zombieList[i].y))
-    }//end for
-}//end createEveryZombie function
-
-function drawZombie(){
-  for(i=0;i<zombieList.length;i++){
-    zombieList[i].moveZombie()
-    zombieList[i].drawEachZombie();
-  }
-}
-
-function zombieClass(){
-  this.speedX = Math.random()*0.4;
-  this.speedY = Math.random()*0.4;
-
-  this.zombieRandomStartLocation = function(){
-    this.x=canvas.width*Math.random();
-    this.y=canvas.height*Math.random();
-    //TODO: ALRIGHT- WHY CAN'T ADD tileType = getTrackAtPixelCoord(this.x,this.y) THAT THEN FEEDS INTO WHILE FUNCTION? ERROR SAYS CANNOT READ PROPERTY MOVEZOMBIE OF UNDEFINED
-    //TODO: ALRIGHT - CONSIDER WALKING BETWEEN TREES
-    //if(getTrackAtPixelCoord(this.x,this.y)==0 || getTrackAtPixelCoord(this.x,this.y) ==4){return} else {this.zombieRandomStartLocation()}
-    while(getTrackAtPixelCoord(this.x,this.y)!=0)
-         {this.zombieRandomStartLocation()};          
-    //var zombieDot = worldCoordToParCoord(this.x, this.y);
-    //return zombieDot;
-    }
-
-this.drawEachZombie = function(){
-    var zombieDot = worldCoordToParCoord(this.x, this.y);
-    drawAtBaseScaled(zombiePic, zombieDot.x, zombieDot.y,zombieDot.scaleHere);
-    }
-
-    this.isPositionSolid = function(examinedTile){
-      if(examinedTile != 0 || examinedTile<0 || examinedTile > TRACK_COLS || examinedTile < 0 || examinedTile > TRACK_ROWS) {return true} else {return false};
-    } 
-
-  this.moveZombie = function(){
-    var prevX = Math.floor(this.x-this.speedX);
-    var prevY = Math.floor(this.y-this.speedY);
-
-    var tileType =  getTrackAtPixelCoord(this.x, this.y);
-    var AdjacentXTile = getTrackAtPixelCoord(prevX,this.y);
-    var isAdjacentYTile = getTrackAtPixelCoord(this.x, prevY);
-    
-    var testChangeColRow = true;
-    var outscreen = false;
-    
-    if (this.isPositionSolid(tileType)) {
-                    if (this.x != prevX) { //came from the side
-                        if (this.isPositionSolid(AdjacentXTile) == false) {
-                            this.speedX *= -1;
-                            testChangeColRow = false
-                        }
-                    }
-                    if (this.y != prevY) { //came from the top or bottom
-                        if (this.isPositionSolid(isAdjacentYTile) == false) {
-                            this.speedY *= -1;
-                            testChangeColRow = false
-                        }
-                    }
-                    if (testChangeColRow) { //came from top or bottom and from the side
-                        this.speedX *= -1;
-                        this.speedY *= -1;
-                    }
-                }
-        this.x += this.speedX;
-        this.y += this.speedY;
-    }
-}
-//END ZOMBIE SECTION
 
 function worldCoordToParCoord(worldX,worldY) {
   var screenPair = {x:0,y:0,scaleHere:1.0};
