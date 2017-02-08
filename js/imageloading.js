@@ -5,6 +5,12 @@ var trackSheet = document.createElement("img");
 var cityBuildingsPic = document.createElement("img");
 var landmarksPic = document.createElement("img");
 var zombiePic = document.createElement("img");
+var twisterPic = document.createElement("img");
+var mountainDownPic = document.createElement("img");
+var treeDownPic = document.createElement("img");
+var cityBuildingsDownPic = document.createElement("img");
+var brokenZombiePic = document.createElement("img");
+
 
 var track3dPics = [];
 /*var mountainPic = document.createElement("img");
@@ -39,12 +45,18 @@ function loadImages() {
       {varName:cityBuildingsPic, theFile:"citybuildings.png"},
       {varName:landmarksPic, theFile:"landmarks.png"},
       {varName:zombiePic, theFile:"zombie4.png"},
+      {varName:twisterPic, theFile:"twister.png"},
+      {varName:cityBuildingsDownPic, theFile:"citybuildingsdown.png"},
+      {varName:brokenZombiePic, theFile:"brokenzombie4.png"},
       {tileKind3d: TRACK_PLAYER, theFile:"laboratory.png"},
       {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
       // added track_cooldown and laboratory to 3d tile render because it's easier to see
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
+      {tileKind3d: TRACK_MOUNTAINS_DOWN, theFile:"mountainsdown.png"},
+      {tileKind3d: TRACK_TREE_DOWN, theFile:"treesdown.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
-      {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"}
+      {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"},
+      {tileKind3d: TRACK_CITY_DOWN, theFile:"citybuildingsdown.png"}
 
     ];
 

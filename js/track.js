@@ -15,10 +15,10 @@ var worldMap0 =  [
 6, 6, 6, 6, 6, -2, 0, 4, 4, 4, 1, 1, 1, -2, -2, 0, -4, -1, -1, -1,
 6, 6, 6, 6, 6, -2, 0, 4, 4, 1, 1, 1, 1, -2, -2, 4, -4, 0, 0, 0,
 -1, -1, -1, 6, 6, -2, 0, 0, 4, 1, 1, 1, 1, -2, -2, 4, 1, 1, 1, 1,
-6, 6, 6, 6, 6, -2, 0, 0, 4, 4, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
-6, 8, 6, 6, 6, 6, 6, 0, 0, 0, 1, 1, -3, -3, -3, 1, 1, 1, 1, 1,
-6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 1, 1, -3, -3, -3, -2, -2, 0, 2, 1,
-6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 1, 1, -3, -3, -3, -2, -2, 0, 1, 1, 0];
+0, 0, 0, 6, 6, -2, 0, 0, 4, 4, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
+0, 8, 0, 6, 6, 6, 6, 0, 0, 0, 1, 1, -3, -3, -3, 1, 1, 0, 0, 0,
+0, 0, 0, 6, 6, 6, 6, 6, 0, 0, 1, 1, -3, -3, -3, -2, -2, 0, 2, 0,
+6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 1, 1, -3, -3, -3, -2, -2, 0, 0, 0, 0];
 var worldMap1 = [
 -2, -3, 3, 3, 3, 3, 3, 4, 4, 6, 6, 6, 6, 6, 6, 3, 4, 4, 4, 4,
 -3, -2, 3, 3, 3, 3, 3, 4, 6, 6, 6, 6, 6, 6, 3, 3, 0, 2, 0, 3,
@@ -156,6 +156,9 @@ const TRACK_COOLDOWN = 7;
 const TRACK_GOAL_LANDMARK = 8;
 const TRACK_HIGHEST_VALID_NUMBER = TRACK_GOAL_LANDMARK;
 const TRACK_OUT_OF_BOUNDS = 999; // no tile or track, just a return value
+const TRACK_MOUNTAINS_DOWN=11;
+const TRACK_CITY_DOWN = 31;
+const TRACK_TREE_DOWN = 41;
 const ARROW_U = -1;
 const ARROW_R = -2;
 const ARROW_D = -3;
@@ -190,11 +193,19 @@ function getTrackAtPixelCoord(pixelX,pixelY) {
      tileRow < 0 || tileRow >= TRACK_ROWS) {
      return TRACK_OUT_OF_BOUNDS; // avoid invalid array access, treat out of bounds as wall
   }
-
+   
   var trackIndex = trackTileToIndex(tileCol, tileRow);
   return trackGrid[trackIndex];
-}
 
+}//end getTrackAtPixelCoord
+
+
+function isTileTypeSolid(tileType){
+  return(tileType != TRACK_ROAD && tileType!=TRACK_TREE);
+}
+function isTileTypeSolidForTwister(tileType){
+  return(tileType == TRACK_GOAL_LANDMARK || tileType==TRACK_PLAYER || tileType==TRACK_OUT_OF_BOUNDS);
+}
 function drawTrackSpriteCards() {
   var trackIndex = 0;
   var trackLeftEdgeX = 0;
@@ -207,6 +218,7 @@ function drawTrackSpriteCards() {
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
+        
       if(trackTypeHere == TRACK_GOAL_LANDMARK) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
@@ -215,7 +227,6 @@ function drawTrackSpriteCards() {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaled(track3dPics[trackTypeHere],
           parPt.x,parPt.y,parPt.scaleHere)
-
       }
 
       trackIndex++; // increment which index we're going to next check for in the track

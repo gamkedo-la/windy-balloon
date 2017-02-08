@@ -5,8 +5,6 @@ var scaledCanvas, scaledContext;
 var isInEditor = false;
 var showParticles = false;
 var editIdx = -1;
-
-// 
 var parVertSkip = 1.65;
 var parVertOffset = 170;
 var parHorizStretch = 0.65;
@@ -30,12 +28,26 @@ var parCornerTR = {x:0,y:0};
 var parCornerBL = {x:0,y:0};
 var parCornerBR = {x:0,y:0};
 
-var videoPlaying = true;
+var videoPlaying = false;//SET TO FALSE TEMPORARILY FOR TESTING PURPOSES
 
 var p1 = new ballClass();
 
 var zombieList=[];
 const ZOMBIECOUNT = 150;
+
+var twisterList=[]
+const TWISTERCOUNT = 1;
+
+//mouse tracking to see col/row
+var mouseX = 0;
+var mouseY = 0;
+function updateMousePos(evt) {
+  var rect = canvas.getBoundingClientRect();
+  var root = document.documentElement;
+
+  mouseX = evt.clientX - rect.left - root.scrollLeft;
+  mouseY = evt.clientY - rect.top - root.scrollTop;
+}
 
 window.onload = function() {
   scaledCanvas = document.getElementById('gameCanvas');
@@ -79,7 +91,7 @@ window.onload = function() {
     function() {
       videoElement.play();
     },false);
-  videoElement.setAttribute("src", "movie/windy-intro." + videoType);
+  //videoElement.setAttribute("src", "movie/windy-intro." + videoType);//TEMPORARY TERMING OFF FOR TESTING
 }
 var  videoElement,videoDiv;
 function videoLoaded() {
@@ -104,7 +116,6 @@ function supportedVideoFormat(video) {
 
 function StartGameOnLevel(selectedLevel){
   currentLevelIdx = selectedLevel;
-  //manual control of zombie count for size of zombie-walking-area
   var framesPerSecond = 30;
   setInterval(function() {
       moveEverything();
@@ -232,6 +243,8 @@ function drawEverything() {
   }
 
   drawPlanes();
+  createEveryTwister();
+
   var backgroundColor = "#003";
   scaledContext.fillStyle = backgroundColor;
   scaledContext.fillRect(0,0,scaledCanvas.width,parCornerTL.y);
@@ -297,6 +310,7 @@ function drawEverything() {
 
   drawZombie();
   drawTrackSpriteCards();
+  drawTwister();
 
   if(isInEditor == false) {
     p1.DrawInAir();
@@ -337,7 +351,11 @@ function drawEverything() {
   } else {
     colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
   }
-
+// onscreen mouse col/row location
+  /*var mouseDot = worldCoordToParCoord(mouseX, mouseY);
+  var mouseDotCol = Math.floor(mouseDot.x / TRACK_W);
+  var mouseDotRow = Math.floor(mouseDot.y / TRACK_H);
+  colorText(mouseDotCol +","+mouseDotRow, mouseX, mouseY, 'yellow');*/
 }
 
 function worldCoordToParCoord(worldX,worldY) {
