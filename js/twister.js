@@ -23,19 +23,28 @@ function drawTwister(){
 }
 
 function createEveryTwister() {
-    if(twisterTemp >= twisterMaxTemp && Math.random()>0.1){
-  		for(var i=0;i<TWISTERCOUNT;i++) {
-	    twisterList.push(new twisterClass());
-	    twisterList[i].twisterRandomStartLocation();
-	    twisterTemp=0;
-      	}//end for
+    if(twisterTemp >= twisterMaxTemp && Math.random()>0.1){//SET TEMPORARILY TO 0.1 FOR TESTING PURPOSES
+        for(var i=0;i<TWISTERCOUNT;i++) {
+  	     if(twisterList.length==0){//limited to 1 twister
+          twisterList.push(new twisterClass());
+    	    twisterList[i].twisterRandomStartLocation();
+    	    twisterTemp=0;
+          }//end if
+        }//end for
      }//end if
      else {twisterTemp += 0.03;}  
 }
 
+//twister bounce off bordering tiles of the Goal
+function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
+      return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
+      console.log(tileColA)//TODO: NOT REPORTING
+      }
+
+
 function twisterClass(){
-    this.speedX = Math.random()*2;
-    this.speedY = Math.random()*2;
+    this.speedX = Math.random()*2;//SET TO 2 TEMPORARILY FOR TESTING PURPOSES
+    this.speedY = Math.random()*2;//SET TO 2 TEMPORARILY FOR TESTING PURPOSES
 
     this.randomSpot=function(){
       this.x=canvas.width*Math.random();
@@ -46,6 +55,7 @@ function twisterClass(){
       /*TODO - build function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
       return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
       }*/
+      
       var tileKindHere;
       do{
         this.randomSpot();
@@ -73,9 +83,9 @@ function twisterClass(){
       	
         switch (tileType) {
 
-          case TRACK_MOUNTAINS:
-  	            trackGrid[worldTileUnderTwister] = TRACK_MOUNTAINS_DOWN;
-  	            break;
+          case TRACK_ICE:
+  	            trackGrid[worldTileUnderTwister] = TRACK_ICE;// TO CREATE WHILEPOOL WHEN TWISTER ON TOP, TEMPORARILY POINTING TO SAME PIC
+                break;
 
           case TRACK_CITY:
   	                trackGrid[worldTileUnderTwister] = TRACK_CITY_DOWN;
@@ -85,11 +95,15 @@ function twisterClass(){
   	            trackGrid[worldTileUnderTwister] = TRACK_TREE_DOWN;
   	            break;
   	     }//end switch
-
+         
       var testChangeColRow = true;
       var tileType =  getTrackAtPixelCoord(this.x, this.y);
+      
+      //locate Goal col,row
+      getGoalCoords(TRACK_GOAL_LANDMARK);
+      console.log(goal.Col,goal.Row);
 
-      if (isTileTypeSolidForTwister(tileType)) {
+      if (isTileTypeSolidForTwister(tileType) || areTilesNear(this.col, this.row, goal.Col, goal.Row)) {//TODO: GETGOALCOORDS NOT PICKING UP COL, ROW WHERE GOAL IS LOCATED
                      
         if (this.x != prevX) { //came from the side
             if (isTileTypeSolidForTwister(AdjacentXTile) == false) {

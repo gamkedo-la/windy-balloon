@@ -54,7 +54,6 @@ function zombieClass(){
     var distToTwisterY=Math.abs(onlyTwisterY-this.y);
     this.isDead=distToTwisterX<25 && distToTwisterY<25;
 
-
     var prevX = Math.floor(this.x-this.speedX);
     var prevY = Math.floor(this.y-this.speedY);
 
