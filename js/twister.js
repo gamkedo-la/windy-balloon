@@ -35,7 +35,7 @@ function createEveryTwister() {
      else {twisterTemp += 0.03;}  
 }
 
-//twister bounce off bordering tiles of the Goal
+//twister bounce off bordering tiles of the Goal/Lab
 function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
       return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
       console.log(tileColA)//TODO: NOT REPORTING
@@ -43,8 +43,8 @@ function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
 
 
 function twisterClass(){
-    this.speedX = Math.random()*2;//SET TO 2 TEMPORARILY FOR TESTING PURPOSES
-    this.speedY = Math.random()*2;//SET TO 2 TEMPORARILY FOR TESTING PURPOSES
+    this.speedX = 4;//SET TO  TEMPORARILY FOR TESTING PURPOSES - Math.random()*0.2
+    this.speedY = 4;//SET TO  TEMPORARILY FOR TESTING PURPOSES - Math.random()*0.2
 
     this.randomSpot=function(){
       this.x=canvas.width*Math.random();
@@ -52,15 +52,11 @@ function twisterClass(){
     }
 
     this.twisterRandomStartLocation = function(){
-      /*TODO - build function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
-      return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
-      }*/
-      
       var tileKindHere;
       do{
         this.randomSpot();
         tileKindHere = getTrackAtPixelCoord(this.x,this.y);
-      }while(isTileTypeSolid(tileKindHere));
+      }while(isTileTypeSolid(tileKindHere));//TODO: ADD ARETILESNEAR GOAL OR LAB, ELSE TWISTER GETS STUCK IF SPAWNS AT LAB/GOAL
     }
 
     this.drawEachTwister = function(){
@@ -78,7 +74,7 @@ function twisterClass(){
       this.row=Math.floor(this.y/TRACK_H);
 
       var tileType =  getTrackAtPixelCoord(this.x, this.y);
-
+      
       var worldTileUnderTwister = trackTileToIndex(this.col, this.row);		
       	
         switch (tileType) {
@@ -97,13 +93,13 @@ function twisterClass(){
   	     }//end switch
          
       var testChangeColRow = true;
-      var tileType =  getTrackAtPixelCoord(this.x, this.y);
+            
+      //locate Goal/lab col,row
       
-      //locate Goal col,row
-      getGoalCoords(TRACK_GOAL_LANDMARK);
-      console.log(goal.Col,goal.Row);
-
-      if (isTileTypeSolidForTwister(tileType) || areTilesNear(this.col, this.row, goal.Col, goal.Row)) {//TODO: GETGOALCOORDS NOT PICKING UP COL, ROW WHERE GOAL IS LOCATED
+      getBounceTileCoords(TRACK_GOAL_LANDMARK);
+      //getBounceTileCoords(TRACK_PLAYER);TODO: CHANGE CODE TO COVER BOTH GOAL LANDMARK OR TRACKPLAYER
+      
+      if (isTileTypeSolidForTwister(tileType) || areTilesNear(this.col, this.row, bounce.Col, bounce.Row)) {//TODO: CAN BOUNCE BOTH OFF TRACK_PLAYER OR GOAL LANDMARK
                      
         if (this.x != prevX) { //came from the side
             if (isTileTypeSolidForTwister(AdjacentXTile) == false) {
