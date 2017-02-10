@@ -37,7 +37,7 @@ function soundSystemClass() {
 					'audio/'+samplename+'.ogg',
 					'audio/'+samplename+'.webm'],
 				loop: looping,
-				volume: vol
+				volume: vol				
 			});
 		}
 		

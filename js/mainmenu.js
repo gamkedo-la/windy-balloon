@@ -137,9 +137,7 @@ function updateCurrPointer(val){
     }else{
         curr_pointer_index = (curr_pointer_index+ val)%selectLength;
     }
-    
-	console.log("menu pointer index: " + curr_pointer_index);
-
+	//console.log("menu pointer index: " + curr_pointer_index);
 	soundSystem.play("hover");
 }
 
@@ -171,6 +169,7 @@ function menuActivate(){
             if(curr_pointer_index === 0){
                 clearInterval(menuInterval);
                 StartGameOnLevel(currSelectedLevel);
+                soundSystem.play("select");               
             }
             if(curr_pointer_index === 1){
                 curr_pointer_index = 0;
@@ -180,6 +179,7 @@ function menuActivate(){
             break;
         case LEVEL_SELECT:
             clearInterval(menuInterval);            
+            soundSystem.play("select");           
             StartGameOnLevel(curr_pointer_index);
             break;
     }

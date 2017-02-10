@@ -165,6 +165,7 @@ function keyPressed(evt) {
     case KEY_LETTER_D:
     case KEY_LEFT_ARROW:
     case KEY_RIGHT_ARROW:
+      soundSystem.play("hover",false,0.5);
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_L) {
           trackGrid[i] = ARROW_R;
@@ -175,10 +176,11 @@ function keyPressed(evt) {
         }
       }
       break;
-    case KEY_LETTER_W:
+    case KEY_LETTER_W: 
     case KEY_LETTER_S:
     case KEY_UP_ARROW:
     case KEY_DOWN_ARROW:
+    soundSystem.play("hover",false,0.5);
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_U) {
           trackGrid[i] = ARROW_D;

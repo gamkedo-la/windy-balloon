@@ -207,6 +207,7 @@ function setupParticles() {
 function cureTempUpdate(){
   if(isInEditor == false) {
     if(cureTemp >= cureVialMaxTemp) {
+      soundSystem.play("Alarm",false,1);
       if(isCureVialViable) {
         spawnPlane((p1.y+canvas.height/2 +
                     Math.random()*80)%canvas.height,

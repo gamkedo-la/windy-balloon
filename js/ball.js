@@ -56,6 +56,7 @@ function ballClass() {
   } // end of carReset
   
   this.Move = function() {
+    //balloon movement impacted by twister closeby
     var controlLoss=false;
      var distBalToTwisterX=Math.abs(onlyTwisterX-this.x);
      var distBalToTwisterY=Math.abs(onlyTwisterY-this.y);
@@ -66,6 +67,28 @@ function ballClass() {
         } else {
           controlLossImpact=1;
         }
+
+    //temporary sounds where balloon is located
+    //TODO: DEACTIVATE OTHER SOUNDS WHEN ONE SOUND'S ON
+    var tileType =  getTrackAtPixelCoord(this.x, this.y);
+        switch (tileType) {
+          case TRACK_CITY:
+                    soundSystem.play("City",false,0.1);
+                break;
+                
+          case TRACK_GOAL_LANDMARK:
+                soundSystem.play("Crowd",false,1);
+                break;
+
+          case TRACK_HEAT:
+          soundSystem.play("Take off",false,1);
+          break;
+
+          /*case TRACK_ROAD:
+          soundSystem.play("zombies1",false,0.5);
+          break;*/
+         }//end switch
+
 
     var nextX = this.x + this.xv*controlLossImpact;
     var nextY = this.y + this.yv*controlLossImpact;
@@ -84,7 +107,7 @@ function ballClass() {
         this.yv -= Math.sin(r)*0.09;
       }
     }
-    //console.log(controlLossImpact);
+
     var primaryAxisAccel = 0.7;
     var otherAxisDampen = 0.97;
 
@@ -106,18 +129,22 @@ function ballClass() {
       case ARROW_U:
         this.yv -= primaryAxisAccel;
         this.xv *= otherAxisDampen;
+        
         break;
       case ARROW_R:
         this.xv += primaryAxisAccel;
         this.yv *= otherAxisDampen;
+        
         break;
       case ARROW_D:
         this.yv += primaryAxisAccel;
         this.xv *= otherAxisDampen;
+        
         break;
       case ARROW_L:
         this.xv -= primaryAxisAccel;
         this.yv *= otherAxisDampen;
+        
         break;
       case TRACK_HEAT:
         this.zv = 6;
