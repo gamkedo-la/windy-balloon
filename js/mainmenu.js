@@ -137,10 +137,14 @@ function updateCurrPointer(val){
     }else{
         curr_pointer_index = (curr_pointer_index+ val)%selectLength;
     }
+<<<<<<< HEAD
     
 	console.log("menu pointer index: " + curr_pointer_index);
 
 	soundSystem.play("hover");
+=======
+    //console.log(curr_pointer_index);    
+>>>>>>> origin/master
 }
 
 function keyPressedInMenu(evt){
@@ -163,6 +167,11 @@ function keyPressedInMenu(evt){
 
 function menuActivate(){
 
+<<<<<<< HEAD
+=======
+    //soundSystem();//in selecting choice of levels it activates
+
+>>>>>>> origin/master
     switch(curr_select){
         case MENU_SELECT:
             if(curr_pointer_index === 0){

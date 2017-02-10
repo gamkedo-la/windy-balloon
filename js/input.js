@@ -137,7 +137,6 @@ function keyPressed(evt) {
         if(trackGrid[trackGrid.length-1]>TRACK_TREE) {
           trackGrid[trackGrid.length-1]=0;
         }
-        console.log(trackGrid[trackGrid.length-1]);
         break;
       case KEY_LETTER_X:
         displayTrackAsHTMLString();
