@@ -6,6 +6,11 @@ var maxTwisterTimer=4;
 var twisterTemp=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
 const twisterMaxTemp = 50;
 
+const twisterAnimationFrames = 3;
+const twisterStepsPerAnimFrame = 3;
+var twisterFrame = 0;
+var twisterFrameTimer = twisterStepsPerAnimFrame;
+
 function clearTwister() {
   twisterList = [];
 }
@@ -64,9 +69,18 @@ function twisterClass(){
     }
 
     this.drawEachTwister = function(){
-      var twisterDot = worldCoordToParCoord(this.x, this.y);
-      drawAtBaseScaled(twisterPic, twisterDot.x, twisterDot.y,twisterDot.scaleHere);//TODO: USE SCRIP FOR TWISTER VARIATION
+      if(twisterFrameTimer-- < 0) {
+        twisterFrameTimer = twisterStepsPerAnimFrame;
+        twisterFrame++;
+        if(twisterFrame >= twisterAnimationFrames) {
+          twisterFrame = 0;
+        }
       }
+
+      var twisterDot = worldCoordToParCoord(this.x, this.y);
+      drawAtBaseScaledSheet(twisterPic, twisterFrame,
+        twisterDot.x, twisterDot.y,twisterDot.scaleHere);
+    }
 
     this.moveTwister = function(){
       var prevX = Math.floor(this.x-this.speedX);

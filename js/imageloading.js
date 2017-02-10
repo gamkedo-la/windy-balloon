@@ -45,7 +45,7 @@ function loadImages() {
       {varName:cityBuildingsPic, theFile:"citybuildings.png"},
       {varName:landmarksPic, theFile:"landmarks.png"},
       {varName:zombiePic, theFile:"zombie4.png"},
-      {varName:twisterPic, theFile:"twister.png"},
+      {varName:twisterPic, theFile:"twister_scrip.png"},
       {varName:cityBuildingsDownPic, theFile:"citybuildingsdown.png"},
       {varName:brokenZombiePic, theFile:"brokenzombie4.png"},
       {tileKind3d: TRACK_PLAYER, theFile:"laboratory.png"},
