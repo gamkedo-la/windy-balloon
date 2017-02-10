@@ -45,6 +45,25 @@ function soundSystemClass() {
 		sounds[samplename].play();
 	}
 	
+	this.stop = function(samplename)
+	{
+		if (debug_sound) console.log("soundSystem.stop "+samplename);
+		if (sounds[samplename]) 
+			sounds[samplename].stop();
+	}
+	
+	this.fade = function(samplename,fromvol,tovol,duration)
+	{
+		if (debug_sound) console.log("soundSystem.fade "+samplename);
+		if (sounds[samplename]) 
+			sounds[samplename].fade(fromvol,tovol,duration);
+	}
+
+	this.fadeout = function(samplename)
+	{
+		this.fade(samplename,1.0,0.0,0.5); // assumes prev vol is max FIXME
+	}
+
 	this.mute = function(on_or_off) {
 		if (debug_sound) console.log("soundSystem.mute "+on_or_off);
 		Howler.mute(on_or_off);
