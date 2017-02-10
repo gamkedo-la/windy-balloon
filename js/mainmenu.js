@@ -137,14 +137,10 @@ function updateCurrPointer(val){
     }else{
         curr_pointer_index = (curr_pointer_index+ val)%selectLength;
     }
-<<<<<<< HEAD
     
 	console.log("menu pointer index: " + curr_pointer_index);
 
 	soundSystem.play("hover");
-=======
-    //console.log(curr_pointer_index);    
->>>>>>> origin/master
 }
 
 function keyPressedInMenu(evt){
@@ -154,7 +150,10 @@ function keyPressedInMenu(evt){
         case KEY_UP_ARROW:updateCurrPointer(-1);break;
         case KEY_DOWN_ARROW:updateCurrPointer(1);break;
         case KEY_ENTER:menuActivate();break;
-		case KEY_LETTER_M:soundSystem.toggleMute();break;
+		// note: this event is active during gameplay
+		// so this will fire twice during the game
+		// because keyPressed M is checked in input.js
+		// case KEY_LETTER_M:soundSystem.toggleMute();break; 
         case KEY_ESC: 
             if(curr_select === LEVEL_SELECT){ 
                 selectLength = menu_select_length;
@@ -167,11 +166,6 @@ function keyPressedInMenu(evt){
 
 function menuActivate(){
 
-<<<<<<< HEAD
-=======
-    //soundSystem();//in selecting choice of levels it activates
-
->>>>>>> origin/master
     switch(curr_select){
         case MENU_SELECT:
             if(curr_pointer_index === 0){
