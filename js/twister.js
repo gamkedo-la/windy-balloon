@@ -1,5 +1,7 @@
 var onlyTwisterX=-100;
 var onlyTwisterY=-100;
+var twisterTimer=2;//SET TO 2 FOR TESTING PURPOSES ELSE SET TO ZERO
+var maxTwisterTimer=4;
 
 var twisterTemp=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
 const twisterMaxTemp = 50;
@@ -36,15 +38,14 @@ function createEveryTwister() {
 }
 
 //twister bounce off bordering tiles of the Goal/Lab
-function areTilesNear(tileColA,tileRowA,tileColB,tileRowB) {
+function areTilesNear(tileToCheck, tileColA,tileRowA,tileColB,tileRowB) {
+      getBounceTileCoords(tileToCheck);
       return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
-      console.log(tileColA)//TODO: NOT REPORTING
       }
 
-
 function twisterClass(){
-    this.speedX = 4;//SET TO  TEMPORARILY FOR TESTING PURPOSES - Math.random()*0.2
-    this.speedY = 4;//SET TO  TEMPORARILY FOR TESTING PURPOSES - Math.random()*0.2
+    this.speedX = 0.15;
+    this.speedY = 0.15;
 
     this.randomSpot=function(){
       this.x=canvas.width*Math.random();
@@ -56,12 +57,15 @@ function twisterClass(){
       do{
         this.randomSpot();
         tileKindHere = getTrackAtPixelCoord(this.x,this.y);
-      }while(isTileTypeSolid(tileKindHere));//TODO: ADD ARETILESNEAR GOAL OR LAB, ELSE TWISTER GETS STUCK IF SPAWNS AT LAB/GOAL
+        this.col= Math.floor(this.x/TRACK_W);
+        this.row=Math.floor(this.y/TRACK_H);
+      }while(isTileTypeSolid(tileKindHere) || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
+      areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row));//TODO: TWISTER CAN GET STUCK ON GOAL/LAB AT STARTLOCATION VISIBLE ON ADJACENT COL TO TRACK_PLAYER LOCATION
     }
 
     this.drawEachTwister = function(){
       var twisterDot = worldCoordToParCoord(this.x, this.y);
-      drawAtBaseScaled(twisterPic, twisterDot.x, twisterDot.y,twisterDot.scaleHere);
+      drawAtBaseScaled(twisterPic, twisterDot.x, twisterDot.y,twisterDot.scaleHere);//TODO: USE SCRIP FOR TWISTER VARIATION
       }
 
     this.moveTwister = function(){
@@ -76,12 +80,8 @@ function twisterClass(){
       var tileType =  getTrackAtPixelCoord(this.x, this.y);
       
       var worldTileUnderTwister = trackTileToIndex(this.col, this.row);		
-      	
-        switch (tileType) {
 
-          case TRACK_ICE:
-  	            trackGrid[worldTileUnderTwister] = TRACK_ICE;// TO CREATE WHILEPOOL WHEN TWISTER ON TOP, TEMPORARILY POINTING TO SAME PIC
-                break;
+        switch (tileType) {
 
           case TRACK_CITY:
   	                trackGrid[worldTileUnderTwister] = TRACK_CITY_DOWN;
@@ -94,12 +94,8 @@ function twisterClass(){
          
       var testChangeColRow = true;
             
-      //locate Goal/lab col,row
-      
-      getBounceTileCoords(TRACK_GOAL_LANDMARK);
-      //getBounceTileCoords(TRACK_PLAYER);TODO: CHANGE CODE TO COVER BOTH GOAL LANDMARK OR TRACKPLAYER
-      
-      if (isTileTypeSolidForTwister(tileType) || areTilesNear(this.col, this.row, bounce.Col, bounce.Row)) {//TODO: CAN BOUNCE BOTH OFF TRACK_PLAYER OR GOAL LANDMARK
+      if (isTileTypeSolidForTwister(tileType) || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
+      areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row)) {
                      
         if (this.x != prevX) { //came from the side
             if (isTileTypeSolidForTwister(AdjacentXTile) == false) {
@@ -118,10 +114,24 @@ function twisterClass(){
             this.speedY *= -1;
         }
             }//end if
-  	
+  	     
+          
+        //randomize twister movement  
+        if(twisterTimer>maxTwisterTimer){
+          if(Math.random()>0.5){var i=1;} else {i=-1;}
+          if(Math.random()>0.5){var t=1;} else {t=-1;}
+            if (isTileTypeSolidForTwister(tileType)==false || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row)==false ||
+            areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row)==false){
+                  this.speedX*=i;
+                  this.speedY*=t;
+                  twisterTimer=2;
+            }
+            } else {
+            twisterTimer+=0.03;
+          }
         this.x += this.speedX;
-        this.y += this.speedY;
-    
-    }//end this.move
+        this.y += this.speedY; 
+  }//end this.move
+        
 
 }//end twisterClass

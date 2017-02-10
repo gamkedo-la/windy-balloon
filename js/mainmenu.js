@@ -137,7 +137,7 @@ function updateCurrPointer(val){
     }else{
         curr_pointer_index = (curr_pointer_index+ val)%selectLength;
     }
-    console.log(curr_pointer_index);    
+    //console.log(curr_pointer_index);    
 }
 
 function keyPressedInMenu(evt){
@@ -159,7 +159,7 @@ function keyPressedInMenu(evt){
 
 function menuActivate(){
 
-    soundSystem();
+    //soundSystem();//in selecting choice of levels it activates
 
     switch(curr_select){
         case MENU_SELECT:

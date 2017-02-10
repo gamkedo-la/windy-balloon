@@ -124,6 +124,7 @@ function StartGameOnLevel(selectedLevel){
   ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
   loadLevel();
   initInput(); 
+  soundSystem();
 }
 
 function loadingDoneSoStartGame() {

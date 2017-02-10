@@ -35,10 +35,18 @@ function soundSystem (mute) {
 		sounds[samplename].play();
 	}
 	
-	var init = function()
-	{
-		play("music",true,0.5); // looping quite music
-
+	var init = function(){
+		console.log(currentLevelIdx)
+		if(currentLevelIdx===1 || currentLevelIdx==3){
+		play("City",true,0.25); // looping
+		}
+		else {
+		play("music",true,0.5); // looping quite music	
+		}
+		
+		//if(cureTemp == cureVialMaxTemp){
+		//play("Alarm",false,0.5); // not loop	
+	//	}
 		// test voiceover intro
 		//play("Wendy_B_Loon_Intro_Cinematic_VO"); // once only
 	}

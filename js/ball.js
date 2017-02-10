@@ -9,6 +9,8 @@ var mountainHeight = 30;
 var balloonCorrectivePaceRise = 0.1;
 var balloonCorrectivePaceSink = 0.5;
 
+var controlLossImpact=1;
+
 function ballClass() {
   this.x;
   this.y;
@@ -54,8 +56,19 @@ function ballClass() {
   } // end of carReset
   
   this.Move = function() {
-    var nextX = this.x + this.xv;
-    var nextY = this.y + this.yv;
+    var controlLoss=false;
+     var distBalToTwisterX=Math.abs(onlyTwisterX-this.x);
+     var distBalToTwisterY=Math.abs(onlyTwisterY-this.y);
+     controlLoss=(distBalToTwisterX<80 && distBalToTwisterY<80)
+
+        if(controlLoss){
+          controlLossImpact=5*(Math.round(Math.random()) * 2 - 1);
+        } else {
+          controlLossImpact=1;
+        }
+
+    var nextX = this.x + this.xv*controlLossImpact;
+    var nextY = this.y + this.yv*controlLossImpact;
     
     var carRad = 19;
 
@@ -71,7 +84,7 @@ function ballClass() {
         this.yv -= Math.sin(r)*0.09;
       }
     }
-  
+    //console.log(controlLossImpact);
     var primaryAxisAccel = 0.7;
     var otherAxisDampen = 0.97;
 
@@ -89,6 +102,7 @@ function ballClass() {
             // eventually I'll need to remove the message that directs the player to the lab here
           }
           break;
+        
       case ARROW_U:
         this.yv -= primaryAxisAccel;
         this.xv *= otherAxisDampen;
@@ -159,9 +173,10 @@ function ballClass() {
     } else {
       this.zv *= heightChangeDampen;
     }
+    controlLoss=false;
   }
 
-  this.heightNow = function() {
+   this.heightNow = function() {
     return this.z + Math.cos(this.heightOscillate) * ballonDeviation;
   }
   
