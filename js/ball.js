@@ -122,7 +122,6 @@ function ballClass() {
               // need to figure out how to get this working (Eric)
               break;
           }
-
         return;
     }
 
