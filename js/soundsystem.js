@@ -1,19 +1,28 @@
 // SOUND SYSTEM MODULE
-// by Christer "McFunkypants" Kaitila for http://gamkedo.com
-
+// made by Christer "McFunkypants" Kaitila for http://gamkedo.com
 // Requires https://github.com/goldfire/howler.js
+
+// how to use in-game: 
+
+// soundSystem.play("soundname");
+// will optionally download or play a cached version of "audio/soundname.mp3" or ogg or webm
+
+// soundSystem.mute(true);
+// set global sound mute on or off
 
 "use strict";
 
-var isMuted = false; 
-var music = null;	// one looping Howl() object
-var sounds = [];	// an array of Howl() objects
+var soundSystem = new soundSystemClass();
 
+function soundSystemClass() {
 
-function soundSystem (mute) {
+	// private variable - no need to access from game code
+	var sounds = []; // an array of Howl() objects
+	var isMuted = false; // boolean state
+	var debug_sound = true; // write to console?
 
-	var play = function(samplename,looping,vol) 
-	{
+	this.play = function(samplename,looping,vol) {
+		
 		if (looping==null) looping = false;
 		if (vol==null) vol = 1;
 
@@ -32,18 +41,20 @@ function soundSystem (mute) {
 			});
 		}
 		
+		if (debug_sound) console.log("soundSystem.play "+samplename);
 		sounds[samplename].play();
 	}
 	
-	var init = function()
-	{
-		play("music",true,0.5); // looping quite music
-
-		// test voiceover intro
-		//play("Wendy_B_Loon_Intro_Cinematic_VO"); // once only
+	this.mute = function(on_or_off) {
+		if (debug_sound) console.log("soundSystem.mute "+on_or_off);
+		Howler.mute(on_or_off);
+		isMuted = on_or_off;
 	}
 	
-	init();
-	
+	this.toggleMute = function() {
+		if (debug_sound) console.log("toggleMute");
+		Howler.mute(!isMuted);
+	}
+
 };
 

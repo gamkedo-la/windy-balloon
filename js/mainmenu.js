@@ -137,7 +137,10 @@ function updateCurrPointer(val){
     }else{
         curr_pointer_index = (curr_pointer_index+ val)%selectLength;
     }
-    console.log(curr_pointer_index);    
+    
+	console.log("menu pointer index: " + curr_pointer_index);
+
+	soundSystem.play("hover");
 }
 
 function keyPressedInMenu(evt){
@@ -147,6 +150,7 @@ function keyPressedInMenu(evt){
         case KEY_UP_ARROW:updateCurrPointer(-1);break;
         case KEY_DOWN_ARROW:updateCurrPointer(1);break;
         case KEY_ENTER:menuActivate();break;
+		case KEY_LETTER_M:soundSystem.toggleMute();break;
         case KEY_ESC: 
             if(curr_select === LEVEL_SELECT){ 
                 selectLength = menu_select_length;
@@ -158,8 +162,6 @@ function keyPressedInMenu(evt){
 }
 
 function menuActivate(){
-
-    soundSystem();
 
     switch(curr_select){
         case MENU_SELECT:

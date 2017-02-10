@@ -88,14 +88,7 @@ function keyPressed(evt) {
     break;
 
     case KEY_LETTER_M:
-      if (isMuted) {
-        sounds['music'].play()
-        isMuted = false;
-      }
-      else {
-        sounds['music'].stop();
-        isMuted = true;
-      }
+      soundSystem.toggleMute();
     break;
   } 
 

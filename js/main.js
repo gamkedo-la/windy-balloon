@@ -50,6 +50,9 @@ function updateMousePos(evt) {
 }
 
 window.onload = function() {
+	
+  // soundSystem.play("music"); // autoplaying sound?
+
   scaledCanvas = document.getElementById('gameCanvas');
   canvas = document.createElement('canvas');
   canvasContext = canvas.getContext('2d');
@@ -115,6 +118,9 @@ function supportedVideoFormat(video) {
 }
 
 function StartGameOnLevel(selectedLevel){
+	
+  soundSystem.play("music");
+  
   currentLevelIdx = selectedLevel;
   var framesPerSecond = 30;
   setInterval(function() {
