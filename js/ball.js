@@ -52,6 +52,7 @@ function ballClass() {
     this.y = this.homeY;
     this.xv = 5;
     this.yv = -3;
+    soundSystem.stop("City");
 
   } // end of carReset
   
@@ -73,20 +74,21 @@ function ballClass() {
     var tileType =  getTrackAtPixelCoord(this.x, this.y);
         switch (tileType) {
           case TRACK_CITY:
-                    soundSystem.play("City",false,0.1);
-                break;
+                /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
+                } else {
+                soundSystem.play("City",false,0.1);  
+                }
+                break;*/
                 
-          case TRACK_GOAL_LANDMARK:
-                soundSystem.play("Crowd",false,1);
+          case TRACK_TREE:
+                soundSystem.stop("City");
+                //soundSystem.play("zombies3",false,0.2); // TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
                 break;
 
           case TRACK_HEAT:
           soundSystem.play("Take off",false,1);
           break;
 
-          /*case TRACK_ROAD:
-          soundSystem.play("zombies1",false,0.5);
-          break;*/
          }//end switch
 
 
@@ -154,6 +156,8 @@ function ballClass() {
         break;
       case TRACK_GOAL_LANDMARK:
           if(isCureVialViable == true){
+              soundSystem.stop("City");
+              soundSystem.play("Crowd",false,1);
               nextLevel();
           } else {
               //colorText("Hey! The vial is spoiled! Please head back to base" +

@@ -33,6 +33,24 @@ function drawAtBaseScaledSheet(graphic, idx, atX, atY, forScaleX, forScaleY) {
   scaledContext.restore();
 }
 
+function drawZombieAtBaseScaledSheet(graphic, idx, atX, atY, forScaleX, forScaleY) {
+  if (forScaleY == undefined) {
+    forScaleY = forScaleX;
+  }
+  scaledContext.save(); 
+  var dimPerFrame = graphic.height;
+  scaledContext.translate(atX-forScaleX*dimPerFrame/2,
+                          atY-forScaleY*dimPerFrame*1.2);
+  scaledContext.scale(forScaleX,forScaleY);
+  scaledContext.drawImage(graphic,
+    idx * ZOMBIE_W, 0,
+    ZOMBIE_W, ZOMBIE_H,
+    0, 0,
+    ZOMBIE_W, ZOMBIE_H);
+  scaledContext.restore();
+}
+
+
 function drawAtBaseScaled(graphic, atX, atY, forScaleX, forScaleY) {
   if (forScaleY == undefined) {
     forScaleY = forScaleX;

@@ -119,7 +119,7 @@ function supportedVideoFormat(video) {
 
 function StartGameOnLevel(selectedLevel){
 	
-  soundSystem.play("music");
+  soundSystem.play("music",true,0.5);
   
   currentLevelIdx = selectedLevel;
   var framesPerSecond = 30;
@@ -206,8 +206,11 @@ function setupParticles() {
 
 function cureTempUpdate(){
   if(isInEditor == false) {
-    if(cureTemp >= cureVialMaxTemp) {
-      soundSystem.play("Alarm",false,1);
+    if(cureTemp == cureVialMaxTemp-1){
+    soundSystem.stop("City");
+    soundSystem.play("Alarm",false,1);
+    }
+    if(cureTemp >= cureVialMaxTemp) {  
       if(isCureVialViable) {
         spawnPlane((p1.y+canvas.height/2 +
                     Math.random()*80)%canvas.height,

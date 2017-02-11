@@ -44,7 +44,7 @@ function loadImages() {
       {varName:trackSheet, theFile:"track_all_sheet.png"},
       {varName:cityBuildingsPic, theFile:"citybuildings.png"},
       {varName:landmarksPic, theFile:"landmarks.png"},
-      {varName:zombiePic, theFile:"zombie4.png"},
+      {varName:zombiePic, theFile:"zombie_scrip.png"},
       {varName:twisterPic, theFile:"twister_scrip.png"},
       {varName:cityBuildingsDownPic, theFile:"citybuildingsdown.png"},
       {varName:brokenZombiePic, theFile:"brokenzombie4.png"},

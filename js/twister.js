@@ -6,8 +6,8 @@ var maxTwisterTimer=4;
 var twisterTemp=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
 const twisterMaxTemp = 50;
 
-const twisterAnimationFrames = 3;
-const twisterStepsPerAnimFrame = 3;
+const twisterAnimationFrames = 4;
+const twisterStepsPerAnimFrame = 4;
 var twisterFrame = 0;
 var twisterFrameTimer = twisterStepsPerAnimFrame;
 

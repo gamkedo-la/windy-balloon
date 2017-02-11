@@ -1,3 +1,11 @@
+const zombieAnimationFrames = 3;
+const zombieStepsPerAnimFrame = 3;
+var zombieFrame = 0;
+var zombieFrameTimer = zombieFrameResetTimer;
+var zombieFrameResetTimer=15000;
+const ZOMBIE_H=7;
+const ZOMBIE_W=7;
+
 function clearZombies() {
   zombieList = [];
 }
@@ -38,11 +46,19 @@ function zombieClass(){
 
   this.drawEachZombie = function(){
       var scaledZombieLocation = worldCoordToParCoord(this.x, this.y);
-      
+      if(zombieFrameTimer-- < 0) {
+        zombieFrameTimer = zombieFrameResetTimer;
+        zombieFrame++;
+        if(zombieFrame >= zombieAnimationFrames) {
+          zombieFrame = 0;
+        }
+      }
+
       if(this.isDead){
         drawAtBaseScaled(brokenZombiePic, scaledZombieLocation.x, scaledZombieLocation.y,scaledZombieLocation.scaleHere);
       } else {
-        drawAtBaseScaled(zombiePic, scaledZombieLocation.x, scaledZombieLocation.y,scaledZombieLocation.scaleHere);
+        drawZombieAtBaseScaledSheet(zombiePic, zombieFrame,
+        scaledZombieLocation.x, scaledZombieLocation.y,scaledZombieLocation.scaleHere);
       }
   }
 
