@@ -79,7 +79,14 @@ function ballClass() {
                 soundSystem.play("City",false,0.1);  
                 }
                 break;*/
-                
+
+          case TRACK_CITY_PARIS:
+          /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
+          } else {
+          soundSystem.play("City",false,0.1);  
+          }
+          break;*/
+              
           case TRACK_TREE:
                 soundSystem.stop("City");
                 //soundSystem.play("zombies3",false,0.2); // TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
