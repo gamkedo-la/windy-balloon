@@ -97,15 +97,22 @@ function twisterClass(){
 
         switch (tileType) {
 
+        case TRACK_MOUNTAINS:
+                    trackGrid[worldTileUnderTwister] = TRACK_MOUNTAINS_DOWN;
+                break;
+
           case TRACK_CITY:
   	                trackGrid[worldTileUnderTwister] = TRACK_CITY_DOWN;
   	            break;
+
+          case TRACK_CITY_LONDON:
+              trackGrid[worldTileUnderTwister] = TRACK_CITY_LONDON_DOWN;
+          break;
   	            
           case TRACK_TREE:
   	            trackGrid[worldTileUnderTwister] = TRACK_TREE_DOWN;
   	            break;
           
-          console.log(tileType)
           case TRACK_CITY_PARIS:
                 trackGrid[worldTileUnderTwister] = TRACK_CITY_PARIS_DOWN;
                 break;                

@@ -2,17 +2,11 @@ var carPic = document.createElement("img");
 var carShadowPic = document.createElement("img");
 var planePic = document.createElement("img");
 var trackSheet = document.createElement("img");
-//var cityBuildingsPic = document.createElement("img");
-//var cityBuildingsParisPic = document.createElement("img");
 var landmarksPic = document.createElement("img");
 var zombiePic = document.createElement("img");
 var twisterPic = document.createElement("img");
-//var mountainDownPic = document.createElement("img");
 var treeDownPic = document.createElement("img");
-//var cityBuildingsDownPic = document.createElement("img");
-//var cityBuildingsParisDownPic = document.createElement("img");
 var brokenZombiePic = document.createElement("img");
-
 
 var track3dPics = [];
 /*var mountainPic = document.createElement("img");
@@ -47,22 +41,20 @@ function loadImages() {
       {varName:landmarksPic, theFile:"landmarks.png"},
       {varName:zombiePic, theFile:"zombie_scrip.png"},
       {varName:twisterPic, theFile:"twister_scrip.png"},
-      /*{varName:cityBuildingsPic, theFile:"citybuildings.png"},
-      {varName:cityBuildingsDownPic, theFile:"citybuildingsdown.png"},
-      {varName:cityBuildingsParisPic, theFile:"citybuildingsdown.png"},
-      {varName:cityBuildingsParisDownPic, theFile:"citybuildingsparisdown.png"},*/
       {varName:brokenZombiePic, theFile:"brokenzombie4.png"},
       {tileKind3d: TRACK_PLAYER, theFile:"laboratory.png"},
       {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
       // added track_cooldown and laboratory to 3d tile render because it's easier to see
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
-      //{tileKind3d: TRACK_MOUNTAINS_DOWN, theFile:"mountainsdown.png"},
+      {tileKind3d: TRACK_MOUNTAINS_DOWN, theFile:"mountainsdown.png"},
       {tileKind3d: TRACK_TREE_DOWN, theFile:"treesdown.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
       {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"},
       {tileKind3d: TRACK_CITY_DOWN, theFile:"citybuildingsdown.png"},
       {tileKind3d: TRACK_CITY_PARIS, theFile:"citybuildingsparis.png"},
-      {tileKind3d: TRACK_CITY_PARIS_DOWN, theFile:"citybuildingsparisdown.png"}
+      {tileKind3d: TRACK_CITY_PARIS_DOWN, theFile:"citybuildingsparisdown.png"},
+      {tileKind3d: TRACK_CITY_LONDON, theFile:"citybuildingslondon.png"},
+      {tileKind3d: TRACK_CITY_LONDON_DOWN, theFile:"citybuildingslondondown.png"}
 
     ];
 

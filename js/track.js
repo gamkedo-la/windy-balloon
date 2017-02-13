@@ -35,6 +35,7 @@ var worldMap1 = [
 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -3, 4, 4, 3, 3, 4, 4,
 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, -4, -4, -4, 3, 3, -1, -4,
 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 6, 3, 3, -4, -4, -4, 3, 3, -4, -1, 1];
+
 var worldMap2 = [
 0, 0, -2, -3, -3, -4, 1, 1, 1, 0, 0, 0, 0, -3, -3, -3, -3, 0, 0, -4,
 4, 0, -2, 5, 5, 1, 1, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 4, 4, -4,
@@ -67,6 +68,23 @@ var worldMap3 = [
 9, 9, 0, 6, 6, 0, 0, 9, 9, 9, -1, -1, 4, -4, -4, 9, 0, 9, 9, 9,
 9, 9, -1, 6, 6, -4, -3, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, -1, -4,
 9, 9, -1, 6, 6, -4, -3, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, -4, -1, 8];
+
+var worldMap_london =  [
+9, 9, 9, 9, 9, 9, 9, 9, 0, 4, 4, 4, 4, 4, 4, -3, 10, 10, 10, 10,
+9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 4, 4, 4, 5, 9, 9, 9, 9,
+4, 4, 0, 4, 4, 4, 4, 4, 0, 9, 9, 9, 9 ,9, 0, 0, -2, -2, 9, 9,
+4, 4, -4, 4, 4, 4, 4, 4, -1, 10, 10, 10, 10, 0, 0, 0, 0, 6, 6, 6,
+7, 4, -4, 4, 4, 4, 4, 4, -1, 10, 10, 10, 10, 10, 0, 0, 0, 6, 0, 0,
+4, 4, 0, 4, 4, 4, 4, 4, 4, 5, 5, 5, 4, 4, 0, 0, -1, 6, 0, 10,
+10, 9, 9, 9, 9, 9, 4, 4, 4, 4, 4, 4, 4, 0, 0, -1, 6, -4, 10, 9,
+10, 9, 9, 9, 9, 9, 0, 4, 4, -4, 4, 4, 0, 0, -1, 6, 6, -4, 10, 9,
+0, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 6, 10, 10, 10, 10, 10,
+-4, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 10, 10, 10, 10, 10,
+0, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 6, 6, 0, 0, 0, 4, 4, 0,
+0, -3, -3, -3, 6, 6, 6, 0, 0, 0, 0, 6, 6, 0, 0, 0, -3, -3, -3, 0,
+0, 6, 5, 6, 4, 4, 4, 6, -1, -1, 6, 6, 0, 0, 0, 0, -2, 0, 0, 0,
+0, 6, 0, 4, 4, 4, 4, 0, 6, 6, 6, 8, 0, 4, 10, 10, 10, 10, 2, 10,
+0, 6, 0, 4, 4, 4, 4, -2, 0, 0, 0, 0, 0, 4, 4, 10, 10, 10, 10, 10, 1];
 
 var worldMap_pinball_machine = [
 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
@@ -136,9 +154,9 @@ var worldMap_openworld = [
 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 -2, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0];
 
-var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3,worldMap_pinball_machine,worldMap_spiral,worldMap_maze,worldMap_openworld];
+var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3,worldMap_london,worldMap_pinball_machine,worldMap_spiral,worldMap_maze,worldMap_openworld];
 
-var levelName = ["Easter Island","New York","Piza","Paris","Pinball Machine","Spiral Death","Maze Daze","Open World"];
+var levelName = ["Easter Island","New York","Piza","Paris","London","Pinball Machine","Spiral Death","Maze Daze","Open World"];
 
 var trackNeedsRedraw = true;
 
@@ -158,11 +176,13 @@ const TRACK_ICE = 6;
 const TRACK_COOLDOWN = 7;
 const TRACK_GOAL_LANDMARK = 8;
 const TRACK_CITY_PARIS=9;
+const TRACK_CITY_LONDON=10;
 const TRACK_HIGHEST_VALID_NUMBER = TRACK_GOAL_LANDMARK;
 const TRACK_OUT_OF_BOUNDS = 999; // no tile or track, just a return value
-//const TRACK_MOUNTAINS_DOWN=11; CAN REMOVE IF DECIDE TWISTER DOES NOT DESTROY MOUNTAINS
+const TRACK_MOUNTAINS_DOWN=11;
 const TRACK_CITY_DOWN = 31;
 const TRACK_CITY_PARIS_DOWN=91;
+const TRACK_CITY_LONDON_DOWN=101;
 const TRACK_TREE_DOWN = 41;
 const ARROW_U = -1;
 const ARROW_R = -2;
@@ -239,7 +259,7 @@ function drawTrackSpriteCards() {
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
 
       var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
-        
+          
       if(trackTypeHere == TRACK_GOAL_LANDMARK) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
@@ -281,7 +301,6 @@ function drawTracks() {
           TRACK_W, TRACK_H,
           trackLeftEdgeX, trackTopEdgeY,
           TRACK_W, TRACK_H);
-
           // draw arrow
           canvasContext.drawImage(trackSheet,
               (ARROW_ANIM_FRAMES+1) * TRACK_W, arrowType* TRACK_H,
@@ -304,9 +323,9 @@ function drawTracks() {
           tileFlatIdx = trackGrid[trackGrid.length-1];
         } else if(trackTypeHere != TRACK_GOAL_LANDMARK) {
           tileFlatIdx = trackTypeHere;
-        } //else {
-          //tileFlatIdx = TRACK_CITY;
-        //}
+        } else {
+          tileFlatIdx = TRACK_CITY;
+        }
         
         canvasContext.drawImage(trackSheet,
             tileFlatIdx * TRACK_W, 0,
