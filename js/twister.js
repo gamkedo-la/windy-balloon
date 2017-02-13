@@ -1,6 +1,6 @@
 var onlyTwisterX=-100;
 var onlyTwisterY=-100;
-var twisterTimer=2;//SET TO 2 FOR TESTING PURPOSES ELSE SET TO ZERO
+var twisterTimer=0;
 var maxTwisterTimer=4;
 
 var twisterTemp=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
@@ -157,6 +157,7 @@ function twisterClass(){
           }
         this.x += this.speedX;
         this.y += this.speedY; 
+
   }//end this.move
         
 

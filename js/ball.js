@@ -9,8 +9,6 @@ var mountainHeight = 30;
 var balloonCorrectivePaceRise = 0.1;
 var balloonCorrectivePaceSink = 0.5;
 
-var controlLossImpact=1;
-
 function ballClass() {
   this.x;
   this.y;
@@ -53,21 +51,20 @@ function ballClass() {
     this.xv = 5;
     this.yv = -3;
     soundSystem.stop("City");
+    this.ang = -Math.PI/2;
+    this.speed=10;
 
   } // end of carReset
   
   this.Move = function() {
     //balloon movement impacted by twister closeby
     var controlLoss=false;
-     var distBalToTwisterX=Math.abs(onlyTwisterX-this.x);
-     var distBalToTwisterY=Math.abs(onlyTwisterY-this.y);
-     controlLoss=(distBalToTwisterX<80 && distBalToTwisterY<80)
-
-        if(controlLoss){
-          controlLossImpact=5*(Math.round(Math.random()) * 2 - 1);
-        } else {
-          controlLossImpact=1;
-        }
+    var activeControlLoss=false;
+    var distBalToTwisterX=Math.abs(onlyTwisterX-this.x);
+    var distBalToTwisterY=Math.abs(onlyTwisterY-this.y);
+    var maxThisAng= -25;
+    var trigger=80;
+    var TURN_RATE=1;
 
     //temporary sounds where balloon is located
     //TODO: DEACTIVATE OTHER SOUNDS WHEN ONE SOUND'S ON
@@ -86,6 +83,13 @@ function ballClass() {
           soundSystem.play("City",false,0.1);  
           }
           break;*/
+
+           case TRACK_CITY_LONDON:
+          /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
+          } else {
+          soundSystem.play("City",false,0.1);  
+          }
+          break;*/
               
           case TRACK_TREE:
                 soundSystem.stop("City");
@@ -98,10 +102,31 @@ function ballClass() {
 
          }//end switch
 
-
-    var nextX = this.x + this.xv*controlLossImpact;
-    var nextY = this.y + this.yv*controlLossImpact;
-    
+        if (activeControlLoss=(distBalToTwisterX<Math.abs(trigger) && distBalToTwisterY<Math.abs(trigger)) && this.ang>maxThisAng){
+            this.ang -= TURN_RATE;
+            var nextX = this.x + Math.cos(this.ang) * this.speed;
+            var nextY = this.y + Math.sin(this.ang) * this.speed;
+            trigger--;
+        }
+        else {
+              var nextX = this.x + this.xv;
+              var nextY = this.y + this.yv;
+              if(this.ang>1){
+                  this.ang=1;
+                }
+                else {
+                  this.ang++;
+                }
+        if(trigger>80){
+                  this.ang=80;
+                }
+                else {
+                  trigger++;
+                }
+        }
+            //console.log(activeControlLoss=(distBalToTwisterX<80 && distBalToTwisterY<80))
+            //console.log(this.ang)
+            //console.log(trigger)
     var carRad = 19;
 
     var hitC = getTrackAtPixelCoord(nextX,nextY);
