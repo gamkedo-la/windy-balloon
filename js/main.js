@@ -189,10 +189,11 @@ function setupParticles() {
     for(var x=0; x < TRACK_COLS; x++) {
       var localCluster = null;
       switch(trackGrid[ trackIndex ]) {
-        case -1: localCluster = ParticleSystem.add(pos[0]+cx,pos[1]+TRACK_H, {}, "upwind"); break;
-        case -2: localCluster = ParticleSystem.add(pos[0],pos[1]+cy, {}, "rightwind"); break;
-        case -3: localCluster = ParticleSystem.add(pos[0]+cx,pos[1], {}, "downwind"); break;
-        case -4: localCluster = ParticleSystem.add(pos[0]+TRACK_W,pos[1]+cy, {}, "leftwind"); break;
+        case ARROW_U: localCluster = ParticleSystem.add(pos[0]+cx,pos[1]+TRACK_H, {}, "upwind"); break;
+        case ARROW_R: localCluster = ParticleSystem.add(pos[0],pos[1]+cy, {}, "rightwind"); break;
+        case ARROW_D: localCluster = ParticleSystem.add(pos[0]+cx,pos[1], {}, "downwind"); break;
+        case ARROW_L: localCluster = ParticleSystem.add(pos[0]+TRACK_W,pos[1]+cy, {}, "leftwind"); break;
+        case TRACK_HEAT: localCluster = ParticleSystem.add(pos[0]+cx,pos[1]+TRACK_H, {}, "heat"); break;
       }
       particleGrid.push(localCluster);
       trackIndex++;
@@ -286,9 +287,6 @@ function drawEverything() {
                           parCornerBL.x,parCornerTL.y,
                           parCornerBR.x-parCornerBL.x,
                           parCornerBL.y-parCornerTL.y);
-  if(showParticles) {
-    ParticleSystem.draw();
-  }
 
   if(isInEditor == false) {
     p1.DrawShadow(); // shadow
@@ -326,6 +324,9 @@ function drawEverything() {
     p1.DrawInAir();
   }
   drawAtBaseScaledPlanes();
+   if(showParticles) {
+    ParticleSystem.draw();
+  }
 
   colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
   colorText("Press 'M' to toggle music",canvas.width - 200,canvas.height-40,"yellow");
