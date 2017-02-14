@@ -16,6 +16,7 @@ var twisterFrameTimer = twisterStepsPerAnimFrame;
 
 function clearTwister() {
   twisterList = [];
+  event=false;
 }
 
 function drawTwister(){

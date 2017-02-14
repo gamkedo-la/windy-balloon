@@ -143,7 +143,8 @@ function loadingDoneSoStartGame() {
   ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
 
   loadLevel();
-  initInput();  
+  initInput();
+
   }
 
 function prevLevel() {
@@ -174,6 +175,7 @@ function loadLevel() {
     clearZombies();
   } else {
     createEveryZombie();
+    clearTwister();
   }
 }
 
