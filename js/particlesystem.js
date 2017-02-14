@@ -20,6 +20,7 @@ var ParticleSystem = (function () {
   	//
   	var psCtx;
   	var dt;
+  	var labMode;
 	//
 	
 	//
@@ -63,8 +64,10 @@ var ParticleSystem = (function () {
 	};
 	//
 	//
-	var init = function(canvas_, msDelay_) 
+	var init = function(canvas_, msDelay_, labMode_) 
 	{
+		labMode = typeof labMode_ === 'undefined' ? false : labMode_;
+		//
 		_canvas = canvas_;
 		_msDelay = msDelay_;
 		//
@@ -135,6 +138,7 @@ function Particle()
 	this.rgba;
 	//
 	this.parDot; // cache perspective location
+	this.labMode;
 	return this;	
 } Particle.prototype.init = function(cluster_, first_) {
 	//
@@ -174,6 +178,7 @@ function Particle()
 	this.rgba = Da.RGBA(this.color, + this.alpha);
 	//
 	this.alive = true;
+	this.labMode = this.cluster.system.getLabmode();
 	//
 	return this;
 };
@@ -248,7 +253,7 @@ Particle.prototype.draw = function()
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
-	this.parDot = worldCoordToParCoord(this.x,this.y);
+	this.parDot = this.labMode ? {x:this.x, y:this.y, scaleHere:1.0} : worldCoordToParCoord(this.x,this.y);
 
 	psCtx.fillStyle = this.gradient(false);
 	psCtx.arc(this.parDot.x, this.parDot.y,
@@ -506,6 +511,7 @@ Cluster.prototype.getColor = function()
 	  	//
 	  	getCtx: function() { return psCtx; },
 	  	getDeltatime: function() { return dt / _msDelay; },
+	  	getLabmode: function() { return labMode; },
 	};
 
 })();
