@@ -14,6 +14,9 @@ const twisterStepsPerAnimFrame = 4;
 var twisterFrame = 0;
 var twisterFrameTimer = twisterStepsPerAnimFrame;
 
+var landmarkTile;
+var playerStartTile;
+
 function clearTwister() {
   twisterList = [];
   event=false;
@@ -35,7 +38,7 @@ function drawTwister(){
 }
 
 function createEveryTwister() {
-    if(twisterSpawnTimer >= twisterMaxSpawnTimer && Math.random()>0.1){//SET TEMPORARILY TO 0.1 FOR TESTING PURPOSES
+    if(twisterSpawnTimer >= twisterMaxSpawnTimer){
         for(var i=0;i<TWISTERCOUNT;i++) {
   	     if(twisterList.length==0){//limited to 1 twister
           twisterList.push(new twisterClass());
@@ -44,20 +47,15 @@ function createEveryTwister() {
           }//end if
         }//end for
      }//end if
-     else {twisterSpawnTimer += 0.03;}  
+     else {
+      twisterSpawnTimer += 0.03;
+    }
 }
 
 //twister bounce off bordering tiles of the Goal/Lab
-function areTilesNearAtSpawn(tileToCheck, tileColA,tileRowA,tileColB,tileRowB) {
-      getBounceTileCoords(tileToCheck);
-      return ( Math.abs(tileColA-tileColB) <= 3 || Math.abs(tileRowA-tileRowB) <= 3 );
-      }
-
-function areTilesNear(tileToCheck, tileColA,tileRowA,tileColB,tileRowB) {
-      getBounceTileCoords(tileToCheck);
-      return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
-      }
-
+function areTilesTooNear(tileColA,tileRowA,tileColB,tileRowB, range) {
+  return ( Math.abs(tileColA-tileColB) <= range && Math.abs(tileRowA-tileRowB) <= range );
+}
 
 function twisterClass(){
     this.speedX = 0.15;
@@ -70,13 +68,24 @@ function twisterClass(){
 
     this.twisterRandomStartLocation = function(){
       var tileKindHere;
+      landmarkTile = findTileCoordsForTileType(TRACK_GOAL_LANDMARK);
+      playerStartTile = findTileCoordsForTileType(TRACK_PLAYER);
+      
+      var playerAtTileNow = p1.MyTileCR();
+
+      var safetyBreak = 100;
       do{
         this.randomSpot();
         tileKindHere = getTrackAtPixelCoord(this.x,this.y);
         this.col= Math.floor(this.x/TRACK_W);
         this.row=Math.floor(this.y/TRACK_H);
-      }while(isTileTypeSolid(tileKindHere) || areTilesNearAtSpawn(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
-      areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row));//TODO: TWISTER CAN GET STUCK ON GOAL/LAB AT STARTLOCATION VISIBLE ON ADJACENT COL TO TRACK_PLAYER LOCATION
+        if( safetyBreak-- < 0) {
+          break; // protection against infinite loop, better to let tornado spawn in bad area
+        }
+      }while(isTileTypeSolid(tileKindHere) ||
+             areTilesTooNear(this.col, this.row, landmarkTile.col, landmarkTile.row, 3) ||
+             areTilesTooNear(this.col, this.row, playerStartTile.col, playerStartTile.row,3) ||
+             areTilesTooNear(this.col, this.row, playerAtTileNow.col, playerAtTileNow.row,6));
     }
 
     this.drawEachTwister = function(){
@@ -94,15 +103,13 @@ function twisterClass(){
     }
 
     this.twisterVanish = function (){
-      console.log(event)
-      console.log(twisterVanishTimer)
       if(event){
         if (twisterVanishTimer>=twisterVanishMaxTimer){
             this.x=-1000;
             this.y=-1000;
         } else {
           twisterVanishTimer+=0.03;
-          }
+        }
       }
     }
 
@@ -144,8 +151,9 @@ function twisterClass(){
          
       var testChangeColRow = true;
             
-      if (isTileTypeSolidForTwister(tileType) || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
-      areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row)) {
+      if (isTileTypeSolidForTwister(tileType) ||
+           areTilesTooNear(this.col, this.row, landmarkTile.col, landmarkTile.row, 3) ||
+           areTilesTooNear(this.col, this.row, playerStartTile.col, playerStartTile.row,3)) {
                      
         if (this.x != prevX) { //came from the side
             if (isTileTypeSolidForTwister(AdjacentXTile) == false) {
@@ -170,8 +178,9 @@ function twisterClass(){
         if(twisterRnadomMoveTimer>maxTwisterRandomMoveTimer){
           if(Math.random()>0.5){var i=1;} else {i=-1;}
           if(Math.random()>0.5){var t=1;} else {t=-1;}
-            if (isTileTypeSolidForTwister(tileType)==false || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row)==false ||
-            areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row)==false){
+            if (isTileTypeSolidForTwister(tileType)==false || 
+                areTilesTooNear(this.col, this.row, landmarkTile.col, landmarkTile.row, 3) == false ||
+                areTilesTooNear(this.col, this.row, playerStartTile.col, playerStartTile.row,3) == false){
                   this.speedX*=i;
                   this.speedY*=t;
                   twisterTimer=2;

@@ -164,8 +164,6 @@ var currentLevelIdx = 0;
 var trackGrid = []; // live play/edit scratch copy
 var particleGrid = [];
 
-var bounce = {Col:0,Row:0};
-
 const TRACK_ROAD = 0;
 const TRACK_MOUNTAINS = 1;
 const TRACK_PLAYER = 2;
@@ -231,16 +229,12 @@ function isTileTypeSolidForTwister(tileType){
   return(tileType == TRACK_GOAL_LANDMARK || tileType==TRACK_PLAYER || tileType==TRACK_OUT_OF_BOUNDS);
 }
 
-function getBounceTileCoords(TileType){
+function findTileCoordsForTileType(tileType){
   var trackIndex = 0;
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
     for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) { // left to right in each row
-      var trackTypeHere = trackGrid[ trackIndex ]; // getting the track code for this tile
-      if(trackTypeHere == TileType) {
-        bounce.Col=eachCol;
-        bounce.Row=eachRow;
-        return(bounce);
-        break;
+      if(trackGrid[ trackIndex ] == tileType) {
+        return {col:eachCol,row:eachRow};
       }
     trackIndex++
     }

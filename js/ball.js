@@ -56,6 +56,10 @@ function ballClass() {
     this.speed=10;
 
   } // end of carReset
+
+  this.MyTileCR = function() {
+    return {col: Math.floor(this.x / TRACK_W), row: Math.floor(this.y / TRACK_H) };
+  }
   
   this.Move = function() {
     //balloon movement impacted by twister closeby
