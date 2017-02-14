@@ -1,10 +1,13 @@
 var onlyTwisterX=-100;
 var onlyTwisterY=-100;
-var twisterTimer=0;
-var maxTwisterTimer=4;
+var twisterRnadomMoveTimer=0;
+var maxTwisterRandomMoveTimer=4;
 
-var twisterTemp=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
-const twisterMaxTemp = 50;
+var twisterSpawnTimer=49;//SET TEMPORARILY CLOSE TO TWISTERMAXTEMP FOR TESTING PURPOSES
+const twisterMaxSpawnTimer = 50;
+
+var twisterVanishTimer=0;
+const twisterVanishMaxTimer=10;//TESTING TO 10
 
 const twisterAnimationFrames = 4;
 const twisterStepsPerAnimFrame = 4;
@@ -17,6 +20,7 @@ function clearTwister() {
 
 function drawTwister(){
   for(i=0;i<twisterList.length;i++){
+    twisterList[i].twisterVanish();
     twisterList[i].moveTwister();
     twisterList[i].drawEachTwister();
   }
@@ -30,23 +34,29 @@ function drawTwister(){
 }
 
 function createEveryTwister() {
-    if(twisterTemp >= twisterMaxTemp && Math.random()>0.1){//SET TEMPORARILY TO 0.1 FOR TESTING PURPOSES
+    if(twisterSpawnTimer >= twisterMaxSpawnTimer && Math.random()>0.1){//SET TEMPORARILY TO 0.1 FOR TESTING PURPOSES
         for(var i=0;i<TWISTERCOUNT;i++) {
   	     if(twisterList.length==0){//limited to 1 twister
           twisterList.push(new twisterClass());
     	    twisterList[i].twisterRandomStartLocation();
-    	    twisterTemp=0;
+    	    twisterSpawnTimer=0;
           }//end if
         }//end for
      }//end if
-     else {twisterTemp += 0.03;}  
+     else {twisterSpawnTimer += 0.03;}  
 }
 
 //twister bounce off bordering tiles of the Goal/Lab
+function areTilesNearAtSpawn(tileToCheck, tileColA,tileRowA,tileColB,tileRowB) {
+      getBounceTileCoords(tileToCheck);
+      return ( Math.abs(tileColA-tileColB) <= 3 || Math.abs(tileRowA-tileRowB) <= 3 );
+      }
+
 function areTilesNear(tileToCheck, tileColA,tileRowA,tileColB,tileRowB) {
       getBounceTileCoords(tileToCheck);
       return ( Math.abs(tileColA-tileColB) <= 1 && Math.abs(tileRowA-tileRowB) <= 1 );
       }
+
 
 function twisterClass(){
     this.speedX = 0.15;
@@ -64,7 +74,7 @@ function twisterClass(){
         tileKindHere = getTrackAtPixelCoord(this.x,this.y);
         this.col= Math.floor(this.x/TRACK_W);
         this.row=Math.floor(this.y/TRACK_H);
-      }while(isTileTypeSolid(tileKindHere) || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
+      }while(isTileTypeSolid(tileKindHere) || areTilesNearAtSpawn(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row) ||
       areTilesNear(TRACK_PLAYER,this.col, this.row, bounce.Col, bounce.Row));//TODO: TWISTER CAN GET STUCK ON GOAL/LAB AT STARTLOCATION VISIBLE ON ADJACENT COL TO TRACK_PLAYER LOCATION
     }
 
@@ -80,6 +90,19 @@ function twisterClass(){
       var twisterDot = worldCoordToParCoord(this.x, this.y);
       drawAtBaseScaledSheet(twisterPic, twisterFrame,
         twisterDot.x, twisterDot.y,twisterDot.scaleHere);
+    }
+
+    this.twisterVanish = function (){
+      console.log(event)
+      console.log(twisterVanishTimer)
+      if(event){
+        if (twisterVanishTimer>=twisterVanishMaxTimer){
+            this.x=-1000;
+            this.y=-1000;
+        } else {
+          twisterVanishTimer+=0.03;
+          }
+      }
     }
 
     this.moveTwister = function(){
@@ -143,7 +166,7 @@ function twisterClass(){
   	     
           
         //randomize twister movement  
-        if(twisterTimer>maxTwisterTimer){
+        if(twisterRnadomMoveTimer>maxTwisterRandomMoveTimer){
           if(Math.random()>0.5){var i=1;} else {i=-1;}
           if(Math.random()>0.5){var t=1;} else {t=-1;}
             if (isTileTypeSolidForTwister(tileType)==false || areTilesNear(TRACK_GOAL_LANDMARK,this.col, this.row, bounce.Col, bounce.Row)==false ||
@@ -153,7 +176,7 @@ function twisterClass(){
                   twisterTimer=2;
             }
             } else {
-            twisterTimer+=0.03;
+            twisterRnadomMoveTimer+=0.03;
           }
         this.x += this.speedX;
         this.y += this.speedY; 

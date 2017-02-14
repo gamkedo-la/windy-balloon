@@ -8,6 +8,7 @@ var cityHeight = 15;
 var mountainHeight = 30;
 var balloonCorrectivePaceRise = 0.1;
 var balloonCorrectivePaceSink = 0.5;
+var event=false;//at true twister position -1000,-1000
 
 function ballClass() {
   this.x;
@@ -102,11 +103,12 @@ function ballClass() {
 
          }//end switch
 
-        if (activeControlLoss=(distBalToTwisterX<Math.abs(trigger) && distBalToTwisterY<Math.abs(trigger)) && this.ang>maxThisAng){
+        if (distBalToTwisterX<Math.abs(trigger) && distBalToTwisterY<Math.abs(trigger) && this.ang>maxThisAng){
             this.ang -= TURN_RATE;
             var nextX = this.x + Math.cos(this.ang) * this.speed;
             var nextY = this.y + Math.sin(this.ang) * this.speed;
             trigger--;
+            event=true;
         }
         else {
               var nextX = this.x + this.xv;
