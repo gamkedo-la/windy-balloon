@@ -118,10 +118,14 @@ function supportedVideoFormat(video) {
 }
 
 function StartGameOnLevel(selectedLevel){
-	
+	currentLevelIdx = selectedLevel;
+  console.log(currentLevelIdx)
+  if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
   soundSystem.play("music",true,0.5);
+  } else {
+  soundSystem.play("BGM",true,0.5);  
+  }
   
-  currentLevelIdx = selectedLevel;
   var framesPerSecond = 30;
   setInterval(function() {
       moveEverything();
@@ -210,7 +214,12 @@ function setupParticles() {
 function cureTempUpdate(){
   if(isInEditor == false) {
     if(cureTemp == cureVialMaxTemp-1){
+    console.log(cureTemp == cureVialMaxTemp-1)
     soundSystem.stop("City");
+    soundSystem.stop("zombies3");
+    soundSystem.stop("Take off");
+    soundSystem.stop("refill");
+    soundSystem.stop("WIND 1");
     soundSystem.play("Alarm",false,1);
     }
     if(cureTemp >= cureVialMaxTemp) {  

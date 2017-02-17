@@ -9,6 +9,7 @@ var mountainHeight = 30;
 var balloonCorrectivePaceRise = 0.1;
 var balloonCorrectivePaceSink = 0.5;
 var event=false;//at true twister position -1000,-1000
+var zombiesSound=false;
 
 function ballClass() {
   this.x;
@@ -55,6 +56,9 @@ function ballClass() {
     this.ang = -Math.PI/2;
     this.speed=10;
 
+    //reset zombie3 sound
+    zombiesSound=false;
+
   } // end of carReset
 
   this.MyTileCR = function() {
@@ -71,43 +75,88 @@ function ballClass() {
     var trigger=80;
     var TURN_RATE=1;
 
+    //trigger music if non playing
+    if(soundSystem.isPlaying("zombies3") || soundSystem.isPlaying("City") || soundSystem.isPlaying("Take off") || soundSystem.isPlaying("music") || soundSystem.isPlaying("BGM") || 
+      soundSystem.isPlaying("WIND 1") || soundSystem.isPlaying("Alarm")){
+    } else {
+      if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
+      soundSystem.play("music",true,0.5);
+      } else {
+      soundSystem.play("BGM",true,0.5);  
+      }
+    }
+
     //temporary sounds where balloon is located
-    //TODO: DEACTIVATE OTHER SOUNDS WHEN ONE SOUND'S ON
     var tileType =  getTrackAtPixelCoord(this.x, this.y);
         switch (tileType) {
           case TRACK_CITY:
-                /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
+                soundSystem.stop("zombies3");
+                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
                 } else {
                 soundSystem.play("City",false,0.1);  
                 }
-                break;*/
+                break;
 
           case TRACK_CITY_PARIS:
-          /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
-          } else {
-          soundSystem.play("City",false,0.1);  
-          }
-          break;*/
+                soundSystem.stop("zombies3");
+                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
+                } else {
+                soundSystem.play("City",false,0.1);  
+                }
+          break;
 
-           case TRACK_CITY_LONDON:
-          /*if(soundSystem.playing("zombies3")){//TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
-          } else {
-          soundSystem.play("City",false,0.1);  
-          }
-          break;*/
+          case TRACK_CITY_LONDON:
+                soundSystem.stop("zombies3");
+                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
+                } else {
+                soundSystem.play("City",false,0.1);  
+                }
+          break;
               
           case TRACK_TREE:
+                
+                if(soundSystem.isPlaying("zombies3") || soundSystem.isPlaying("City") || soundSystem.isPlaying("Take off") || soundSystem.isPlaying("WIND 1") || zombiesSound==true){
+                } else {
+                soundSystem.stop("BGM");
+                soundSystem.stop("music");
+                soundSystem.play("zombies3",false,0.1);  
+                zombiesSound=true;
+                }
+                break;
+
+                case TRACK_COOLDOWN:
+                soundSystem.stop("music");
+                soundSystem.stop("BGM");
+                soundSystem.stop("Take off");
+                soundSystem.stop("zombies3");
                 soundSystem.stop("City");
-                //soundSystem.play("zombies3",false,0.2); // TODO -BOTH FILES HEAVILY CONFLICT, CAN TRY WHEN PLAYING BUILT FOR SOUNDSYSTEM
+                if(soundSystem.isPlaying("refill")){
+                } else {
+                soundSystem.play("refill",false,0.1);  
+                }
                 break;
 
           case TRACK_HEAT:
-          soundSystem.play("Take off",false,1);
+                soundSystem.stop("zombies3");
+                soundSystem.stop("City");
+                soundSystem.play("Take off",false,1);
           break;
 
          }//end switch
 
         if (distBalToTwisterX<Math.abs(trigger) && distBalToTwisterY<Math.abs(trigger) && this.ang>maxThisAng){
+            
+                soundSystem.stop("music");
+                soundSystem.stop("BGM");
+                soundSystem.stop("Take off");
+                soundSystem.stop("zombies3");
+                soundSystem.stop("City");
+                soundSystem.stop("refill");
+                if(soundSystem.isPlaying("WIND 1")){
+                } else {
+                soundSystem.play("WIND 1",false,0.1);  
+                }
+
             this.ang -= TURN_RATE;
             var nextX = this.x + Math.cos(this.ang) * this.speed;
             var nextY = this.y + Math.sin(this.ang) * this.speed;
