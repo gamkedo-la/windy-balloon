@@ -104,7 +104,7 @@ function levelSelectDraw(){
 		
     }
     colorText("->", worldDrawCanvas.width/4*1.25, worldDrawCanvas.height/3*1.5 + unit*curr_pointer_index  , 'white',"25px Verdana"); 
-    colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.5 + unit*1  , 'white',"18px Verdana");
+    colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
 }
 
 function drawBG(){
