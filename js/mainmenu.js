@@ -10,7 +10,7 @@ var selectLength;
 var menuBalloons = [];
 
 var creditLine = [
-"Chris DeLeon - Lead, Tilt Effect, 3 Levels, Cinematics",
+"Chris DeLeon - Lead, Tilt Effect, 3 Levels, Cutscene Anims",
 "Sergio Solorzano - Zombies, Twister, Sound Hooks, London",
 "Eric Andrade - Temperature Spoil Code, Cooling Building",
 "Matthew Ko - 2 Monuments (NYC, Pisa), Menu Code",
@@ -20,9 +20,9 @@ var creditLine = [
 "Thomas Kresge - Gameplay Music",
 "Ashleigh Morris - Tutorial Level, Monument Art (TBD)",
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
-"Christer Kaitila - VO, Level Select, Sound Code, 4 Levels",
 "William DiFruscio - Mute Feature",
 "Tyler Hays - Building Art (Main/Background in NYC, Pisa)",
+"Christer Kaitila - VO, Level Select, Sound Code, 4 Levels",
 "Special Thanks to Nicholas Polchies (Canvas Scale from APC5)"
 ];
 
@@ -63,6 +63,7 @@ function menuBalloon(){
 
 }
 
+var forIntro = true;
 
 function loadMainMenu(){
     isInMenu = true;
@@ -88,7 +89,12 @@ function loadMainMenu(){
           var videoType = supportedVideoFormat(videoElement);
           videoElement.addEventListener("canplaythrough",
             function() {
-              videoElement.play();
+              if(forIntro) {
+                videoElement.play();
+                forIntro = false;
+              } else {
+                console.log("end video loaded");
+              }
             },false);
           videoPlaying = true;
         videoElement.setAttribute("src", "movie/windy-intro." + videoType);
@@ -238,6 +244,7 @@ var menuItems = [{
             clearInterval(menuInterval);
             soundSystem.play("select");
             StartGameOnLevel(curr_pointer_index);
+            curr_pointer_index = 0;
         }
     },
     {

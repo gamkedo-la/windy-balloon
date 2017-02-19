@@ -42,6 +42,9 @@ function skipVideo() {
     videoElement.pause();
     soundSystem.play("music",true,0.5);
     videoPlaying = false;
+    if(firstInit == false) { // after play, so ending movie
+      returnToMenu();
+    }
   }
 }
 

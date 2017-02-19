@@ -153,10 +153,21 @@ function StartGameOnLevel(selectedLevel){
       drawEverything();
     }, 1000/framesPerSecond);
   if(firstInit) {
+    var videoType = supportedVideoFormat(videoElement);
+    videoElement.setAttribute("src", "movie/windy-ending." + videoType);
     firstInit = false;
     ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
   }
   loadLevel();
+}
+
+function playEndMovie() {
+  if(videoPlaying == false) {
+    videoElement.currentTime = 0;
+    videoElement.play();
+    soundSystem.stopAll();
+    videoPlaying = true;
+  }
 }
 
 function returnToMenu() {
@@ -189,15 +200,16 @@ function prevLevel() {
 function nextLevel() {
   currentLevelIdx++;
   if(currentLevelIdx >= levelOrder.length) {
+    playEndMovie();
     currentLevelIdx = 0;
+    return;
   }
   loadLevel();
 }
 
 function loadLevel() {
   isInMenu = false;
-  soundSystem.stop("music");
-  soundSystem.stop("BGM");
+  soundSystem.stopAll();
   soundSystem.play("BGM",true,0.5);
   trackNeedsRedraw = true;
   trackGrid = levelOrder[currentLevelIdx].slice();
@@ -290,6 +302,9 @@ function drawEverything() {
     videoPlaying = videoElement.currentTime < videoElement.duration;
     scaledContext.drawImage(videoElement , 0, 0);
     scaledContext.restore();
+    if(videoPlaying == false) {
+      returnToMenu();
+    }
     return;
   }
 
