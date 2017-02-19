@@ -58,6 +58,12 @@ function soundSystemClass() {
 		if (sounds[samplename]) 
 			sounds[samplename].stop();
 	}
+
+	this.stopAll = function() {
+		for(var snd in sounds){
+			sounds[snd].stop();
+		}
+	}
 	
 	// fades in or out a sample - vol is 0 to 1, duration is seconds
 	this.fade = function(samplename,fromvol,tovol,duration)	{

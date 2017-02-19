@@ -40,6 +40,7 @@ const KEY_NUMROW_LAST = KEY_NUMROW_9;
 function skipVideo() {
   if(videoPlaying) {
     videoElement.pause();
+    soundSystem.play("music",true,0.5);
     videoPlaying = false;
   }
 }
@@ -80,6 +81,9 @@ function keyPressed(evt) {
 
   // first check keys which apply in or out of level editor
   switch(thisKey) {
+    case KEY_ESC:
+    returnToMenu();
+    break;
     case KEY_COMMA:
     prevLevel();
     break;
@@ -165,7 +169,7 @@ function keyPressed(evt) {
     case KEY_LETTER_D:
     case KEY_LEFT_ARROW:
     case KEY_RIGHT_ARROW:
-      soundSystem.play("hover",false,0.5);
+      soundSystem.play("click",false,0.5);
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_L) {
           trackGrid[i] = ARROW_R;
@@ -180,7 +184,7 @@ function keyPressed(evt) {
     case KEY_LETTER_S:
     case KEY_UP_ARROW:
     case KEY_DOWN_ARROW:
-    soundSystem.play("hover",false,0.5);
+    soundSystem.play("select",false,0.5);
       for(var i=0;i<trackGrid.length;i++) {
         if(trackGrid[i] == ARROW_U) {
           trackGrid[i] = ARROW_D;

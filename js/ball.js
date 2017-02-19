@@ -75,50 +75,21 @@ function ballClass() {
     var trigger=80;
     var TURN_RATE=1;
 
-    //trigger music if non playing
-    if(soundSystem.isPlaying("zombies3") || soundSystem.isPlaying("City") || soundSystem.isPlaying("Take off") || soundSystem.isPlaying("music") || soundSystem.isPlaying("BGM") || 
-      soundSystem.isPlaying("WIND 1") || soundSystem.isPlaying("Alarm")){
-    } else {
-      if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
-      soundSystem.play("music",true,0.5);
-      } else {
-      soundSystem.play("BGM",true,0.5);  
-      }
-    }
-
     //temporary sounds where balloon is located
     var tileType =  getTrackAtPixelCoord(this.x, this.y);
         switch (tileType) {
           case TRACK_CITY:
-                soundSystem.stop("zombies3");
-                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
-                } else {
-                soundSystem.play("City",false,0.1);  
-                }
-                break;
-
           case TRACK_CITY_PARIS:
-                soundSystem.stop("zombies3");
-                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
-                } else {
-                soundSystem.play("City",false,0.1);  
-                }
-          break;
-
           case TRACK_CITY_LONDON:
                 soundSystem.stop("zombies3");
-                if(soundSystem.isPlaying("Take off") || soundSystem.isPlaying("City") || soundSystem.isPlaying("WIND 1")){
-                } else {
-                soundSystem.play("City",false,0.1);  
+                if(soundSystem.isPlaying("City") == false){
+                  soundSystem.play("City",false,0.1);  
                 }
           break;
               
-          case TRACK_TREE:
-                
+          case TRACK_TREE:                
                 if(soundSystem.isPlaying("zombies3") || soundSystem.isPlaying("City") || soundSystem.isPlaying("Take off") || soundSystem.isPlaying("WIND 1") || zombiesSound==true){
                 } else {
-                soundSystem.stop("BGM");
-                soundSystem.stop("music");
                 soundSystem.play("zombies3",false,0.1);  
                 zombiesSound=true;
                 }
@@ -126,7 +97,6 @@ function ballClass() {
 
                 case TRACK_COOLDOWN:
                 soundSystem.stop("music");
-                soundSystem.stop("BGM");
                 soundSystem.stop("Take off");
                 soundSystem.stop("zombies3");
                 soundSystem.stop("City");
@@ -145,17 +115,13 @@ function ballClass() {
          }//end switch
 
         if (distBalToTwisterX<Math.abs(trigger) && distBalToTwisterY<Math.abs(trigger) && this.ang>maxThisAng){
-            
-                soundSystem.stop("music");
-                soundSystem.stop("BGM");
-                soundSystem.stop("Take off");
-                soundSystem.stop("zombies3");
-                soundSystem.stop("City");
-                soundSystem.stop("refill");
-                if(soundSystem.isPlaying("WIND 1")){
-                } else {
-                soundSystem.play("WIND 1",false,0.1);  
-                }
+            soundSystem.stop("Take off");
+            soundSystem.stop("zombies3");
+            soundSystem.stop("City");
+            soundSystem.stop("refill");
+            if(soundSystem.isPlaying("WIND 1") == false){
+              soundSystem.play("WIND 1",false,0.1);  
+            }
 
             this.ang -= TURN_RATE;
             var nextX = this.x + Math.cos(this.ang) * this.speed;
@@ -245,7 +211,7 @@ function ballClass() {
       case TRACK_GOAL_LANDMARK:
           if(isCureVialViable == true){
               soundSystem.stop("City");
-              soundSystem.play("Crowd",false,1);
+              soundSystem.play("Crowd",false,0.3);
               nextLevel();
           } else {
               //colorText("Hey! The vial is spoiled! Please head back to base" +

@@ -66,34 +66,40 @@ function menuBalloon(){
 
 function loadMainMenu(){
     var framesPerSecond = 30;
-    level_select_length = levelOrder.length;
     selectLength = menuItems.length;
-    for(let i=0; i<14; i++){
-        let temp = new menuBalloon();
-        temp.Init( -200+Math.random()*10 + Math.random()*-10, 30+i*30+Math.random()*10, 0.01+ i*0.02,
-            1000+Math.random()*100, 1+i*0.2);
-        menuBalloons.push(temp);
+    if(menuBalloons.length == 0) { // first init?
+        level_select_length = levelOrder.length;
+        for(let i=0; i<14; i++){
+            let temp = new menuBalloon();
+            temp.Init( -200+Math.random()*10 + Math.random()*-10, 30+i*30+Math.random()*10, 0.01+ i*0.02,
+                1000+Math.random()*100, 1+i*0.2);
+            menuBalloons.push(temp);
+        }
+
+        scaledCanvas.addEventListener('mousedown',skipVideo);
+        document.addEventListener("keydown", keyPressedInMenu);
+
+        videoElement = document.createElement("video");
+          videoDiv = document.createElement('div');
+          document.body.appendChild(videoDiv);
+          videoDiv.appendChild(videoElement);
+          videoDiv.setAttribute("style", "display:none;");
+          var videoType = supportedVideoFormat(videoElement);
+          videoElement.addEventListener("canplaythrough",
+            function() {
+              videoElement.play();
+            },false);
+          videoPlaying = true;
+        videoElement.setAttribute("src", "movie/windy-intro." + videoType);
+    } else {
+      soundSystem.stopAll();
+      soundSystem.play("music",true,0.5);
     }
 
     menuInterval = setInterval(function() {        
         drawMainMenu();
         }, 1000/framesPerSecond);    
     curr_select = 0;
-    scaledCanvas.addEventListener('mousedown',skipVideo);
-    document.addEventListener("keydown", keyPressedInMenu);
-
-    videoElement = document.createElement("video");
-      videoDiv = document.createElement('div');
-      document.body.appendChild(videoDiv);
-      videoDiv.appendChild(videoElement);
-      videoDiv.setAttribute("style", "display:none;");
-      var videoType = supportedVideoFormat(videoElement);
-      videoElement.addEventListener("canplaythrough",
-        function() {
-          videoElement.play();
-        },false);
-      videoPlaying = true;
-    videoElement.setAttribute("src", "movie/windy-intro." + videoType);
 }
 
 function drawMainMenu(){
@@ -177,10 +183,13 @@ function updateCurrPointer(val){
     }
 
 	//console.log("menu pointer index: " + curr_pointer_index);
-	soundSystem.play("hover");
+	soundSystem.play("select");
 }
 
 function keyPressedInMenu(evt){
+    if(videoPlaying) {
+        return;
+    }
     var thisKey = evt.keyCode;
     var wasValidGameKeySoBlockDefault = true;
 

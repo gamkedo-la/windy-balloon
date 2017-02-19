@@ -135,23 +135,33 @@ function supportedVideoFormat(video) {
 
 }
 
+var gameInterval;
+var firstInit = true;
+
 function StartGameOnLevel(selectedLevel){
 	currentLevelIdx = selectedLevel;
   // console.log(currentLevelIdx)
-  if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
+  /*if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
   soundSystem.play("music",true,0.5);
   } else {
   soundSystem.play("BGM",true,0.5);  
-  }
-  
+  }*/
   var framesPerSecond = 30;
-  setInterval(function() {
+  gameInterval = setInterval(function() {
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
-  ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
+  if(firstInit) {
+    firstInit = false;
+    ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
+    initInput(); 
+  }
   loadLevel();
-  initInput(); 
+}
+
+function returnToMenu() {
+  clearInterval(gameInterval); 
+  loadMainMenu();
 }
 
 function loadingDoneSoStartGame() {
@@ -185,6 +195,9 @@ function nextLevel() {
 }
 
 function loadLevel() {
+  soundSystem.stop("music");
+  soundSystem.stop("BGM");
+  soundSystem.play("BGM",true,0.5);
   trackNeedsRedraw = true;
   trackGrid = levelOrder[currentLevelIdx].slice();
   p1.Init(carShadowPic);
@@ -401,7 +414,7 @@ function drawEverything() {
 
   } else {
     colorText("WASD or arrows to flip north/south or east/west winds.",50,30,"yellow");
-    colorText("Bring the cure to the landmark! Press R to restart level.",50,50,"yellow");
+    colorText("Bring the cure to the landmark! R to restart, Esc to quit",50,50,"yellow");
   }
 // onscreen mouse col/row location
   /*var mouseDot = worldCoordToParCoord(mouseX, mouseY);
