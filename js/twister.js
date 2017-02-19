@@ -44,6 +44,7 @@ function createEveryTwister() {
           twisterList.push(new twisterClass());
     	    twisterList[i].twisterRandomStartLocation();
     	    twisterSpawnTimer=0;
+          twisterList[i].particles = ParticleSystem.add(twisterList[i].x, twisterList[i].y, {}, "twister");
           }//end if
         }//end for
      }//end if
@@ -60,6 +61,7 @@ function areTilesTooNear(tileColA,tileRowA,tileColB,tileRowB, range) {
 function twisterClass(){
     this.speedX = 0.75;
     this.speedY = 0.75;
+    this.particles = null;
 
     this.randomSpot=function(){
       this.x=canvas.width*Math.random();
@@ -107,6 +109,8 @@ function twisterClass(){
         if (twisterVanishTimer>=twisterVanishMaxTimer){
             this.x=-1000;
             this.y=-1000;
+            ParticleSystem.remove(this.particles);
+            this.particles = null;
         } else {
           twisterVanishTimer+=0.03;
         }
@@ -216,6 +220,12 @@ function twisterClass(){
           }
         this.x += this.speedX;
         this.y += this.speedY; 
+
+        if(this.particles != null) {
+          this.particles.xOffset += this.speedX;
+          this.particles.yOffset += this.speedY;   
+        }
+        
 
   }//end this.move
         

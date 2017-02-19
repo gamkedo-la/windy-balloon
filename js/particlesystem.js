@@ -66,6 +66,10 @@ var ParticleSystem = (function () {
 	{
 		_clusters.splice(_clusters.indexOf(pSys_), 1);
 	};
+	var clear = function()
+	{
+		_clusters = [];
+	};
 	//
 	//
 	var init = function(canvas_, msDelay_, labMode_) 
@@ -243,7 +247,9 @@ Particle.prototype.drawShadow = function()
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
-	this.parDot = this.labMode ? {x:this.x+cfg['offset'][0], y:this.y+cfg['offset'][1], scaleHere:1.0} : worldCoordToParCoord(this.x+cfg['offset'][0],this.y+cfg['offset'][1]);
+	var x = this.x + cfg['offset'][0] + this.cluster.xOffset;
+	var y = this.y + cfg['offset'][1] + this.cluster.yOffset;
+	this.parDot = this.labMode ? {x:x, y:y, scaleHere:1.0} : worldCoordToParCoord(x,y);
 
 	psCtx.fillStyle = this.shadowGradient();
 	psCtx.arc(this.parDot.x, this.parDot.y, 
@@ -265,7 +271,9 @@ Particle.prototype.draw = function()
 	var psCtx = this.cluster.system.getCtx();
 	psCtx.beginPath();
 
-	this.parDot = this.labMode ? {x:this.x, y:this.y, scaleHere:1.0} : worldCoordToParCoord(this.x,this.y);
+	var x = this.x + this.cluster.xOffset;
+	var y = this.y + this.cluster.yOffset;
+	this.parDot = this.labMode ? { x:x, y:y, scaleHere:1.0} : worldCoordToParCoord(x,y);
 
 	psCtx.fillStyle = this.gradient(false);
 	psCtx.arc(this.parDot.x, this.parDot.y,
@@ -344,6 +352,8 @@ function Cluster()
 	this.system;
 	this.x;
 	this.y;
+	this.xOffset;
+	this.yOffset;
 	//
 	this.particles;
 	//
@@ -352,6 +362,8 @@ function Cluster()
 	this.system = system_;
 	this.x = x_;
 	this.y = y_;
+	this.xOffset = 0.0;
+	this.yOffset = 0.0;
 	//
 	settings_ = typeof settings_ === 'undefined' ? {} : settings_;
 	this.settings = Da.Merge(settings_, Cluster.DefaultSettings);
@@ -539,6 +551,7 @@ Cluster.prototype.getColor = function()
 	  	draw: draw,
 	  	add: add,
 	  	remove: remove,
+	  	clear: clear,
 	  	init: init,
 	  	addPreset: addPreset,
 	  	//
@@ -752,10 +765,10 @@ ParticleSystem.addPreset("heat", {
 });
 
 
-ParticleSystem.addPreset("tornado", {
-	'maxAmount': 20,
+ParticleSystem.addPreset("twister", {
+	'maxAmount': 100,
 	'minRadius': 0.5,
-	'maxRadius': 2.0,
+	'maxRadius': 1.5,
 	'alphaRange': [1.0, 0.01, -0.005], 
 	'endByAlpha': true,
 	'scaleRange': null,//[0.5, 1.2, 0.012],
@@ -766,16 +779,18 @@ ParticleSystem.addPreset("tornado", {
 		[0,0],
 		[800,600]
 	],
-	'color': [255,255,255],
+	'color': [0,0,0],
+	//'colorPicks': [ [0.33, 20,20,20], [0.67, 40,40,40], [1.0, 60,60,60] ],
+	'colorPicks': [ [0.33, 200,200,200], [0.67, 228,228,228], [1.0, 255,255,255] ],
 	'gradient': null,
 	'shadow': null,	
 
 	'scatter': [0,0],
 	'vxRange': [0,0],
-	'vyRange': [-0.1,-0.8],
+	'vyRange': [-0.15,-1.0],
 	'xOscillate': { 
-		'length': 100.0,
-		'step': 1.0,
+		'length': 79.0,
+		'step': 2.0,
 		'smooth': true
  	},
 });

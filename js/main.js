@@ -228,9 +228,7 @@ function loadLevel() {
 }
 
 function setupParticles() {
-  for(var i=0; i < particleGrid.length; i++) {
-    particleGrid[i] != null && ParticleSystem.remove(particleGrid[i]);
-  }
+  ParticleSystem.clear();
   particleGrid = [];
   var cx = TRACK_W / 2, cy = TRACK_H / 2;
   var trackIndex = 0; 
