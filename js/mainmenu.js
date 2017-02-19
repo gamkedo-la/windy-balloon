@@ -22,7 +22,8 @@ var creditLine = [
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
 "Christer Kaitila - VO, Level Select, Sound Code, 4 Levels",
 "William DiFruscio - Mute Feature",
-"Tyler Hays - Building Art (Generic)"
+"Tyler Hays - Building Art (Main/Background in NYC, Pisa)",
+"Special Thanks to Nicholas Polchies (Canvas Scale from APC5)"
 ];
 
 function menuBalloon(){
@@ -80,15 +81,33 @@ function loadMainMenu(){
     curr_select = 0;
     scaledCanvas.addEventListener('mousedown',skipVideo);
     document.addEventListener("keydown", keyPressedInMenu);
+
+    videoElement = document.createElement("video");
+      videoDiv = document.createElement('div');
+      document.body.appendChild(videoDiv);
+      videoDiv.appendChild(videoElement);
+      videoDiv.setAttribute("style", "display:none;");
+      var videoType = supportedVideoFormat(videoElement);
+      videoElement.addEventListener("canplaythrough",
+        function() {
+          videoElement.play();
+        },false);
+      videoPlaying = true;
+    videoElement.setAttribute("src", "movie/windy-intro." + videoType);
 }
 
 function drawMainMenu(){
     if(videoPlaying) {
+        scaledContext.save();
+        scaledContext.scale(drawScale, drawScale);
         videoPlaying = videoElement.currentTime < videoElement.duration;
         scaledContext.drawImage(videoElement , 0, 0);
+        scaledContext.restore();
         return;
     }    
     
+    scaledContext.save();
+    scaledContext.scale(drawScale, drawScale);
     drawBG();    
     drawBalloons();
     if(curr_select != CREDITS_SELECT) {
@@ -96,6 +115,7 @@ function drawMainMenu(){
         colorText("Windy Balloon" , worldDrawCanvas.width/4*1.2, worldDrawCanvas.height/3, 'white',"40px Verdana");
     }
     menuItems[curr_select].drawMenu();
+    scaledContext.restore();
 }
 
 function drawBalloons(){
@@ -125,7 +145,7 @@ function levelSelectDraw(){
 function creditScreenDraw(){
     var unit = worldDrawCanvas.height/20;
     for(var creditIdx = 0; creditIdx < creditLine.length; creditIdx++){
-        colorText(creditLine[creditIdx], 30, worldDrawCanvas.height/6 + unit*creditIdx , 'white',"25px Verdana");        
+        colorText(creditLine[creditIdx], 15, worldDrawCanvas.height/6 + unit*creditIdx , 'white',"25px Verdana");        
     }
     colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
 }
@@ -134,13 +154,7 @@ function drawBG(){
     var backgroundColor = "#003";
     
     scaledContext.fillStyle = backgroundColor;
-    scaledContext.fillRect(0,0,scaledCanvas.width,parCornerTL.y);
-    scaledContext.fillRect(0,parCornerBL.y,
-        scaledCanvas.width,scaledCanvas.height-parCornerBL.y);
-    scaledContext.fillRect(0,parCornerTL.y,
-                            parCornerBL.x,parCornerBL.y-parCornerTL.y);
-    scaledContext.fillRect(parCornerBR.x,parCornerTL.y,
-                            canvas.width-parCornerBR.x,parCornerBL.y-parCornerTL.y);
+    scaledContext.fillRect(0,0,canvas.width,canvas.height);
                                 
     worldDrawContext.fillStyle = backgroundColor;
     worldDrawContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);    

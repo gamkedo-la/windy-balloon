@@ -1,6 +1,7 @@
 var canvas, canvasContext;
 var worldDrawCanvas, worldDrawContext;
 var scaledCanvas, scaledContext;
+var gameDiv, aspectRatio, drawScale;
 
 var isInEditor = false;
 var showParticles = false;
@@ -84,18 +85,35 @@ window.onload = function() {
   
   loadImages();
   setParCorners();
-  videoElement = document.createElement("video");
-  videoDiv = document.createElement('div');
-  document.body.appendChild(videoDiv);
-  videoDiv.appendChild(videoElement);
-  videoDiv.setAttribute("style", "display:none;");
-  var videoType = supportedVideoFormat(videoElement);
-  videoElement.addEventListener("canplaythrough",
-    function() {
-      videoElement.play();
-    },false);
-  //videoElement.setAttribute("src", "movie/windy-intro." + videoType);//TEMPORARY TERMING OFF FOR TESTING
+
+  aspectRatio = scaledCanvas.width / scaledCanvas.height;
+  gameDiv = document.getElementById('gameDiv');
+  window.addEventListener('resize', resizeWindow);
+  resizeWindow();
+
+  // videoElement.setAttribute("src", "movie/windy-intro." + videoType);//TEMPORARY TERMING OFF FOR TESTING
 }
+
+function resizeWindow() {
+  gameDiv.height = window.innerHeight;
+  gameDiv.width = window.innerWidth;
+
+  if (window.innerWidth / window.innerHeight < aspectRatio) {
+    scaledCanvas.width = window.innerWidth;
+    scaledCanvas.height = window.innerWidth / aspectRatio;
+  }
+  else {
+    scaledCanvas.height = window.innerHeight;
+    scaledCanvas.width = window.innerHeight * aspectRatio;
+  }
+
+  scaledCanvas.style.top = (window.innerHeight / 2 - scaledCanvas.height / 2) + 'px';
+  scaledCanvas.style.left = (window.innerWidth / 2 - scaledCanvas.width / 2) + 'px';
+
+  drawScale = scaledCanvas.width / canvas.width;
+  setParCorners();
+}
+
 var  videoElement,videoDiv;
 function videoLoaded() {
 }
@@ -119,7 +137,7 @@ function supportedVideoFormat(video) {
 
 function StartGameOnLevel(selectedLevel){
 	currentLevelIdx = selectedLevel;
-  console.log(currentLevelIdx)
+  // console.log(currentLevelIdx)
   if(currentLevelIdx==0 || currentLevelIdx==1 || currentLevelIdx==2 || currentLevelIdx==3 || currentLevelIdx==4){
   soundSystem.play("music",true,0.5);
   } else {
@@ -251,9 +269,13 @@ function moveEverything() {
 }
 
 function drawEverything() {
-  if(videoPlaying) {
+  // next block isn't being used yet, may for end movie
+  if(videoPlaying) { // NOTE: look in mainmenu instead
+    scaledContext.save();
+    scaledContext.scale(drawScale, drawScale);
     videoPlaying = videoElement.currentTime < videoElement.duration;
     scaledContext.drawImage(videoElement , 0, 0);
+    scaledContext.restore();
     return;
   }
 
@@ -268,14 +290,6 @@ function drawEverything() {
   createEveryTwister();
 
   var backgroundColor = "#003";
-  scaledContext.fillStyle = backgroundColor;
-  scaledContext.fillRect(0,0,scaledCanvas.width,parCornerTL.y);
-  scaledContext.fillRect(0,parCornerBL.y,
-    scaledCanvas.width,scaledCanvas.height-parCornerBL.y);
-  scaledContext.fillRect(0,parCornerTL.y,
-                        parCornerBL.x,parCornerBL.y-parCornerTL.y);
-  scaledContext.fillRect(parCornerBR.x,parCornerTL.y,
-                        canvas.width-parCornerBR.x,parCornerBL.y-parCornerTL.y);
   
   if(isInEditor || trackNeedsRedraw) {
     trackNeedsRedraw = false;
@@ -291,6 +305,17 @@ function drawEverything() {
             centerX-wid/2, i/parVertSkip+parVertOffset, wid, 1);
     }
   }
+  scaledContext.save();
+  scaledContext.scale(drawScale, drawScale);
+  scaledContext.fillStyle = backgroundColor;
+  scaledContext.fillRect(0,0,canvas.width,parCornerTL.y);
+  scaledContext.fillRect(0,parCornerBL.y,
+    canvas.width,canvas.height-parCornerBL.y);
+  scaledContext.fillRect(0,parCornerTL.y,
+                        parCornerBL.x,parCornerBL.y-parCornerTL.y);
+  scaledContext.fillRect(parCornerBR.x,parCornerTL.y,
+                        canvas.width-parCornerBR.x,parCornerBL.y-parCornerTL.y);
+
   scaledContext.drawImage(worldDrawCanvas,
                           parCornerBL.x,parCornerTL.y,
                           parCornerBR.x-parCornerBL.x,
@@ -379,6 +404,8 @@ function drawEverything() {
   var mouseDotCol = Math.floor(mouseDot.x / TRACK_W);
   var mouseDotRow = Math.floor(mouseDot.y / TRACK_H);
   colorText(mouseDotCol +","+mouseDotRow, mouseX, mouseY, 'yellow');*/
+
+  scaledContext.restore();
 }
 
 function worldCoordToParCoord(worldX,worldY) {
