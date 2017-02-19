@@ -10,8 +10,19 @@ var selectLength;
 var menuBalloons = [];
 
 var creditLine = [
-"name1",
-"name2",
+"Chris DeLeon - Lead, Tilt Effect, 3 Levels, Cinematics",
+"Sergio Solorzano - Zombies and Twister, London Level+Art",
+"Eric Andrade - Temperature Spoil Code, Cooling Building",
+"Matthew Ko - 2 Monuments (NYC, Pisa), Menu Code",
+"c:games - 2 Monuments (Eiffel Tower, Temple of Heaven)",
+"Andreas Lathe - Particle Effects for Wind and Fire",
+"Micky Turner - Sound Effects",
+"Thomas Kresge - Gameplay Music",
+"Caspar Dunant - Warning Airplane Model & Code",
+"Christer Kaitila - Voiceovers, Level Select, 3 Levels",
+"William DiFruscio - Mute Feature",
+"Tyler Hays - Building Art (Generic)",
+"Ashleigh Morris - Monument Art (Coming Soon)"
 ];
 
 function menuBalloon(){
@@ -80,8 +91,10 @@ function drawMainMenu(){
     
     drawBG();    
     drawBalloons();
-    var unit = worldDrawCanvas.height/20;
-    colorText("Windy Balloon" , worldDrawCanvas.width/4*1.2, worldDrawCanvas.height/3, 'white',"40px Verdana");
+    if(curr_select != CREDITS_SELECT) {
+        var unit = worldDrawCanvas.height/20;
+        colorText("Windy Balloon" , worldDrawCanvas.width/4*1.2, worldDrawCanvas.height/3, 'white',"40px Verdana");
+    }
     menuItems[curr_select].drawMenu();
 }
 
@@ -112,7 +125,7 @@ function levelSelectDraw(){
 function creditScreenDraw(){
     var unit = worldDrawCanvas.height/20;
     for(var creditIdx = 0; creditIdx < creditLine.length; creditIdx++){
-        colorText(creditLine[creditIdx], worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*1.5 + unit*creditIdx , 'white',"25px Verdana");        
+        colorText(creditLine[creditIdx], 30, worldDrawCanvas.height/6 + unit*creditIdx , 'white',"25px Verdana");        
     }
     colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
 }

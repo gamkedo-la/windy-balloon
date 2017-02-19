@@ -156,7 +156,7 @@ var worldMap_openworld = [
 
 var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3,worldMap_london,worldMap_pinball_machine,worldMap_spiral,worldMap_maze,worldMap_openworld];
 
-var levelName = ["Easter Island","New York","Piza","Paris","London","Pinball Machine","Spiral Death","Maze Daze","Open World"];
+var levelName = ["Easter Island","New York","Pisa","Paris","London","Pinball Machine","Spiral Death","Maze Daze","Open World"];
 
 var trackNeedsRedraw = true;
 
