@@ -18,11 +18,11 @@ var creditLine = [
 "Andreas Lathe - Particle Effects for Wind and Fire",
 "Micky Turner - Sound Effects",
 "Thomas Kresge - Gameplay Music",
-"Caspar Dunant - Warning Airplane Model & Code",
+"Ashleigh Morris - Tutorial Level, Monument Art (TBD)",
+"Caspar Dunant - Warning Airplane Model & Flyover Code",
 "Christer Kaitila - Voiceovers, Level Select, 3 Levels",
 "William DiFruscio - Mute Feature",
-"Tyler Hays - Building Art (Generic)",
-"Ashleigh Morris - Monument Art (Coming Soon)"
+"Tyler Hays - Building Art (Generic)"
 ];
 
 function menuBalloon(){
