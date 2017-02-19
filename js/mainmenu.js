@@ -2,12 +2,17 @@ var menuInterval;
 var currSelectedLevel = 0;
 const MENU_SELECT = 0;
 const LEVEL_SELECT = 1;
+const CREDITS_SELECT = 2;
 var curr_select = MENU_SELECT;
 var curr_pointer_index = 0;
-var menu_select_length = 2;
 var level_select_length;
 var selectLength;
 var menuBalloons = [];
+
+var creditLine = [
+"name1",
+"name2",
+];
 
 function menuBalloon(){
     this.x;
@@ -50,7 +55,7 @@ function menuBalloon(){
 function loadMainMenu(){
     var framesPerSecond = 30;
     level_select_length = levelOrder.length;
-    selectLength = menu_select_length;
+    selectLength = menuItems.length;
     for(let i=0; i<14; i++){
         let temp = new menuBalloon();
         temp.Init( -200+Math.random()*10 + Math.random()*-10, 30+i*30+Math.random()*10, 0.01+ i*0.02,
@@ -77,11 +82,7 @@ function drawMainMenu(){
     drawBalloons();
     var unit = worldDrawCanvas.height/20;
     colorText("Windy Balloon" , worldDrawCanvas.width/4*1.2, worldDrawCanvas.height/3, 'white',"40px Verdana");
-    switch(curr_select){
-        case MENU_SELECT: menuSelectDraw(); break;
-        case LEVEL_SELECT: levelSelectDraw(); break;
-    }
-
+    menuItems[curr_select].drawMenu();
 }
 
 function drawBalloons(){
@@ -92,8 +93,9 @@ function drawBalloons(){
 
 function menuSelectDraw(){
     var unit = worldDrawCanvas.height/20;
-    colorText("Start Campaign" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2 + unit*0  , 'white',"25px Verdana");
-    colorText("Load Level" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2 + unit*1  , 'white',"25px Verdana");
+    for(var i=0;i<menuItems.length;i++) {
+        colorText(menuItems[i].label, worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2 + unit*i  , 'white',"25px Verdana");
+    }
     colorText("->", worldDrawCanvas.width/4*1.25, worldDrawCanvas.height/3*2 + unit*curr_pointer_index  , 'white',"25px Verdana"); 
 }
 
@@ -104,6 +106,14 @@ function levelSelectDraw(){
 		
     }
     colorText("->", worldDrawCanvas.width/4*1.25, worldDrawCanvas.height/3*1.5 + unit*curr_pointer_index  , 'white',"25px Verdana"); 
+    colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
+}
+
+function creditScreenDraw(){
+    var unit = worldDrawCanvas.height/20;
+    for(var creditIdx = 0; creditIdx < creditLine.length; creditIdx++){
+        colorText(creditLine[creditIdx], worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*1.5 + unit*creditIdx , 'white',"25px Verdana");        
+    }
     colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
 }
 
@@ -132,11 +142,13 @@ function drawBG(){
 }
 
 function updateCurrPointer(val){
-    if(curr_pointer_index + val <0){
-        curr_pointer_index = selectLength - Math.abs(val)%selectLength;
-    }else{
-        curr_pointer_index = (curr_pointer_index+ val)%selectLength;
+    curr_pointer_index += val;
+    if(curr_pointer_index<0) {
+        curr_pointer_index+=selectLength;
+    } else if(curr_pointer_index>=selectLength) {
+        curr_pointer_index-=selectLength;
     }
+
 	//console.log("menu pointer index: " + curr_pointer_index);
 	soundSystem.play("hover");
 }
@@ -147,41 +159,51 @@ function keyPressedInMenu(evt){
     switch(thisKey){
         case KEY_UP_ARROW:updateCurrPointer(-1);break;
         case KEY_DOWN_ARROW:updateCurrPointer(1);break;
-        case KEY_ENTER:menuActivate();break;
+        case KEY_ENTER:menuItems[curr_select].activate();break;
 		// note: this event is active during gameplay
 		// so this will fire twice during the game
 		// because keyPressed M is checked in input.js
 		// case KEY_LETTER_M:soundSystem.toggleMute();break; 
         case KEY_ESC: 
-            if(curr_select === LEVEL_SELECT){ 
-                selectLength = menu_select_length;
-                curr_select = MENU_SELECT; 
-            }
+            selectLength = menuItems.length;
+            curr_pointer_index = curr_select;
+            curr_select = MENU_SELECT; 
             break;
     }
 
 }
 
-function menuActivate(){
-
-    switch(curr_select){
-        case MENU_SELECT:
-            if(curr_pointer_index === 0){
+var menuItems = [{
+        label: "Start Campaign",
+        drawMenu: menuSelectDraw,
+        activate: function() {
+            if (curr_pointer_index === MENU_SELECT) {
                 clearInterval(menuInterval);
                 StartGameOnLevel(currSelectedLevel);
-                soundSystem.play("select");               
-            }
-            if(curr_pointer_index === 1){
+                soundSystem.play("select");
+            } else {
+                curr_select = curr_pointer_index;
                 curr_pointer_index = 0;
                 selectLength = level_select_length;
-                curr_select = LEVEL_SELECT;
             }
-            break;
-        case LEVEL_SELECT:
-            clearInterval(menuInterval);            
-            soundSystem.play("select");           
+        }
+    },
+    {
+        label: "Load Level",
+        drawMenu: levelSelectDraw,
+        activate: function() {
+            clearInterval(menuInterval);
+            soundSystem.play("select");
             StartGameOnLevel(curr_pointer_index);
-            break;
+        }
+    },
+    {
+        label: "Credits",
+        drawMenu: creditScreenDraw,
+        activate: function() {
+            selectLength = menuItems.length;
+            curr_select = MENU_SELECT;
+            curr_pointer_index = CREDITS_SELECT;
+        }
     }
-    
-}
+];
