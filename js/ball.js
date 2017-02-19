@@ -189,8 +189,9 @@ function ballClass() {
     for(var r=Math.random()*0.1; r < 2*3.14159; r+=0.1) {
       hitR = getTrackAtPixelCoord(nextX+Math.cos(r)*carRad,
                                   nextY+Math.sin(r)*carRad);
-      if( (hitR == TRACK_MOUNTAINS || hitR == TRACK_MOUNTAINS_DOWN && this.z < mountainHeight) ||
-          (hitR == TRACK_CITY || hitR == TRACK_CITY_PARIS || hitR == TRACK_CITY_LONDON ||  hitR == TRACK_CITY_DOWN ||  hitR == TRACK_CITY_PARIS_DOWN || hitR == TRACK_CITY_LONDON_DOWN && this.z < cityHeight) ||
+      if( ((hitR == TRACK_MOUNTAINS || hitR == TRACK_MOUNTAINS_DOWN) && 
+           this.z < mountainHeight) ||
+          ((hitR == TRACK_CITY || hitR == TRACK_CITY_PARIS || hitR == TRACK_CITY_LONDON ||  hitR == TRACK_CITY_DOWN ||  hitR == TRACK_CITY_PARIS_DOWN || hitR == TRACK_CITY_LONDON_DOWN) && this.z < cityHeight) ||
           hitR == TRACK_OUT_OF_BOUNDS) {
         this.xv -= Math.cos(r)*0.09;
         this.yv -= Math.sin(r)*0.09;

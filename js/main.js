@@ -43,11 +43,11 @@ const TWISTERCOUNT = 1;
 var mouseX = 0;
 var mouseY = 0;
 function updateMousePos(evt) {
-  var rect = canvas.getBoundingClientRect();
+  var rect = scaledCanvas.getBoundingClientRect();
   var root = document.documentElement;
 
-  mouseX = evt.clientX - rect.left - root.scrollLeft;
-  mouseY = evt.clientY - rect.top - root.scrollTop;
+  mouseX = (evt.clientX - rect.left - root.scrollLeft)/drawScale;
+  mouseY = (evt.clientY - rect.top - root.scrollTop)/drawScale;
 }
 
 window.onload = function() {
@@ -287,14 +287,16 @@ function drawEverything() {
   }
 
   drawPlanes();
-  createEveryTwister();
+  if(isInEditor == false) {
+    createEveryTwister();
+  }
 
   var backgroundColor = "#003";
   
   if(isInEditor || trackNeedsRedraw) {
     trackNeedsRedraw = false;
     worldDrawContext.fillStyle = backgroundColor;
-    worldDrawContext.fillRect(0,0,scaledCanvas.width,scaledCanvas.height);
+    worldDrawContext.fillRect(0,0,canvas.width,canvas.height);
     drawTracks();
 
     var canvHei = canvas.height;
@@ -342,19 +344,21 @@ function drawEverything() {
   //console.log(editDot.x,editDot.y);
   if(isInEditor) {
     var editDot = parCoordToWorldCoord(mouseX,mouseY);
-    if(editDot.x < 0 || editDot.x >= scaledCanvas.width ||
-       editDot.y < 0 || editDot.y >= scaledCanvas.height) {
+    if(editDot.x < 0 || editDot.x >= canvas.width ||
+       editDot.y < 0 || editDot.y >= canvas.height) {
       editIdx = -1;
     } else {
-      var editCol = Math.floor(editDot.x / TRACK_W);
-      var editRow = Math.floor(editDot.y / TRACK_H);
+      var editCol = Math.floor(editDot.x/drawScale / TRACK_W);
+      var editRow = Math.floor(editDot.y/drawScale / TRACK_H);
       editIdx = editRow*TRACK_COLS + editCol;
     }    
   }
 
   drawZombie();
   drawTrackSpriteCards();
-  drawTwister();
+  if(isInEditor == false) {
+    drawTwister();
+  }
 
   if(isInEditor == false) {
     p1.DrawInAir();
@@ -432,8 +436,8 @@ function parCoordToWorldCoord(parX,parY) {
   var percAcross = (1.0-percDown) * percAcrossTop +
     (percDown) * percAcrossBot;
 
-  worldPair.x = percAcross * canvas.width;
-  worldPair.y = percDown * canvas.height;
+  worldPair.x = (percAcross * canvas.width)*drawScale;
+  worldPair.y = (percDown * canvas.height)*drawScale;
   return worldPair;
 }
 
