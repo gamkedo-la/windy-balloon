@@ -16,6 +16,7 @@ var ParticleSystem = (function () {
   	var _canvas;
   	var _time;
   	var _msDelay;
+  	var _dtCap;
   	var _presets = {};
   	//
   	var psCtx;
@@ -31,6 +32,9 @@ var ParticleSystem = (function () {
 	{
 		var now = new Date().getTime();
 		dt = now - (_time || now);
+		if(dt > _dtCap) { // Ugly hack to fix the browser tab-switch timing distortion
+			dt = _dtCap;
+		}
     	_time = now;
 
     	if(labMode) {
@@ -70,6 +74,7 @@ var ParticleSystem = (function () {
 		//
 		_canvas = canvas_;
 		_msDelay = msDelay_;
+		_dtCap = msDelay_ * 3.0;
 		//
 		psCtx = _canvas.getContext("2d");
 		_clusters = [];
@@ -123,6 +128,8 @@ function Particle()
 	//
 	this.vx;
 	this.vy;
+	this.oscStepX = 0.0;
+	this.oscCtrX = 0.0;
 	this.alpha;
 	this.minAlpha;
 	this.maxAlpha;
@@ -157,6 +164,11 @@ function Particle()
 	var vyRange = this.cluster.settings['vyRange'];
 	this.vx = Math.random() * (vxRange[1]-vxRange[0]) + vxRange[0];
 	this.vy = Math.random() * (vyRange[1]-vyRange[0]) + vyRange[0];
+	if(this.cluster.settings['xOscillate'] != null) {
+		var cfg = this.cluster.settings['xOscillate'];
+		this.oscStepX = cfg['step'];
+		this.oscCtrX = cfg['length'] / 2.0;
+	}
 	// Alpha
 	this.alpha = this.cluster.settings['alpha'];
 	this.alphaLoopCtr = this.cluster.settings['alphaLoop'];
@@ -273,6 +285,19 @@ Particle.prototype.draw = function()
 			this.alive = false;
 		}
 	}
+	if(this.oscStepX != 0) {
+		var length = this.cluster.settings['xOscillate']['length'];
+		var diff = this.oscStepX * dt;
+		this.oscCtrX -= Math.abs(diff);
+		if(this.cluster.settings['xOscillate']['smooth']) {
+			diff *= 2 * Math.sin(Math.PI * ( this.oscCtrX / length ));
+		}
+		this.x += diff;
+		if(this.oscCtrX <= 0.0) {
+			this.oscStepX *= -1;
+			this.oscCtrX = length;
+		}
+	}
 	// Alpha
 	if(this.cluster.settings['alphaRange'] != null) {
 		this.alpha += this.alphaStep;
@@ -354,6 +379,14 @@ Cluster.DefaultSettings = {
 	'scatter': [0,0],
 	'vxRange': [-10,10],
 	'vyRange': [-10,10],
+	'xOscillate': null,
+	/*
+	'xOscillate': { 
+		'length': 20.0,
+		'step': 0.1,
+		'smooth': false
+	 },
+	*/
 	'bounds': null,
 	'alpha': 1.0,
 	'alphaRange': null,
@@ -716,4 +749,33 @@ ParticleSystem.addPreset("heat", {
 	'scatter': [25,10],
 	'vxRange': [0,0],
 	'vyRange': [-0.1,-0.8],
+});
+
+
+ParticleSystem.addPreset("tornado", {
+	'maxAmount': 20,
+	'minRadius': 0.5,
+	'maxRadius': 2.0,
+	'alphaRange': [1.0, 0.01, -0.005], 
+	'endByAlpha': true,
+	'scaleRange': null,//[0.5, 1.2, 0.012],
+	'scaleLoop': null,//1,
+	'endByScale': false,//true, 
+	'spawnChance': 0.01,
+	'bounds': [
+		[0,0],
+		[800,600]
+	],
+	'color': [255,255,255],
+	'gradient': null,
+	'shadow': null,	
+
+	'scatter': [0,0],
+	'vxRange': [0,0],
+	'vyRange': [-0.1,-0.8],
+	'xOscillate': { 
+		'length': 100.0,
+		'step': 1.0,
+		'smooth': true
+ 	},
 });
