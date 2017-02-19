@@ -58,8 +58,8 @@ function areTilesTooNear(tileColA,tileRowA,tileColB,tileRowB, range) {
 }
 
 function twisterClass(){
-    this.speedX = 0.15;
-    this.speedY = 0.15;
+    this.speedX = 0.75;
+    this.speedY = 0.75;
 
     this.randomSpot=function(){
       this.x=canvas.width*Math.random();
@@ -114,6 +114,30 @@ function twisterClass(){
     }
 
     this.moveTwister = function(){
+      var hitC = getTrackAtPixelCoord(this.x,this.y);
+      switch( hitC ) {
+        case ARROW_U:
+          if(this.speedY > 0) {
+            this.speedY *= -1;
+          }
+          break;
+        case ARROW_D:
+          if(this.speedY < 0) {
+            this.speedY *= -1;
+          }
+          break;
+        case ARROW_L:
+          if(this.speedX > 0) {
+            this.speedX *= -1;
+          }
+          break;
+        case ARROW_R:
+          if(this.speedX < 0) {
+            this.speedX *= -1;
+          }
+          break;
+      }
+
       var prevX = Math.floor(this.x-this.speedX);
       var prevY = Math.floor(this.y-this.speedY);
       var AdjacentXTile = getTrackAtPixelCoord(prevX,this.y);
@@ -176,6 +200,7 @@ function twisterClass(){
           
         //randomize twister movement  
         if(twisterRnadomMoveTimer>maxTwisterRandomMoveTimer){
+          twisterRnadomMoveTimer = 0.0;
           if(Math.random()>0.5){var i=1;} else {i=-1;}
           if(Math.random()>0.5){var t=1;} else {t=-1;}
             if (isTileTypeSolidForTwister(tileType)==false || 

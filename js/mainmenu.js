@@ -11,7 +11,7 @@ var menuBalloons = [];
 
 var creditLine = [
 "Chris DeLeon - Lead, Tilt Effect, 3 Levels, Cinematics",
-"Sergio Solorzano - Zombies and Twister, London Level+Art",
+"Sergio Solorzano - Zombies, Twister, Sound Hooks, London",
 "Eric Andrade - Temperature Spoil Code, Cooling Building",
 "Matthew Ko - 2 Monuments (NYC, Pisa), Menu Code",
 "c:games - 2 Monuments (Eiffel Tower, Temple of Heaven)",
@@ -20,7 +20,7 @@ var creditLine = [
 "Thomas Kresge - Gameplay Music",
 "Ashleigh Morris - Tutorial Level, Monument Art (TBD)",
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
-"Christer Kaitila - Voiceovers, Level Select, 3 Levels",
+"Christer Kaitila - VO, Level Select, Sound Code, 3 Levels",
 "William DiFruscio - Mute Feature",
 "Tyler Hays - Building Art (Generic)"
 ];
@@ -168,6 +168,7 @@ function updateCurrPointer(val){
 
 function keyPressedInMenu(evt){
     var thisKey = evt.keyCode;
+    var wasValidGameKeySoBlockDefault = true;
 
     switch(thisKey){
         case KEY_UP_ARROW:updateCurrPointer(-1);break;
@@ -182,8 +183,13 @@ function keyPressedInMenu(evt){
             curr_pointer_index = curr_select;
             curr_select = MENU_SELECT; 
             break;
+        default:
+            wasValidGameKeySoBlockDefault = false;
+            break;
     }
-
+    if(wasValidGameKeySoBlockDefault) {
+      evt.preventDefault();
+    }
 }
 
 var menuItems = [{

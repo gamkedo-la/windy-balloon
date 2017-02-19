@@ -21,7 +21,7 @@ function soundSystemClass() {
 	// private variables - no need to access from game code
 	var sounds = []; // an array of Howl() objects
 	var isMuted = false; // boolean state
-	var debug_sound = true; // write to console?
+	var debug_sound = false; // write to console?
 
 	// play a sound (downloads a sound file the 1st time)
 	this.play = function(samplename,looping,vol) {
