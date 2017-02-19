@@ -319,12 +319,10 @@ function drawTracks() {
           canvasContext.drawImage(flatTreePic,
               trackLeftEdgeX, trackTopEdgeY);
         } else {
-          if(trackTypeHere == 0) {
+          if(trackTypeHere == 0 || trackTypeHere == TRACK_GOAL_LANDMARK) {
             tileFlatIdx = trackGrid[trackGrid.length-1];
-          } else if(trackTypeHere != TRACK_GOAL_LANDMARK) {
-            tileFlatIdx = trackTypeHere;
           } else {
-            tileFlatIdx = TRACK_CITY;
+            tileFlatIdx = trackTypeHere;
           }
           canvasContext.drawImage(trackSheet,
               tileFlatIdx * TRACK_W, 0,
