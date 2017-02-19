@@ -20,7 +20,7 @@ var creditLine = [
 "Thomas Kresge - Gameplay Music",
 "Ashleigh Morris - Tutorial Level, Monument Art (TBD)",
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
-"Christer Kaitila - VO, Level Select, Sound Code, 3 Levels",
+"Christer Kaitila - VO, Level Select, Sound Code, 4 Levels",
 "William DiFruscio - Mute Feature",
 "Tyler Hays - Building Art (Generic)"
 ];

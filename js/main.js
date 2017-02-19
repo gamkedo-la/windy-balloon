@@ -339,7 +339,7 @@ function drawEverything() {
     ParticleSystem.draw();
   }
 
-  colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
+  //colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
   colorText("Press 'M' to toggle music",canvas.width - 200,canvas.height-40,"yellow");
   if(isInEditor == false){
     colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
@@ -371,7 +371,8 @@ function drawEverything() {
     }
 
   } else {
-    colorText("Press R to Restart, Press L for Level Editor Mode",50,50,"yellow");
+    colorText("WASD or arrows to flip north/south or east/west winds.",50,30,"yellow");
+    colorText("Bring the cure to the landmark! Press R to restart level.",50,50,"yellow");
   }
 // onscreen mouse col/row location
   /*var mouseDot = worldCoordToParCoord(mouseX, mouseY);
