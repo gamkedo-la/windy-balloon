@@ -3,6 +3,7 @@ var carShadowPic = document.createElement("img");
 var planePic = document.createElement("img");
 var trackSheet = document.createElement("img");
 var landmarksPic = document.createElement("img");
+var flatTreePic = document.createElement("img");
 var zombiePic = document.createElement("img");
 var twisterPic = document.createElement("img");
 var treeDownPic = document.createElement("img");
@@ -45,9 +46,9 @@ function loadImages() {
       {tileKind3d: TRACK_PLAYER, theFile:"laboratory.png"},
       {tileKind3d: TRACK_COOLDOWN, theFile:"cooldown_tile.png"},
       // added track_cooldown and laboratory to 3d tile render because it's easier to see
+      {varName: flatTreePic, theFile:"treesdown.png"},
       {tileKind3d: TRACK_MOUNTAINS, theFile:"mountains.png"},
       {tileKind3d: TRACK_MOUNTAINS_DOWN, theFile:"mountainsdown.png"},
-      {tileKind3d: TRACK_TREE_DOWN, theFile:"treesdown.png"},
       {tileKind3d: TRACK_TREE, theFile:"trees.png"},
       {tileKind3d: TRACK_CITY, theFile:"citybuildings.png"},
       {tileKind3d: TRACK_CITY_DOWN, theFile:"citybuildingsdown.png"},

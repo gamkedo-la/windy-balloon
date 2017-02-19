@@ -166,6 +166,7 @@ function twisterClass(){
   	            
           case TRACK_TREE:
   	            trackGrid[worldTileUnderTwister] = TRACK_TREE_DOWN;
+                trackNeedsRedraw = true;
   	            break;
           
           case TRACK_CITY_PARIS:

@@ -65,6 +65,7 @@ function menuBalloon(){
 
 
 function loadMainMenu(){
+    isInMenu = true;
     var framesPerSecond = 30;
     selectLength = menuItems.length;
     if(menuBalloons.length == 0) { // first init?
@@ -187,7 +188,7 @@ function updateCurrPointer(val){
 }
 
 function keyPressedInMenu(evt){
-    if(videoPlaying) {
+    if(videoPlaying || isInMenu == false) {
         return;
     }
     var thisKey = evt.keyCode;

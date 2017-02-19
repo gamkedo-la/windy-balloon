@@ -77,6 +77,14 @@ function clearIfUniqueKeyReq(whichKind) {
 
 function keyPressed(evt) {
   var thisKey = evt.keyCode;
+  if(thisKey == KEY_LETTER_M) { // before menu check
+      soundSystem.toggleMute();
+  }
+
+  if(isInMenu) {
+    return;
+  }
+
   var wasValidGameKeySoBlockDefault = false;
 
   // first check keys which apply in or out of level editor
@@ -89,10 +97,6 @@ function keyPressed(evt) {
     break;
     case KEY_PERIOD:
     nextLevel();
-    break;
-
-    case KEY_LETTER_M:
-      soundSystem.toggleMute();
     break;
   } 
 

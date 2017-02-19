@@ -314,19 +314,24 @@ function drawTracks() {
         }*/
       } else {
         var tileFlatIdx;
-        if(trackTypeHere == 0) {
-          tileFlatIdx = trackGrid[trackGrid.length-1];
-        } else if(trackTypeHere != TRACK_GOAL_LANDMARK) {
-          tileFlatIdx = trackTypeHere;
+
+        if(trackTypeHere == TRACK_TREE_DOWN) {
+          canvasContext.drawImage(flatTreePic,
+              trackLeftEdgeX, trackTopEdgeY);
         } else {
-          tileFlatIdx = TRACK_CITY;
+          if(trackTypeHere == 0) {
+            tileFlatIdx = trackGrid[trackGrid.length-1];
+          } else if(trackTypeHere != TRACK_GOAL_LANDMARK) {
+            tileFlatIdx = trackTypeHere;
+          } else {
+            tileFlatIdx = TRACK_CITY;
+          }
+          canvasContext.drawImage(trackSheet,
+              tileFlatIdx * TRACK_W, 0,
+              TRACK_W, TRACK_H,
+              trackLeftEdgeX, trackTopEdgeY,
+              TRACK_W, TRACK_H);
         }
-        
-        canvasContext.drawImage(trackSheet,
-            tileFlatIdx * TRACK_W, 0,
-            TRACK_W, TRACK_H,
-            trackLeftEdgeX, trackTopEdgeY,
-            TRACK_W, TRACK_H);
       }
 
       if(isInEditor && trackIndex == editIdx) {

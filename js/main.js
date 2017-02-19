@@ -20,6 +20,7 @@ var cureVialCondition = "Viable";
 var cureVialMaxTemp = 50;
 
 var arrowAnimFrame = 0;
+var isInMenu = true;
 var arrowAnimFrameTicksDelay = 0;
 const TICKS_PER_ANIM = 2;
 const ARROW_ANIM_FRAMES = 4;
@@ -90,7 +91,7 @@ window.onload = function() {
   gameDiv = document.getElementById('gameDiv');
   window.addEventListener('resize', resizeWindow);
   resizeWindow();
-
+  initInput(); 
   // videoElement.setAttribute("src", "movie/windy-intro." + videoType);//TEMPORARY TERMING OFF FOR TESTING
 }
 
@@ -154,7 +155,6 @@ function StartGameOnLevel(selectedLevel){
   if(firstInit) {
     firstInit = false;
     ParticleSystem.init(scaledCanvas, 1000/framesPerSecond);
-    initInput(); 
   }
   loadLevel();
 }
@@ -195,6 +195,7 @@ function nextLevel() {
 }
 
 function loadLevel() {
+  isInMenu = false;
   soundSystem.stop("music");
   soundSystem.stop("BGM");
   soundSystem.play("BGM",true,0.5);
@@ -382,7 +383,7 @@ function drawEverything() {
   }
 
   //colorText("Use comma (<) or period (>) to cycle levels in track.js's levelOrder[] array",50,30,"yellow");
-  colorText("Press 'M' to toggle music",canvas.width - 200,canvas.height-40,"yellow");
+  colorText("Press 'M' to toggle mute",canvas.width - 200,canvas.height-40,"yellow");
   if(isInEditor == false){
     colorText("Cure Vial Temperature: " +Math.floor(cureTemp) +"/" +cureVialMaxTemp , 550, 100, 'white');
 
