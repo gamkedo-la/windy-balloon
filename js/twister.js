@@ -109,8 +109,10 @@ function twisterClass(){
         if (twisterVanishTimer>=twisterVanishMaxTimer){
             this.x=-1000;
             this.y=-1000;
-            ParticleSystem.remove(this.particles);
-            this.particles = null;
+            if(this.particles != null) {
+              ParticleSystem.remove(this.particles);
+              this.particles = null;  
+            }
         } else {
           twisterVanishTimer+=0.03;
         }

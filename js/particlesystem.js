@@ -64,7 +64,10 @@ var ParticleSystem = (function () {
 	}; 
 	var remove = function(pSys_) 
 	{
-		_clusters.splice(_clusters.indexOf(pSys_), 1);
+		var idx = _clusters.indexOf(pSys_);
+		if(idx != -1) {
+			_clusters.splice(idx, 1);
+		}
 	};
 	var clear = function()
 	{
