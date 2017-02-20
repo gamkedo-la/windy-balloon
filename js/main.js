@@ -37,8 +37,7 @@ var p1 = new ballClass();
 var zombieList=[];
 const ZOMBIECOUNT = 150;
 
-var twisterList=[]
-const TWISTERCOUNT = 1;
+var theTwister = new twisterClass();
 
 //mouse tracking to see col/row
 var mouseX = 0;
