@@ -174,12 +174,9 @@ function ballClass() {
           }
           break;
         case TRACK_PLAYER:
-          if(isCureVialViable == false){
-            isCureVialViable = true;
-            cureVialCondition = "Viable";
-            cureTemp = 0;
-            // eventually I'll need to remove the message that directs the player to the lab here
-          }
+          isCureVialViable = true;
+          cureVialCondition = "Viable";
+          cureTemp = 0;
           break;
         
       case ARROW_U:
