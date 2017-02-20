@@ -15,10 +15,10 @@ var creditLine = [
 "Eric Andrade - Temperature Spoil Code, Cooling Building",
 "Matthew Ko - 2 Monuments (NYC, Pisa), Menu Code",
 "c:games - 2 Monuments (Eiffel Tower, Temple of Heaven)",
-"Andreas Lathe - Particle Effects for Wind and Fire",
+"Andreas Lathe - Particle Effects for Wind, Fire, and Twister",
 "Micky Turner - Sound Effects",
 "Thomas Kresge - Gameplay Music",
-"Ashleigh Morris - Tutorial Level, Monument Art (TBD)",
+"Ashleigh Morris - Tutorial Level, More Coming Soon :)",
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
 "William DiFruscio - Mute Feature",
 "Tyler Hays - Building Art (Main/Background in NYC, Pisa)",
@@ -90,6 +90,7 @@ function loadMainMenu(){
           videoElement.addEventListener("canplaythrough",
             function() {
               if(forIntro) {
+                videoPlaying = true;
                 videoElement.play();
                 forIntro = false;
               } else {
@@ -110,6 +111,9 @@ function loadMainMenu(){
 }
 
 function drawMainMenu(){
+    if(forIntro) { // waiting for video to play
+        return;
+    }
     if(videoPlaying) {
         scaledContext.save();
         scaledContext.scale(drawScale, drawScale);
