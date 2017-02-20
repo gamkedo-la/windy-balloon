@@ -71,8 +71,8 @@ function loadMainMenu(){
     selectLength = menuItems.length;
     if(menuBalloons.length == 0) { // first init?
         level_select_length = levelOrder.length;
-        for(let i=0; i<14; i++){
-            let temp = new menuBalloon();
+        for(var i=0; i<14; i++){
+            var temp = new menuBalloon();
             temp.Init( -200+Math.random()*10 + Math.random()*-10, 30+i*30+Math.random()*10, 0.01+ i*0.02,
                 1000+Math.random()*100, 1+i*0.2);
             menuBalloons.push(temp);
@@ -136,7 +136,7 @@ function drawMainMenu(){
 }
 
 function drawBalloons(){
-    for(let i=0; i<menuBalloons.length; i++){
+    for(var i=0; i<menuBalloons.length; i++){
         menuBalloons[i].Draw(1000/30);
     }
 }

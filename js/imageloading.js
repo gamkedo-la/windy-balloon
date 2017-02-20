@@ -54,7 +54,7 @@ function loadImages() {
       {tileKind3d: TRACK_CITY_DOWN, theFile:"citybuildingsdown.png"},
       {tileKind3d: TRACK_CITY_PARIS, theFile:"citybuildingsparis.png"},
       {tileKind3d: TRACK_CITY_PARIS_DOWN, theFile:"citybuildingsparisdown.png"},
-      {tileKind3d: TRACK_CITY_LONDON, theFile:"citybuildingslondon.png"},
+      {tileKind3d: TRACK_CITY_LONDON, theFile:"citybuildingsLondon.png"},
       {tileKind3d: TRACK_CITY_LONDON_DOWN, theFile:"citybuildingslondondown.png"}
 
     ];
