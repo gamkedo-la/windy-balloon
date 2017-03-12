@@ -155,9 +155,27 @@ var worldMap_openworld = [
 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 -2, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0];
 
-var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3,worldMap_london,worldMap_pinball_machine,worldMap_spiral,worldMap_maze,worldMap_openworld];
+var worldMap_sf = [
+-2, 0, 0, 0, 0, 2, 0, 0, -2, 0, -1, 0, -3, 0, 0, 3, 0, 3, 3, 3, 
+0, 0, -1, -3, 0, 0, 0, 0, 3, 3, 3, 0, 3, 0, 0, 0, 3, 0, 3, 0, 
+-2, -3, 0, 0, 0, -1, 0, 0, 0, 3, 0, 3, 3, 3, -4, 0, -4, -1, 0, 0, 
+-2, 0, 0, -2, 0, 0, 0, 6, -3, 0, -1, 0, 0, 6, 6, 6, 6, -3, 0, -3, 
+-3, 6, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, -3, 
+-3, 0, 6, 6, 6, 6, -1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+-2, 6, 6, 6, 6, -3, 5, -3, -1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+-2, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, -1, 
+-2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, -1, -1, 0, 0, 0, -4, 
+1, -4, 6, 6, 6, 6, 6, 3, 3, 3, 3, 3, -3, -3, 0, 0, 0, 0, 1, -4, 
+1, 1, 0, 0, 6, 6, 3, -4, 3, 5, 0, 3, 3, -2, -2, 1, 1, 1, 4, 1, 
+1, 0, 0, 0, 8, 8, 3, -3, 3, 3, 3, 3, 3, 6, 6, 0, 0, 1, 7, 0, 
+1, -3, -4, 6, 6, 6, 3, -2, 3, 3, 3, 3, 3, 6, 6, 6, -3, -3, -1, 0, 
+0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 
+4];
 
-var levelName = ["Easter Island","New York","Pisa","Paris","London","Pinball Machine","Spiral Death","Maze Daze","Open World"];
+var levelOrder = [worldMap0,worldMap1,worldMap2,worldMap3,worldMap_london,worldMap_pinball_machine,worldMap_spiral,worldMap_maze,worldMap_openworld,worldMap_sf];
+
+var levelName = ["Easter Island","New York","Pisa","Paris","London","Pinball Machine","Spiral Death","Maze Daze","Open World", "San Francisco"];
 
 var trackNeedsRedraw = true;
 

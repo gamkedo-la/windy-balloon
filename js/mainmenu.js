@@ -18,7 +18,7 @@ var creditLine = [
 "Andreas Lathe - Particle Effects for Wind, Fire, and Twister",
 "Micky Turner - Sound Effects",
 "Thomas Kresge - Gameplay Music",
-"Ashleigh Morris - Tutorial Level, More Coming Soon :)",
+"Ashleigh Morris - Tutorial Level, Golden Gate Bridge Art",
 "Caspar Dunant - Warning Airplane Model & Flyover Code",
 "William DiFruscio - Mute Feature",
 "Tyler Hays - Building Art (Main/Background in NYC, Pisa)",
@@ -152,10 +152,10 @@ function menuSelectDraw(){
 function levelSelectDraw(){
     var unit = worldDrawCanvas.height/20;
     for(var levOrdIndex = 0; levOrdIndex < levelOrder.length; levOrdIndex++){
-        colorText(levelName[levOrdIndex]/*"Level "+(levOrdIndex+1)*/ , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*1.5 + unit*levOrdIndex  , 'white',"25px Verdana");        
+        colorText(levelName[levOrdIndex]/*"Level "+(levOrdIndex+1)*/ , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*1.5-39 + unit*levOrdIndex  , 'white',"25px Verdana");        
 		
     }
-    colorText("->", worldDrawCanvas.width/4*1.25, worldDrawCanvas.height/3*1.5 + unit*curr_pointer_index  , 'white',"25px Verdana"); 
+    colorText("->", worldDrawCanvas.width/4*1.25, worldDrawCanvas.height/3*1.5-39 + unit*curr_pointer_index  , 'white',"25px Verdana"); 
     colorText("Esc to return to main menu" , worldDrawCanvas.width/4*1.45, worldDrawCanvas.height/3*2.7 + unit*1  , 'white',"18px Verdana");
 }
 
