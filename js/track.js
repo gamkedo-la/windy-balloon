@@ -265,6 +265,10 @@ function drawTrackSpriteCards() {
   var trackLeftEdgeX = 0;
   var trackTopEdgeY = 0;
   var parPt;
+  var alreadyDrawnGoal = false;
+
+  var isSF = (currentLevelIdx == levelOrder.length-1);
+
   for(var eachRow=0; eachRow<TRACK_ROWS; eachRow++) { // deal with one row at a time
 
     trackLeftEdgeX = 0; // resetting horizontal draw position for tiles to left edge
@@ -275,8 +279,23 @@ function drawTrackSpriteCards() {
           
       if(trackTypeHere == TRACK_GOAL_LANDMARK) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
-        drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
-          parPt.x,parPt.y,parPt.scaleHere)
+        if(isSF) {
+          if(alreadyDrawnGoal == false) {
+            alreadyDrawnGoal = true;
+          } else {
+            trackIndex++; // increment which index we're going to next check for in the track
+            trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
+            continue;
+          }
+          drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
+            parPt.x,parPt.y,parPt.scaleHere);
+          parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W+TRACK_W/2,trackTopEdgeY+TRACK_H);
+          drawAtBaseScaledSheet(landmarksPic,currentLevelIdx+1,
+            parPt.x,parPt.y,parPt.scaleHere);
+        } else { 
+          drawAtBaseScaledSheet(landmarksPic,currentLevelIdx,
+            parPt.x,parPt.y,parPt.scaleHere);
+        }
       } else if(track3dPics[trackTypeHere] != undefined) {
         parPt = worldCoordToParCoord(trackLeftEdgeX+TRACK_W/2,trackTopEdgeY+TRACK_H);
         drawAtBaseScaled(track3dPics[trackTypeHere],
@@ -338,7 +357,12 @@ function drawTracks() {
               trackLeftEdgeX, trackTopEdgeY);
         } else {
           if(trackTypeHere == 0 || trackTypeHere == TRACK_GOAL_LANDMARK) {
-            tileFlatIdx = trackGrid[trackGrid.length-1];
+            if(currentLevelIdx == levelOrder.length-1 &&
+              trackTypeHere == TRACK_GOAL_LANDMARK) {
+              tileFlatIdx = TRACK_ICE;
+            } else {
+              tileFlatIdx = trackGrid[trackGrid.length-1];
+            }
           } else {
             tileFlatIdx = trackTypeHere;
           }
